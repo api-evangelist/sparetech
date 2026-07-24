@@ -1,0 +1,262 @@
+openapi: 3.0.2
+info:
+  title: Sync Authentication ExtensionIntent API
+  version: 0.2.0
+  description: '# Authorization
+
+
+    <!-- Redoc-Inject: <security-definitions> -->
+
+    '
+  contact: {}
+  x-logo:
+    url: https://app.sparetech.io/img/sparetech-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Sparetech logo
+servers:
+- url: https://sync.sparetech.io/v1
+  description: Production environment
+- url: https://sync.sandbox.sparetech.io/v1
+  description: Sandbox environment
+tags:
+- name: ExtensionIntent
+paths:
+  /extension-intents:
+    get:
+      summary: List all ExtensionIntents
+      tags:
+      - ExtensionIntent
+      responses:
+        '200':
+          description: A dictionary with a `extensionIntents` property that contains an array of up to `limit` ExtensionIntents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtensionIntents'
+        '404':
+          description: Extension intent {id} couldn't be found
+      operationId: getExtensionIntents
+      description: Returns a list of ExtensionIntents.
+      security:
+      - Token: []
+      parameters:
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/ExtensionIntentStatus'
+        description: Only returns intents in the given status.
+      - name: created.gt
+        in: query
+        schema:
+          type: string
+          format: date
+        example: '2022-12-10'
+        description: A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format.
+      - name: created.lt
+        in: query
+        schema:
+          type: string
+          format: date
+        example: '2022-12-13'
+        description: A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format.
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+        description: A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10.
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: A cursor for pagination across multiple pages of results.
+      x-validator: true
+  /extension-intents/{id}:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Retrieve an ExtensionIntent
+      description: Retrieves the details of an ExtensionIntent that has previously been created.
+      security:
+      - Token: []
+      tags:
+      - ExtensionIntent
+      responses:
+        '200':
+          description: An `ExtensionIntent` if a valid `id` was provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtensionIntent'
+        '404':
+          description: Extension intent {id} couldn't be found
+      operationId: getExtensionIntent
+      x-validator: true
+  /extension-intents/{id}/confirm:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Confirm material extension
+      description: Confirms the extension of the material to a new plant.
+      security:
+      - Token: []
+      tags:
+      - ExtensionIntent
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Extension intent {id} couldn't be found
+      operationId: confirmExtensionIntent
+      x-validator: true
+  /extension-intents/{id}/reject:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Reject material extension
+      description: Marks the intent as rejected by the external system.
+      tags:
+      - ExtensionIntent
+      operationId: rejectExtensionIntent
+      security:
+      - Token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectComment'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Extension intent {id} couldn't be found
+      x-validator: true
+components:
+  schemas:
+    RejectComment:
+      title: RejectComment
+      type: object
+      properties:
+        message:
+          type: string
+          description: Short description of the reason for rejecting the intent.
+      required:
+      - message
+    ApprovedBy:
+      title: ApprovedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: approver@example.com
+          description: Email of the approver
+      required:
+      - email
+    ExtensionIntent:
+      title: ExtensionIntent
+      type: object
+      properties:
+        id:
+          type: string
+          example: '904136'
+          description: Unique identifier for the intent object.
+        createdAt:
+          type: string
+          example: '2022-12-10T12:05:12Z'
+          description: Time at which the object was created. Follows the ISO-8601 standard format.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        approvedBy:
+          $ref: '#/components/schemas/ApprovedBy'
+        status:
+          $ref: '#/components/schemas/ExtensionIntentStatus'
+        materialNumber:
+          type: string
+          example: '79850030905'
+          description: Identifier of the material to extend to a new plant.
+        metadata:
+          type: object
+          example:
+            MANU: Sparetech
+            ART_NUM: SED1234
+            TYP: TYP_1234
+            DESC: Material Description
+          description: Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Only fields with changes will be returned.
+      required:
+      - id
+      - status
+      - metadata
+      - materialNumber
+      - createdBy
+    ExtensionIntents:
+      title: ExtensionIntents
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          example: true
+          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
+        totalCount:
+          type: number
+          example: 2
+          description: Total number of intents available to retrieve, given the provided parameters.
+        limit:
+          type: integer
+          example: 1
+          description: The maximum number of items the `extensionIntents` list can have.
+        page:
+          type: integer
+          example: 0
+          description: Current cursor of pagination across multiple pages of results.
+        extensionIntents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtensionIntent'
+      required:
+      - hasMore
+      - totalCount
+      - limit
+      - page
+      - changeRequests
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: creator@example.com
+          description: Email of the creator
+      required:
+      - email
+    ExtensionIntentStatus:
+      title: ExtensionIntentStatus
+      type: string
+      enum:
+      - Ready
+      - Done
+      description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
+      example: Done
+  securitySchemes:
+    Token:
+      description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+x-stoplight:
+  id: gfa4jhd050w9x

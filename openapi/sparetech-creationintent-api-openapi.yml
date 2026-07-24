@@ -1,0 +1,279 @@
+openapi: 3.0.2
+info:
+  title: Sync Authentication CreationIntent API
+  version: 0.2.0
+  description: '# Authorization
+
+
+    <!-- Redoc-Inject: <security-definitions> -->
+
+    '
+  contact: {}
+  x-logo:
+    url: https://app.sparetech.io/img/sparetech-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Sparetech logo
+servers:
+- url: https://sync.sparetech.io/v1
+  description: Production environment
+- url: https://sync.sandbox.sparetech.io/v1
+  description: Sandbox environment
+tags:
+- name: CreationIntent
+paths:
+  /creation-intents:
+    get:
+      summary: List all CreationIntents
+      tags:
+      - CreationIntent
+      responses:
+        '200':
+          description: A dictionary with a `creationIntents` property that contains an array of up to `limit`. CreationIntents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreationIntents'
+        '404':
+          description: Creation intent {id} couldn't be found
+      operationId: getCreationIntents
+      description: Returns a list of CreationIntents.
+      security:
+      - Token: []
+      parameters:
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/CreationIntentStatus'
+        description: Only returns intents in the given status. Allowed statuses are `Ready` and `Done`.
+      - name: created.gt
+        in: query
+        schema:
+          type: string
+          format: date
+        example: '2022-12-10'
+        description: A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format.
+      - name: created.lt
+        in: query
+        schema:
+          type: string
+          format: date
+        example: '2022-12-13'
+        description: A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format.
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+        description: A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10.
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: A cursor for pagination across multiple pages of results.
+      x-validator: true
+  /creation-intents/{id}:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Retrieve a CreationIntent
+      description: Retrieves the details of a CreationIntent that has previously been created.
+      security:
+      - Token: []
+      tags:
+      - CreationIntent
+      responses:
+        '200':
+          description: A `CreationIntent` if a valid `id` was provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreationIntent'
+        '404':
+          description: Creation intent {id} couldn't be found
+      operationId: getCreationIntent
+      x-validator: true
+  /creation-intents/{id}/confirm:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Confirm material creation
+      description: Confirms the material creation by supplying the material number.
+      tags:
+      - CreationIntent
+      operationId: confirmCreationIntent
+      security:
+      - Token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreationIntentConfirmation'
+      responses:
+        '200':
+          description: The updated `CreationIntent` after adding the material number.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreationIntent'
+        '404':
+          description: Creation intent {id} couldn't be found
+      x-validator: true
+  /creation-intents/{id}/reject:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Reject material creation
+      description: Marks the intent as rejected by the external system.
+      tags:
+      - CreationIntent
+      operationId: rejectCreationIntent
+      security:
+      - Token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectComment'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Creation intent {id} couldn't be found
+      x-validator: true
+components:
+  schemas:
+    CreationIntent:
+      title: CreationIntent
+      type: object
+      properties:
+        id:
+          type: string
+          example: '904134'
+          description: Unique identifier for the intent object.
+        createdAt:
+          type: string
+          example: '2022-12-10T12:05:12Z'
+          description: Time at which the object was created. Follows the ISO-8601 standard format.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        approvedBy:
+          $ref: '#/components/schemas/ApprovedBy'
+        status:
+          $ref: '#/components/schemas/CreationIntentStatus'
+        metadata:
+          type: object
+          example:
+            MANU: Sparetech
+            ART_NUM: SED1234
+            TYP: TYP_1234
+            DESC: Material Description
+          description: Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Empty fields will not be returned.
+      required:
+      - id
+      - status
+      - metadata
+      - createdBy
+    RejectComment:
+      title: RejectComment
+      type: object
+      properties:
+        message:
+          type: string
+          description: Short description of the reason for rejecting the intent.
+      required:
+      - message
+    CreationIntentStatus:
+      title: CreationIntentStatus
+      type: string
+      x-stoplight:
+        id: lp1e4gqdhcrni
+      x-examples:
+        example-1:
+          id: string
+      enum:
+      - Ready
+      - Done
+      description: Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.
+      example: Ready
+    ApprovedBy:
+      title: ApprovedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: approver@example.com
+          description: Email of the approver
+      required:
+      - email
+    CreationIntentConfirmation:
+      title: CreationIntentConfirmation
+      type: object
+      properties:
+        materialNumber:
+          type: string
+      required:
+      - materialNumber
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: creator@example.com
+          description: Email of the creator
+      required:
+      - email
+    CreationIntents:
+      title: CreationIntents
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          example: true
+          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
+        totalCount:
+          type: number
+          example: 2
+          description: Total number of intents available to retrieve, given the provided parameters.
+        limit:
+          type: integer
+          example: 1
+          description: The maximum number of items the `changeIntents` list can have.
+        page:
+          type: integer
+          example: 0
+          description: Current cursor of pagination across multiple pages of results.
+        creationIntents:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreationIntent'
+      required:
+      - hasMore
+      - totalCount
+      - limit
+      - page
+      - creationIntents
+  securitySchemes:
+    Token:
+      description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+x-stoplight:
+  id: gfa4jhd050w9x

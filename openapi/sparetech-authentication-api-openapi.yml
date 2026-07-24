@@ -1,0 +1,128 @@
+openapi: 3.0.2
+info:
+  title: Sync Authentication API
+  version: 0.2.0
+  description: '# Authorization
+
+
+    <!-- Redoc-Inject: <security-definitions> -->
+
+    '
+  contact: {}
+  x-logo:
+    url: https://app.sparetech.io/img/sparetech-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Sparetech logo
+servers:
+- url: https://sync.sparetech.io/v1
+  description: Production environment
+- url: https://sync.sandbox.sparetech.io/v1
+  description: Sandbox environment
+tags:
+- name: Authentication
+paths:
+  /oauth/token:
+    post:
+      summary: Retrieve an access token
+      tags:
+      - Authentication
+      responses:
+        '200':
+          description: A dictionary with a JWT, its time until expiration, and type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAccessToken'
+        '403':
+          description: You have exceeded your token quota and cannot create any more tokens until {timestamp}
+      operationId: oAuthAuthenticate
+      description: Retrieves a bearer token to authorize requests. Client id and secret should be supplied as [Basic HTTP Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization#basic_authentication_2). The token retrieved has an expiration time and can be requested a limited number of times per day.
+      security:
+      - ClientCredentials: []
+  /auth:
+    post:
+      deprecated: true
+      summary: Retrieve an access token
+      tags:
+      - Authentication
+      responses:
+        '200':
+          description: A dictionary with a JWT, its time until expiration, and type.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth0AccessToken'
+        '403':
+          description: You have exceeded your token quota and cannot create any more tokens until {timestamp}
+      operationId: authenticate
+      description: Retrieves a bearer token to authorize requests. The token retrieved has an expiration time and can be requested a limited number of times per day.
+      requestBody:
+        description: Client ID and Client Secret pair.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth0TokenRequest'
+      security: []
+components:
+  schemas:
+    OAuthAccessToken:
+      title: OAuthAccessToken
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: eyJz93a...k4laUWw
+        expires_in:
+          type: integer
+          example: 86400
+        token_type:
+          type: string
+          example: Bearer
+      x-naming-strategy: snake_case
+      required:
+      - access_token
+      - expires_in
+      - token_type
+    Auth0TokenRequest:
+      title: Auth0TokenRequest
+      type: object
+      properties:
+        clientId:
+          type: string
+          example: YOUR_CLIENT_ID
+        clientSecret:
+          type: string
+          format: password
+          example: YOUR_CLIENT_SECRET
+      required:
+      - clientId
+      - clientSecret
+    Auth0AccessToken:
+      title: Auth0AccessToken
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: eyJz93a...k4laUWw
+        expiresIn:
+          type: integer
+          example: 86400
+        tokenType:
+          type: string
+          example: Bearer
+      required:
+      - accessToken
+      - expiresIn
+      - tokenType
+  securitySchemes:
+    Token:
+      description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+x-stoplight:
+  id: gfa4jhd050w9x

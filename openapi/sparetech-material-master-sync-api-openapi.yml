@@ -1,0 +1,141 @@
+openapi: 3.0.2
+info:
+  title: Sync Authentication Material Master Sync API
+  version: 0.2.0
+  description: '# Authorization
+
+
+    <!-- Redoc-Inject: <security-definitions> -->
+
+    '
+  contact: {}
+  x-logo:
+    url: https://app.sparetech.io/img/sparetech-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Sparetech logo
+servers:
+- url: https://sync.sparetech.io/v1
+  description: Production environment
+- url: https://sync.sandbox.sparetech.io/v1
+  description: Sandbox environment
+tags:
+- name: Material Master Sync
+paths:
+  /material:
+    post:
+      summary: Create material
+      description: This endpoint is part of the module “Material Master Sync” for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint inserts a new material.
+      security:
+      - Token: []
+      tags:
+      - Material Master Sync
+      operationId: createMaterial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncMaterialMaster'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Material reference already exists.
+      x-validator: false
+  /material/{reference}:
+    parameters:
+    - name: reference
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Update material
+      description: This endpoint is part of the module “Material Master Sync” for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint applies changes to a material.
+      security:
+      - Token: []
+      tags:
+      - Material Master Sync
+      operationId: updateMaterial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncMaterialMaster'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Material reference and/or plant couldn't be found.
+        '409':
+          description: Invalid material reference.
+      x-validator: true
+  /material/{reference}/extend:
+    parameters:
+    - name: reference
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Extend material
+      description: This endpoint is part of the module “Material Master Sync” for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint extends a material to a given plant.
+      security:
+      - Token: []
+      tags:
+      - Material Master Sync
+      operationId: extendMaterial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncMaterialMasterExtension'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Material reference and/or plant couldn't be found.
+        '409':
+          description: Plant is already included in material
+        '422':
+          description: Material fields should not be part of an extension.
+      x-validator: true
+components:
+  schemas:
+    SyncMaterialMaster:
+      title: SyncMaterialMaster
+      type: object
+      properties:
+        material:
+          type: object
+          example:
+            Materialnummer: MAT00001
+            '[ART_NUM]': LIZ031
+            '[MANU]': Sparetech
+            '[TYP]': SPT.1.4541
+          description: Object containing the entire material for a specific plant, if exists. The fields in this object are  based on the material master headings.
+      required:
+      - material
+    SyncMaterialMasterExtension:
+      title: SyncMaterialMasterExtension
+      type: object
+      properties:
+        material:
+          type: object
+          example:
+            '[WERK]': '12345'
+            '[EKGRP]': HH
+            '[DISGR]': HR1
+          description: Object containing the plant fields. The fields in this object are based on the material master  headings.
+      required:
+      - material
+  securitySchemes:
+    Token:
+      description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+x-stoplight:
+  id: gfa4jhd050w9x

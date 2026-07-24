@@ -1,0 +1,81 @@
+openapi: 3.0.2
+info:
+  title: Sync Authentication Schema API
+  version: 0.2.0
+  description: '# Authorization
+
+
+    <!-- Redoc-Inject: <security-definitions> -->
+
+    '
+  contact: {}
+  x-logo:
+    url: https://app.sparetech.io/img/sparetech-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Sparetech logo
+servers:
+- url: https://sync.sparetech.io/v1
+  description: Production environment
+- url: https://sync.sandbox.sparetech.io/v1
+  description: Sandbox environment
+tags:
+- name: Schema
+paths:
+  /schema/export:
+    get:
+      summary: Export Metadata Schema
+      tags:
+      - Schema
+      responses:
+        '200':
+          description: A list of `strings` containing attributes that can occur in the metadata object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                - MANU
+                - ART_NUM
+                - TYP
+                - DESC
+      operationId: getExportSchema
+      description: Returns a list of attributes that can occur in the metadata object. Corresponds to the export mapping of your organisation.
+      security:
+      - Token: []
+  /schema/import:
+    get:
+      summary: Import Material Schema
+      tags:
+      - Schema
+      responses:
+        '200':
+          description: A list of `strings` containing all the names of the attributes that can occur in the request body of the Import Material endpoint.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                - Materialnummer
+                - '[ART_NUM]'
+                - '[MANU]'
+                - '[TYP]'
+      operationId: getImportSchema
+      description: Returns a list of attributes that can occur in the request body of the Import Material endpoint. Corresponds to the Material Master fields of your organisation.
+      security:
+      - Token: []
+components:
+  securitySchemes:
+    Token:
+      description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ClientCredentials:
+      type: http
+      scheme: basic
+x-stoplight:
+  id: gfa4jhd050w9x
