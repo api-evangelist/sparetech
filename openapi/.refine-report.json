@@ -1,0 +1,24 @@
+{
+  "provider": "sparetech",
+  "sources": [
+    "sparetech-authentication-api-openapi.yml",
+    "sparetech-changeintent-api-openapi.yml",
+    "sparetech-creationintent-api-openapi.yml",
+    "sparetech-extensionintent-api-openapi.yml",
+    "sparetech-material-master-sync-api-openapi.yml",
+    "sparetech-schema-api-openapi.yml"
+  ],
+  "outputs": [
+    "sparetech-authentication-api-openapi.yml",
+    "sparetech-changeintent-api-openapi.yml",
+    "sparetech-creationintent-api-openapi.yml",
+    "sparetech-extensionintent-api-openapi.yml",
+    "sparetech-material-master-sync-api-openapi.yml",
+    "sparetech-schema-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

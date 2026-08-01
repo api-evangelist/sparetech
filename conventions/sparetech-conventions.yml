@@ -1,0 +1,64 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/sparetech-sync-v1-openapi.json, openapi/sparetech-sync-v2-openapi.json, https://docs.sparetech.io/v1
+summary: >-
+  Cross-cutting request/response semantics of the Sparetech Sync API, derived from
+  the v1/v2 OpenAPI and the ReDoc documentation. The Sync API integrates a
+  customer's ERP/CMMS/MDM with the SPARETECH platform for material master
+  creation, change and extension synchronization.
+authentication:
+  style: bearer-jwt
+  detail: >-
+    JWT bearer token (securityScheme "Token"). Client credentials are issued by
+    SPARETECH per organisation and integration environment and are exchanged for a
+    token at POST /oauth/token (Auth0-backed) or POST /auth. A basic-auth scheme
+    "ClientCredentials" is also declared for the token exchange.
+  see: authentication/sparetech-authentication.yml
+idempotency:
+  supported: false
+  detail: >-
+    No idempotency-key header or parameter is documented in the OpenAPI. Write
+    operations are modeled as intents (creation/change/extension) that are
+    confirmed or rejected, which provides an approval workflow rather than an
+    idempotency contract.
+pagination:
+  style: page-number
+  params:
+  - name: page
+    in: query
+    description: Page number to retrieve.
+  - name: limit
+    in: query
+    description: Maximum number of items per page.
+  applies_to:
+  - getCreationIntents
+  - getChangeIntents
+  - getExtensionIntents
+filtering:
+  params:
+  - name: status
+    in: query
+    description: Filter intents by their status.
+  - name: created.gt
+    in: query
+    description: Return items created after the given timestamp.
+  - name: created.lt
+    in: query
+    description: Return items created before the given timestamp.
+  - name: changes.only
+    in: query
+    description: Restrict the response to changed records only.
+versioning:
+  style: uri-path
+  detail: Major versions are carried in the base path (/v1, /v2). v2 is SAP-specific.
+  see: lifecycle/sparetech-lifecycle.yml
+error_envelope:
+  style: http-status-plus-message
+  problem_json: false
+  detail: Errors return an HTTP status code (403/404/409/422) with a human-readable message; not RFC 9457.
+  see: errors/sparetech-problem-types.yml
+rate_limiting:
+  detail: >-
+    Token issuance is quota-limited per client; exceeding it returns 403 "token
+    quota exceeded" until the quota resets. No per-request rate-limit response
+    headers are documented.

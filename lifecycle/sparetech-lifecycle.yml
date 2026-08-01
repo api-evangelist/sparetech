@@ -1,0 +1,31 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.sparetech.io/, https://www.sparetech.io/product/api, openapi servers[]
+versioning:
+  scheme: uri-path
+  current: v2
+  versions:
+  - version: v1
+    label: Available for all ERPs
+    docs: https://docs.sparetech.io/v1
+    servers:
+    - https://sync.sparetech.io/v1
+    - https://sync.sandbox.sparetech.io/v1
+  - version: v2
+    label: Made for SAP
+    docs: https://docs.sparetech.io/v2
+    servers:
+    - https://sync.sparetech.io/v2
+    - https://sync.sandbox.sparetech.io/v2
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No published deprecation/sunset policy found; v1 and v2 are both live.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+sandbox:
+  environment: https://sync.sandbox.sparetech.io
+  see: sandbox/sparetech-sandbox.yml
+deprecated_operations: []

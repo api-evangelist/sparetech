@@ -1,0 +1,65 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/sparetech-sync-v1-openapi.json, openapi/sparetech-sync-v2-openapi.json
+format: plain
+notes: >-
+  Derived from the 4xx responses declared across the Sparetech Sync API v1/v2
+  OpenAPI. The API does not emit application/problem+json (RFC 9457); errors are
+  returned with an HTTP status code and a human-readable message. Titles below are
+  taken verbatim from the OpenAPI response descriptions.
+problems:
+- status: 403
+  title: Token quota exceeded
+  detail: You have exceeded your token quota and cannot create any more tokens until the quota resets.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#oAuthAuthenticate
+  - openapi/sparetech-sync-v1-openapi.json#authenticate
+  - openapi/sparetech-sync-v2-openapi.json#oAuthAuthenticate
+  - openapi/sparetech-sync-v2-openapi.json#authenticate
+- status: 404
+  title: Creation intent not found
+  detail: Creation intent {id} couldn't be found.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#getCreationIntent
+  - openapi/sparetech-sync-v1-openapi.json#confirmCreationIntent
+  - openapi/sparetech-sync-v1-openapi.json#rejectCreationIntent
+- status: 404
+  title: Change intent not found
+  detail: Change intent {id} couldn't be found.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#getChangeIntent
+  - openapi/sparetech-sync-v1-openapi.json#applyChangeIntent
+  - openapi/sparetech-sync-v1-openapi.json#rejectChangeIntent
+- status: 404
+  title: Extension intent not found
+  detail: Extension intent {id} couldn't be found.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#getExtensionIntent
+  - openapi/sparetech-sync-v1-openapi.json#confirmExtensionIntent
+  - openapi/sparetech-sync-v1-openapi.json#rejectExtensionIntent
+- status: 404
+  title: Material reference already exists
+  detail: The material reference supplied on creation already exists.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#createMaterial
+- status: 404
+  title: Material reference and/or plant not found
+  detail: The referenced material and/or plant couldn't be found.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#updateMaterial
+  - openapi/sparetech-sync-v1-openapi.json#extendMaterial
+- status: 409
+  title: Invalid material reference
+  detail: The material reference is invalid for this operation.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#updateMaterial
+- status: 409
+  title: Plant already included in material
+  detail: The plant is already included in the material and cannot be extended again.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#extendMaterial
+- status: 422
+  title: Material fields not allowed on extension
+  detail: Material fields should not be part of an extension request.
+  source_operations:
+  - openapi/sparetech-sync-v1-openapi.json#extendMaterial

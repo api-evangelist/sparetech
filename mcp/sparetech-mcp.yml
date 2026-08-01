@@ -1,0 +1,68 @@
+generated: '2026-07-21'
+method: derived
+status: candidate
+source: openapi/sparetech-sync-v1-openapi.json
+notes: No official hosted/remote MCP server found for Sparetech. Candidate tool list derived one-per-operation
+  from the Sync API v1 OpenAPI.
+server:
+  name: sparetech-sync
+  transport: http
+  url: null
+tools:
+- name: oAuthAuthenticate
+  description: Retrieve an access token
+  source_operation: openapi/sparetech-sync-v1-openapi.json#oAuthAuthenticate
+- name: authenticate
+  description: Retrieve an access token
+  source_operation: openapi/sparetech-sync-v1-openapi.json#authenticate
+- name: getExportSchema
+  description: Export Metadata Schema
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getExportSchema
+- name: getImportSchema
+  description: Import Material Schema
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getImportSchema
+- name: getCreationIntents
+  description: List all CreationIntents
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getCreationIntents
+- name: getCreationIntent
+  description: Retrieve a CreationIntent
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getCreationIntent
+- name: confirmCreationIntent
+  description: Confirm material creation
+  source_operation: openapi/sparetech-sync-v1-openapi.json#confirmCreationIntent
+- name: rejectCreationIntent
+  description: Reject material creation
+  source_operation: openapi/sparetech-sync-v1-openapi.json#rejectCreationIntent
+- name: getChangeIntents
+  description: List all ChangeIntents
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getChangeIntents
+- name: getChangeIntent
+  description: Retrieve a ChangeIntent
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getChangeIntent
+- name: applyChangeIntent
+  description: Confirm material change
+  source_operation: openapi/sparetech-sync-v1-openapi.json#applyChangeIntent
+- name: rejectChangeIntent
+  description: Reject material change
+  source_operation: openapi/sparetech-sync-v1-openapi.json#rejectChangeIntent
+- name: getExtensionIntents
+  description: List all ExtensionIntents
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getExtensionIntents
+- name: getExtensionIntent
+  description: Retrieve an ExtensionIntent
+  source_operation: openapi/sparetech-sync-v1-openapi.json#getExtensionIntent
+- name: confirmExtensionIntent
+  description: Confirm material extension
+  source_operation: openapi/sparetech-sync-v1-openapi.json#confirmExtensionIntent
+- name: rejectExtensionIntent
+  description: Reject material extension
+  source_operation: openapi/sparetech-sync-v1-openapi.json#rejectExtensionIntent
+- name: createMaterial
+  description: Create material
+  source_operation: openapi/sparetech-sync-v1-openapi.json#createMaterial
+- name: updateMaterial
+  description: Update material
+  source_operation: openapi/sparetech-sync-v1-openapi.json#updateMaterial
+- name: extendMaterial
+  description: Extend material
+  source_operation: openapi/sparetech-sync-v1-openapi.json#extendMaterial

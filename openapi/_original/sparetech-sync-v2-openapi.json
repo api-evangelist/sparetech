@@ -1,0 +1,4371 @@
+{
+  "openapi": "3.0.2",
+  "x-stoplight": {
+    "id": "gfa4jhd050w9x"
+  },
+  "info": {
+    "title": "Sync API",
+    "version": "0.1.0",
+    "description": "# Authorization\n\n<!-- Redoc-Inject: <security-definitions> -->\n",
+    "contact": {},
+    "x-logo": {
+      "url": "https://app.sparetech.io/img/sparetech-logo.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Sparetech logo"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://sync.sparetech.io/v2",
+      "description": "Production environment"
+    },
+    {
+      "url": "https://sync.sandbox.sparetech.io/v2",
+      "description": "Sandbox environment"
+    }
+  ],
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "summary": "Retrieve an access token",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "A dictionary with a JWT, its time until expiration, and type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthAccessToken"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You have exceeded your token quota and cannot create any more tokens until {timestamp}"
+          }
+        },
+        "operationId": "oAuthAuthenticate",
+        "description": "Retrieves a bearer token to authorize requests. Client id and secret should be supplied as [Basic HTTP Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization#basic_authentication_2). The token retrieved has an expiration time and can be requested a limited number of times per day.",
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ]
+      }
+    },
+    "/auth": {
+      "post": {
+        "deprecated": true,
+        "summary": "Retrieve an access token",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "A dictionary with a JWT, its time until expiration, and type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Auth0AccessToken"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You have exceeded your token quota and cannot create any more tokens until {timestamp}"
+          }
+        },
+        "operationId": "authenticate",
+        "description": "Retrieves a bearer token to authorize requests. The token retrieved has an expiration time and can be requested a limited number of times per day.",
+        "requestBody": {
+          "description": "Client ID and Client Secret pair.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Auth0TokenRequest"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/material": {
+      "post": {
+        "summary": "Upsert material",
+        "description": "This endpoint is part of the module \u201cMaterial Master Sync\u201d for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint updates Material and plants data if material already exists or create a new material if it is a new material.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Material Master Sync"
+        ],
+        "operationId": "upsertMaterial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertMaterial"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "x-validator": false
+      }
+    },
+    "/creation-intents/{id}/confirm": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Confirm material creation",
+        "description": "Confirms the material creation by supplying the material number.",
+        "tags": [
+          "CreationIntent"
+        ],
+        "operationId": "confirmCreationIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreationIntentConfirmation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Creation intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/creation-intents/{id}/reject": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Reject material creation",
+        "description": "Marks the intent as rejected by the external system.",
+        "tags": [
+          "CreationIntent"
+        ],
+        "operationId": "rejectCreationIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Creation intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/change-intents/{id}/confirm": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Confirm material change",
+        "description": "Confirms the change to the material.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "ChangeIntent"
+        ],
+        "operationId": "applyChangeIntent",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Change intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/change-intents/{id}/reject": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Reject material change",
+        "description": "Marks the intent as rejected by the external system.",
+        "tags": [
+          "ChangeIntent"
+        ],
+        "operationId": "rejectChangeIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Change intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/extension-intents/{id}/confirm": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Confirm material extension",
+        "description": "Confirms the extension of the material to a new plant.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "ExtensionIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Extension intent {id} couldn't be found"
+          }
+        },
+        "operationId": "confirmExtensionIntent",
+        "x-validator": true
+      }
+    },
+    "/extension-intents/{id}/reject": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Reject material extension",
+        "description": "Marks the intent as rejected by the external system.",
+        "tags": [
+          "ExtensionIntent"
+        ],
+        "operationId": "rejectExtensionIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Extension intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Token": {
+        "description": "This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "ClientCredentials": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "OAuthAccessToken": {
+        "title": "OAuthAccessToken",
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "example": "eyJz93a...k4laUWw"
+          },
+          "expires_in": {
+            "type": "integer",
+            "example": 86400
+          },
+          "token_type": {
+            "type": "string",
+            "example": "Bearer"
+          }
+        },
+        "x-naming-strategy": "snake_case",
+        "required": [
+          "access_token",
+          "expires_in",
+          "token_type"
+        ]
+      },
+      "Auth0TokenRequest": {
+        "title": "Auth0TokenRequest",
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "example": "YOUR_CLIENT_ID"
+          },
+          "clientSecret": {
+            "type": "string",
+            "format": "password",
+            "example": "YOUR_CLIENT_SECRET"
+          }
+        },
+        "required": [
+          "clientId",
+          "clientSecret"
+        ]
+      },
+      "Auth0AccessToken": {
+        "title": "Auth0AccessToken",
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJz93a...k4laUWw"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "example": 86400
+          },
+          "tokenType": {
+            "type": "string",
+            "example": "Bearer"
+          }
+        },
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "tokenType"
+        ]
+      },
+      "MARA1": {
+        "title": "MARA1",
+        "type": "object",
+        "description": "Additional Fields for E1MARAM",
+        "properties": {
+          "MATNR_EXTERNAL": {
+            "type": "string",
+            "description": "Material Number"
+          },
+          "MATNR_VERSION": {
+            "type": "string",
+            "description": "Version Number for MATNR Field"
+          },
+          "MATNR_GUID": {
+            "type": "string",
+            "description": "External GUID for MATNR Field"
+          },
+          "BMATN_EXTERNAL": {
+            "type": "string",
+            "description": "Long Material Number for Field BMATN"
+          },
+          "BMATN_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field BMATN"
+          },
+          "BMATN_GUID": {
+            "type": "string",
+            "description": "External GUID for Field BMATN"
+          },
+          "STOFF_EXTERNAL": {
+            "type": "string",
+            "description": "Long Material Number for Field STOFF"
+          },
+          "STOFF_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field STOFF"
+          },
+          "STOFF_GUID": {
+            "type": "string",
+            "description": "External GUID for Field STOFF"
+          },
+          "HUTYP_DFLT": {
+            "type": "string",
+            "description": "Standard HU Type"
+          },
+          "PILFERABLE": {
+            "type": "string",
+            "description": "Pilferable"
+          },
+          "WHSTC": {
+            "type": "string",
+            "description": "Warehouse Storage Condition"
+          },
+          "WHMATGR": {
+            "type": "string",
+            "description": "Warehouse Material Group"
+          },
+          "HNDLCODE": {
+            "type": "string",
+            "description": "Handling Indicator"
+          },
+          "HAZMAT": {
+            "type": "string",
+            "description": "Relevant for Hazardous Substances"
+          },
+          "HUTYP": {
+            "type": "string",
+            "description": "Handling Unit Type"
+          },
+          "TARE_VAR": {
+            "type": "string",
+            "description": "Variable Tare Weight"
+          },
+          "MAXC": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum Allowed Capacity of Packaging Material"
+          },
+          "MAXC_TOL": {
+            "type": "number",
+            "format": "double",
+            "description": "Overcapacity Tolerance of the Handling Unit"
+          },
+          "MAXL": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum Packing Length of Packaging Material"
+          },
+          "MAXB": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum Packing Width of Packaging Material"
+          },
+          "MAXH": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum Packing Height of Packaging Material"
+          },
+          "MAXDIM_UOM": {
+            "type": "string",
+            "description": "Unit of Measure for Maximum Packing Length/Width/Height"
+          },
+          "HERKL": {
+            "type": "string",
+            "description": "Country of origin of the material"
+          },
+          "MFRGR": {
+            "type": "string",
+            "description": "Material freight group"
+          },
+          "QQTIME": {
+            "type": "number",
+            "format": "double",
+            "description": "Quarantine Period"
+          },
+          "QQTIMEUOM": {
+            "type": "string",
+            "description": "Time Unit for Quarantine Period"
+          },
+          "QGRP": {
+            "type": "string",
+            "description": "Quality Inspection Group"
+          },
+          "SERIAL": {
+            "type": "string",
+            "description": "Serial Number Profile"
+          },
+          "PS_SMARTFORM": {
+            "type": "string",
+            "description": "Form Name"
+          },
+          "CWQPROC": {
+            "type": "string",
+            "description": "EWM CW: Catch Weight Profile for Entering CW Quantity"
+          },
+          "CWQTOLGR": {
+            "type": "string",
+            "description": "EWM-CW: Catch Weight Tolerance Group for EWM"
+          },
+          "ADPROF": {
+            "type": "string",
+            "description": "Adjustment Profile"
+          },
+          "IPMIPPRODUCT": {
+            "type": "string",
+            "description": "ID for an Intellectual Property (CRM Product)"
+          },
+          "MEDIUM": {
+            "type": "string",
+            "description": "Medium"
+          },
+          "COMMODITY": {
+            "type": "string",
+            "description": "Physical Commodity"
+          },
+          "SGT_CSGR": {
+            "type": "string",
+            "description": "Segmentation Structure"
+          },
+          "SGT_COVSA": {
+            "type": "string",
+            "description": "Segmentation Strategy"
+          },
+          "SGT_REL": {
+            "type": "string",
+            "description": "Segmentation Relevant"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MAKT": {
+        "title": "MAKT",
+        "type": "object",
+        "description": "Master material short texts",
+        "properties": {
+          "SPRAS": {
+            "type": "string",
+            "description": "Language Key"
+          },
+          "MAKTX": {
+            "type": "string",
+            "description": "Material Description"
+          },
+          "SPRAS_ISO": {
+            "type": "string",
+            "description": "2-Character SAP Language Code"
+          }
+        },
+        "required": [
+          "SPRAS"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MARC1": {
+        "title": "MARC1",
+        "type": "object",
+        "description": "Additional Fields for E1MARCM",
+        "properties": {
+          "NFMAT_EXTERNAL": {
+            "type": "string",
+            "description": "Long Material Number for Field NFMAT"
+          },
+          "NFMAT_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field NFMAT"
+          },
+          "NFMAT_GUID": {
+            "type": "string",
+            "description": "External GUID for Field NFMAT"
+          },
+          "STDPD_EXTERNAL": {
+            "type": "string",
+            "description": "Long Material Number for Field STDPD"
+          },
+          "STDPD_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field STDPD"
+          },
+          "STDPD_GUID": {
+            "type": "string",
+            "description": "External GUID for Field STDPD"
+          },
+          "VRBMT_EXTERNAL": {
+            "type": "string",
+            "description": "Long Material Number for Field VRBMT"
+          },
+          "VRBMT_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field VRBMT"
+          },
+          "VRBMT_GUID": {
+            "type": "string",
+            "description": "External GUID for Field VRBMT"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MARD": {
+        "title": "MARD",
+        "type": "object",
+        "description": "Master material warehouse/batch segment (MARD)",
+        "properties": {
+          "LGORT": {
+            "type": "string",
+            "description": "Storage Location"
+          },
+          "PSTAT": {
+            "type": "string",
+            "description": "Maintenance status"
+          },
+          "LVORM": {
+            "type": "string",
+            "description": "Flag Material for Deletion at Storage Location Level"
+          },
+          "DISKZ": {
+            "type": "string",
+            "description": "Storage location MRP indicator"
+          },
+          "LSOBS": {
+            "type": "string",
+            "description": "Special procurement type"
+          },
+          "LMINB": {
+            "type": "number",
+            "format": "double",
+            "description": "Reorder point for storage location MRP"
+          },
+          "LBSTF": {
+            "type": "number",
+            "format": "double",
+            "description": "Replenishment quantity for storage location MRP"
+          },
+          "HERKL": {
+            "type": "string",
+            "description": "Country of origin of the material"
+          },
+          "EXPPG": {
+            "type": "string",
+            "description": "Preference indicator (deactivated)"
+          },
+          "EXVER": {
+            "type": "string",
+            "description": "Export indicator (deactivated)"
+          },
+          "LGPBE": {
+            "type": "string",
+            "description": "Storage Bin"
+          },
+          "PRCTL": {
+            "type": "string",
+            "description": "Profit Center"
+          },
+          "LWMKB": {
+            "type": "string",
+            "description": "Picking area for lean WM"
+          },
+          "BSKRF": {
+            "type": "number",
+            "format": "double",
+            "description": "Inventory correction factor"
+          },
+          "ADDITIONAL_PROPERTIES": {
+            "type": "object",
+            "description": "Properties representing fields that are not part of MATMAS05 but are  relevant to the integration on MARD level",
+            "example": {
+              "[add_field_1]": "Example Value",
+              "[add_field_2]": "Example Value 2"
+            }
+          }
+        },
+        "required": [
+          "LGORT"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MFHM": {
+        "title": "MFHM",
+        "type": "object",
+        "description": "Master material production resource/tool (MFHM)",
+        "properties": {
+          "OBJTY": {
+            "type": "string",
+            "description": "Object types of the CIM resource"
+          },
+          "OBJID": {
+            "type": "string",
+            "description": "Object ID of the resource"
+          },
+          "ZAEHL": {
+            "type": "string",
+            "description": "Internal counter"
+          },
+          "OBJTY_V": {
+            "type": "string",
+            "description": "Object types of the CIM resource"
+          },
+          "OBJID_V": {
+            "type": "string",
+            "description": "Object ID of the resource"
+          },
+          "KZKBL": {
+            "type": "string",
+            "description": "Indicator: Create load records for prod. resources/tools"
+          },
+          "STEUF": {
+            "type": "string",
+            "description": "Control key for management of production resources/tools"
+          },
+          "STEUF_REF": {
+            "type": "string",
+            "description": "Control key cannot be changed"
+          },
+          "FGRU1": {
+            "type": "string",
+            "description": "Grouping key 1 for production resources/tools"
+          },
+          "FGRU2": {
+            "type": "string",
+            "description": "Grouping key 2 for production resources/tools"
+          },
+          "PLANV": {
+            "type": "string",
+            "description": "Production resource/tool usage"
+          },
+          "KTSCH": {
+            "type": "string",
+            "description": "Standard text key for production resources/tools"
+          },
+          "KTSCH_REF": {
+            "type": "string",
+            "description": "Reference Key Cannot be Changed"
+          },
+          "BZOFFB": {
+            "type": "string",
+            "description": "Reference date to start of production resource/tool usage"
+          },
+          "BZOFFB_REF": {
+            "type": "string",
+            "description": "Offset to start cannot be changed"
+          },
+          "OFFSTB": {
+            "type": "number",
+            "format": "double",
+            "description": "Offset to start of production resource/tool usage"
+          },
+          "EHOFFB": {
+            "type": "string",
+            "description": "Offset unit for start of prod. resource/tool usage"
+          },
+          "OFFSTB_REF": {
+            "type": "string",
+            "description": "Offset to start cannot be changed"
+          },
+          "BZOFFE": {
+            "type": "string",
+            "description": "Reference date for end of production resource/tool usage"
+          },
+          "BZOFFE_REF": {
+            "type": "string",
+            "description": "End reference date cannot be changed"
+          },
+          "OFFSTE": {
+            "type": "number",
+            "format": "double",
+            "description": "Offset to finish of production resource/tool usage"
+          },
+          "EHOFFE": {
+            "type": "string",
+            "description": "Offset unit for end of production resource/tool usage"
+          },
+          "OFFSTE_REF": {
+            "type": "string",
+            "description": "Offset to end cannot be changed"
+          },
+          "MGFORM": {
+            "type": "string",
+            "description": "Formula for calculating the total quantity of PRT"
+          },
+          "MGFORM_REF": {
+            "type": "string",
+            "description": "Formula for calculating the total quantity cannot be changed"
+          },
+          "EWFORM": {
+            "type": "string",
+            "description": "Formula for calculating the total usage value of PRT"
+          },
+          "EWFORM_REF": {
+            "type": "string",
+            "description": "Formula to calculate entire usage value cannot be changed"
+          },
+          "PAR01": {
+            "type": "string",
+            "description": "First parameter (for formulas)"
+          },
+          "PAR02": {
+            "type": "string",
+            "description": "Second parameter (for formulas)"
+          },
+          "PAR03": {
+            "type": "string",
+            "description": "Third parameter (for formulas)"
+          },
+          "PAR04": {
+            "type": "string",
+            "description": "Fourth parameter (for formulas)"
+          },
+          "PAR05": {
+            "type": "string",
+            "description": "Fifth parameter (for formulas)"
+          },
+          "PAR06": {
+            "type": "string",
+            "description": "Sixth parameter (for formulas)"
+          },
+          "PARU1": {
+            "type": "string",
+            "description": "Parameter unit"
+          },
+          "PARU2": {
+            "type": "string",
+            "description": "Parameter unit"
+          },
+          "PARU3": {
+            "type": "string",
+            "description": "Parameter unit"
+          },
+          "PARU4": {
+            "type": "string",
+            "description": "Parameter unit"
+          },
+          "PARU5": {
+            "type": "string",
+            "description": "Parameter unit"
+          },
+          "PARU6": {
+            "type": "string",
+            "description": "Parameter unit"
+          },
+          "PARV1": {
+            "type": "number",
+            "format": "double",
+            "description": "Parameter value"
+          },
+          "PARV2": {
+            "type": "number",
+            "format": "double",
+            "description": "Parameter value"
+          },
+          "PARV3": {
+            "type": "number",
+            "format": "double",
+            "description": "Parameter value"
+          },
+          "PARV4": {
+            "type": "number",
+            "format": "double",
+            "description": "Parameter value"
+          },
+          "PARV5": {
+            "type": "number",
+            "format": "double",
+            "description": "Parameter value"
+          },
+          "PARV6": {
+            "type": "number",
+            "format": "double",
+            "description": "Parameter value"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MPGD": {
+        "title": "MPGD",
+        "type": "object",
+        "description": "Master material product group",
+        "properties": {
+          "PRGRP": {
+            "type": "string",
+            "description": "Planning material"
+          },
+          "PRWRK": {
+            "type": "string",
+            "description": "Planning plant"
+          },
+          "UMREF": {
+            "type": "string",
+            "description": "Conv. factor f. plng material"
+          },
+          "PRGRP_EXTERNAL": {
+            "type": "string",
+            "description": "Name of Product Group"
+          },
+          "PRGRP_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field PRGRP"
+          },
+          "PRGRP_GUID": {
+            "type": "string",
+            "description": "External GUID for Field PRGRP"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MPOP": {
+        "title": "MPOP",
+        "type": "object",
+        "description": "Master material forecast parameter",
+        "properties": {
+          "VERSP": {
+            "type": "string",
+            "description": "Version number of forecast parameters"
+          },
+          "PROPR": {
+            "type": "string",
+            "description": "Forecast profile"
+          },
+          "MODAW": {
+            "type": "string",
+            "description": "Model Selection Indicator"
+          },
+          "MODAV": {
+            "type": "string",
+            "description": "Model selection procedure"
+          },
+          "KZPAR": {
+            "type": "string",
+            "description": "Indicator for parameter optimization"
+          },
+          "OPGRA": {
+            "type": "string",
+            "description": "Optimization level"
+          },
+          "KZINI": {
+            "type": "string",
+            "description": "Initialization indicator"
+          },
+          "PRMOD": {
+            "type": "string",
+            "description": "Forecast model"
+          },
+          "ALPHA": {
+            "type": "number",
+            "format": "double",
+            "description": "Basic value smoothing using alpha factor"
+          },
+          "BETA1": {
+            "type": "number",
+            "format": "double",
+            "description": "Trend value smoothing using the beta factor"
+          },
+          "GAMMA": {
+            "type": "number",
+            "format": "double",
+            "description": "Seasonal index smoothing using gamma factor"
+          },
+          "DELTA": {
+            "type": "number",
+            "format": "double",
+            "description": "MAD (mean absolute deviation) smoothing using delta factor"
+          },
+          "EPSIL": {
+            "type": "number",
+            "format": "double",
+            "description": "Epsilon factor"
+          },
+          "SIGGR": {
+            "type": "number",
+            "format": "double",
+            "description": "Tracking limit"
+          },
+          "PERKZ": {
+            "type": "string",
+            "description": "Period Indicator"
+          },
+          "PRDAT": {
+            "type": "string",
+            "description": "Date of last forecast"
+          },
+          "PERAN": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of historical periods"
+          },
+          "PERIN": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of periods for initialization"
+          },
+          "PERIO": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of periods per seasonal cycle"
+          },
+          "PEREX": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of periods for ex-post forecasting"
+          },
+          "ANZPR": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of forecast periods"
+          },
+          "FIMON": {
+            "type": "number",
+            "format": "double",
+            "description": "Fixed periods"
+          },
+          "GWERT": {
+            "type": "number",
+            "format": "double",
+            "description": "Basic value"
+          },
+          "GWER1": {
+            "type": "number",
+            "format": "double",
+            "description": "Basic value of the 2nd order"
+          },
+          "GWER2": {
+            "type": "number",
+            "format": "double",
+            "description": "Basic value of the 2nd order"
+          },
+          "VMGWE": {
+            "type": "number",
+            "format": "double",
+            "description": "Basic value of previous period"
+          },
+          "VMGW1": {
+            "type": "number",
+            "format": "double",
+            "description": "Base value of the second order in previous period"
+          },
+          "VMGW2": {
+            "type": "number",
+            "format": "double",
+            "description": "Base value of the second order in previous period"
+          },
+          "TWERT": {
+            "type": "number",
+            "format": "double",
+            "description": "Trend value"
+          },
+          "VMTWE": {
+            "type": "number",
+            "format": "double",
+            "description": "Trend value of previous period"
+          },
+          "PRMAD": {
+            "type": "number",
+            "format": "double",
+            "description": "Mean absolute deviation (MAD)"
+          },
+          "VMMAD": {
+            "type": "number",
+            "format": "double",
+            "description": "Mean absolute devaition of previous period"
+          },
+          "FSUMM": {
+            "type": "number",
+            "format": "double",
+            "description": "Error total"
+          },
+          "VMFSU": {
+            "type": "number",
+            "format": "double",
+            "description": "Error total for the previous period"
+          },
+          "GEWGR": {
+            "type": "string",
+            "description": "Weighting group"
+          },
+          "THKOF": {
+            "type": "number",
+            "format": "double",
+            "description": "Theil coefficient"
+          },
+          "AUSNA": {
+            "type": "string",
+            "description": "Exception message bar"
+          },
+          "PROAB": {
+            "type": "string",
+            "description": "Forecast flow control"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MPRW": {
+        "title": "MPRW",
+        "type": "object",
+        "description": "Master material forecast value",
+        "properties": {
+          "ERTAG": {
+            "type": "string",
+            "description": "First day of the period to which the values refer"
+          },
+          "PRWRT": {
+            "type": "number",
+            "format": "double",
+            "description": "Forecast value"
+          },
+          "KOPRW": {
+            "type": "number",
+            "format": "double",
+            "description": "Corrected value for forecast"
+          },
+          "SAIIN": {
+            "type": "number",
+            "format": "double",
+            "description": "Seasonal index"
+          },
+          "FIXKZ": {
+            "type": "string",
+            "description": "Indicator: consumption value is fixed"
+          },
+          "EXPRW": {
+            "type": "number",
+            "format": "double",
+            "description": "Ex-post forecast value"
+          },
+          "ANTEI": {
+            "type": "number",
+            "format": "double",
+            "description": "Ratio of the corrected value to the original value (CV:OV)"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MVEG": {
+        "title": "MVEG",
+        "type": "object",
+        "description": "Master material total consumption",
+        "properties": {
+          "ERTAG": {
+            "type": "string",
+            "description": "First day of the period to which the values refer"
+          },
+          "VBWRT": {
+            "type": "number",
+            "format": "double",
+            "description": "Consumption value"
+          },
+          "KOVBW": {
+            "type": "number",
+            "format": "double",
+            "description": "Corrected consumption value"
+          },
+          "KZEXI": {
+            "type": "string",
+            "description": "Checkbox"
+          },
+          "ANTEI": {
+            "type": "number",
+            "format": "double",
+            "description": "Ratio of the corrected value to the original value (CV:OV)"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MVEU": {
+        "title": "MVEU",
+        "type": "object",
+        "description": "Master material unplanned consumption",
+        "properties": {
+          "ERTAG": {
+            "type": "string",
+            "description": "First day of the period to which the values refer"
+          },
+          "VBWRT": {
+            "type": "number",
+            "format": "double",
+            "description": "Consumption value"
+          },
+          "KOVBW": {
+            "type": "number",
+            "format": "double",
+            "description": "Corrected consumption value"
+          },
+          "KZEXI": {
+            "type": "string",
+            "description": "Checkbox"
+          },
+          "ANTEI": {
+            "type": "number",
+            "format": "double",
+            "description": "Ratio of the corrected value to the original value (CV:OV)"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MKAL": {
+        "title": "MKAL",
+        "type": "object",
+        "description": "Master material production version",
+        "properties": {
+          "VERID": {
+            "type": "string",
+            "description": "Production Version"
+          },
+          "BDATU": {
+            "type": "string",
+            "description": "Run-time end: production version"
+          },
+          "ADATU": {
+            "type": "string",
+            "description": "Valid-from date of production version"
+          },
+          "STLAL": {
+            "type": "string",
+            "description": "Alternative BOM"
+          },
+          "STLAN": {
+            "type": "string",
+            "description": "BOM Usage"
+          },
+          "PLNTY": {
+            "type": "string",
+            "description": "Task List Type"
+          },
+          "PLNNR": {
+            "type": "string",
+            "description": "Key for Task List Group"
+          },
+          "ALNAL": {
+            "type": "string",
+            "description": "Group Counter"
+          },
+          "BESKZ": {
+            "type": "string",
+            "description": "Procurement Type"
+          },
+          "SOBSL": {
+            "type": "string",
+            "description": "Special procurement type"
+          },
+          "LOSGR": {
+            "type": "number",
+            "format": "double",
+            "description": "Lot Size for Product Costing"
+          },
+          "MDV01": {
+            "type": "string",
+            "description": "Aggregation field for production versions"
+          },
+          "MDV02": {
+            "type": "string",
+            "description": "Aggregation field for production versions"
+          },
+          "TEXT1": {
+            "type": "string",
+            "description": "Short text on the production version"
+          },
+          "EWAHR": {
+            "type": "number",
+            "format": "double",
+            "description": "Usage Probability with Version Control"
+          },
+          "VERTO": {
+            "type": "string",
+            "description": "Distribution key for quantity produced"
+          },
+          "SERKZ": {
+            "type": "string",
+            "description": "Repetitive manufacturing allowed for version"
+          },
+          "BSTMI": {
+            "type": "number",
+            "format": "double",
+            "description": "Lower value of the lot-size interval"
+          },
+          "BSTMA": {
+            "type": "number",
+            "format": "double",
+            "description": "Upper value of the lot-size interval"
+          },
+          "RGEKZ": {
+            "type": "string",
+            "description": "Indicator: backflush for RS header"
+          },
+          "ALORT": {
+            "type": "string",
+            "description": "Receiving storage location for repetitive manufacturing"
+          },
+          "PLTYG": {
+            "type": "string",
+            "description": "Task List Type"
+          },
+          "PLNNG": {
+            "type": "string",
+            "description": "Key for Task List Group"
+          },
+          "ALNAG": {
+            "type": "string",
+            "description": "Group Counter"
+          },
+          "PLTYM": {
+            "type": "string",
+            "description": "Task List Type"
+          },
+          "PLNNM": {
+            "type": "string",
+            "description": "Key for Task List Group"
+          },
+          "ALNAM": {
+            "type": "string",
+            "description": "Group Counter"
+          },
+          "CSPLT": {
+            "type": "string",
+            "description": "Apportionment Structure"
+          },
+          "MATKO": {
+            "type": "string",
+            "description": "Other material for which BOM and task list are maintained"
+          },
+          "ELPRO": {
+            "type": "string",
+            "description": "Proposed issue storage location for components"
+          },
+          "PRVBE": {
+            "type": "string",
+            "description": "Default supply area for components"
+          },
+          "MATKO_EXTERNAL": {
+            "type": "string",
+            "description": "Long Material Number for Field MATKO"
+          },
+          "MATKO_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field MATKO"
+          },
+          "MATKO_GUID": {
+            "type": "string",
+            "description": "External GUID for Field MATKO"
+          }
+        },
+        "required": [
+          "VERID"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MARC": {
+        "title": "MARC",
+        "type": "object",
+        "description": "Master material C segment",
+        "properties": {
+          "WERKS": {
+            "type": "string",
+            "description": "Plant"
+          },
+          "PSTAT": {
+            "type": "string",
+            "description": "Maintenance status"
+          },
+          "LVORM": {
+            "type": "string",
+            "description": "Deletion Indicator"
+          },
+          "BWTTY": {
+            "type": "string",
+            "description": "Valuation Category"
+          },
+          "MAABC": {
+            "type": "string",
+            "description": "ABC Indicator"
+          },
+          "KZKRI": {
+            "type": "string",
+            "description": "Indicator: Critical part"
+          },
+          "EKGRP": {
+            "type": "string",
+            "description": "Purchasing Group"
+          },
+          "AUSME": {
+            "type": "string",
+            "description": "Unit of issue"
+          },
+          "DISPR": {
+            "type": "string",
+            "description": "Material: MRP profile"
+          },
+          "DISMM": {
+            "type": "string",
+            "description": "MRP Type"
+          },
+          "DISPO": {
+            "type": "string",
+            "description": "MRP Controller"
+          },
+          "PLIFZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Planned Delivery Time in Days"
+          },
+          "WEBAZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Goods Receipt Processing Time in Days"
+          },
+          "PERKZ": {
+            "type": "string",
+            "description": "Period Indicator"
+          },
+          "AUSSS": {
+            "type": "number",
+            "format": "double",
+            "description": "Assembly scrap in percent"
+          },
+          "DISLS": {
+            "type": "string",
+            "description": "Lot size (materials planning)"
+          },
+          "BESKZ": {
+            "type": "string",
+            "description": "Procurement Type"
+          },
+          "SOBSL": {
+            "type": "string",
+            "description": "Special procurement type"
+          },
+          "MINBE": {
+            "type": "number",
+            "format": "double",
+            "description": "Reorder Point"
+          },
+          "EISBE": {
+            "type": "number",
+            "format": "double",
+            "description": "Safety Stock"
+          },
+          "BSTMI": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum Lot Size"
+          },
+          "BSTMA": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum Lot Size"
+          },
+          "BSTFE": {
+            "type": "number",
+            "format": "double",
+            "description": "Fixed lot size"
+          },
+          "BSTRF": {
+            "type": "number",
+            "format": "double",
+            "description": "Rounding value for purchase order quantity"
+          },
+          "MABST": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum stock level"
+          },
+          "LOSFX": {
+            "type": "number",
+            "format": "double",
+            "description": "Ordering costs"
+          },
+          "SBDKZ": {
+            "type": "string",
+            "description": "Dependent requirements ind. for individual and coll. reqmts"
+          },
+          "LAGPR": {
+            "type": "string",
+            "description": "Storage costs indicator"
+          },
+          "ALTSL": {
+            "type": "string",
+            "description": "Method for Selecting Alternative Bills of Material"
+          },
+          "KZAUS": {
+            "type": "string",
+            "description": "Discontinuation indicator"
+          },
+          "AUSDT": {
+            "type": "string",
+            "description": "Effective-Out Date"
+          },
+          "NFMAT": {
+            "type": "string",
+            "description": "Follow-Up Material"
+          },
+          "KZBED": {
+            "type": "string",
+            "description": "Indicator for Requirements Grouping"
+          },
+          "MISKZ": {
+            "type": "string",
+            "description": "Mixed MRP indicator"
+          },
+          "FHORI": {
+            "type": "string",
+            "description": "Scheduling Margin Key for Floats"
+          },
+          "PFREI": {
+            "type": "string",
+            "description": "Indicator: automatic fixing of planned orders"
+          },
+          "FFREI": {
+            "type": "string",
+            "description": "Release indicator for production orders"
+          },
+          "RGEKZ": {
+            "type": "string",
+            "description": "Indicator: Backflush"
+          },
+          "FEVOR": {
+            "type": "string",
+            "description": "Production Supervisor"
+          },
+          "BEARZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Processing time"
+          },
+          "RUEZT": {
+            "type": "number",
+            "format": "double",
+            "description": "Setup and teardown time"
+          },
+          "TRANZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Interoperation time"
+          },
+          "BASMG": {
+            "type": "number",
+            "format": "double",
+            "description": "Base quantity"
+          },
+          "DZEIT": {
+            "type": "number",
+            "format": "double",
+            "description": "In-house production time"
+          },
+          "MAXLZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum Storage Period"
+          },
+          "LZEIH": {
+            "type": "string",
+            "description": "Unit for maximum storage period"
+          },
+          "KZPRO": {
+            "type": "string",
+            "description": "Indicator: withdrawal of stock from production bin"
+          },
+          "GPMKZ": {
+            "type": "string",
+            "description": "Indicator: Material Included in Rough-Cut Planning"
+          },
+          "UEETO": {
+            "type": "number",
+            "format": "double",
+            "description": "Overdelivery tolerance limit"
+          },
+          "UEETK": {
+            "type": "string",
+            "description": "Indicator: Unlimited Overdelivery Allowed"
+          },
+          "UNETO": {
+            "type": "number",
+            "format": "double",
+            "description": "Underdelivery tolerance limit"
+          },
+          "WZEIT": {
+            "type": "number",
+            "format": "double",
+            "description": "Total replenishment lead time (in workdays)"
+          },
+          "ATPKZ": {
+            "type": "string",
+            "description": "Replacement part"
+          },
+          "VZUSL": {
+            "type": "number",
+            "format": "double",
+            "description": "Surcharge factor for cost in percent"
+          },
+          "HERBL": {
+            "type": "string",
+            "description": "State of manufacture"
+          },
+          "INSMK": {
+            "type": "string",
+            "description": "Post to Inspection Stock"
+          },
+          "SSQSS": {
+            "type": "string",
+            "description": "QA Control Key"
+          },
+          "KZDKZ": {
+            "type": "string",
+            "description": "Documentation required indicator"
+          },
+          "UMLMC": {
+            "type": "number",
+            "format": "double",
+            "description": "Stock in Transfer (Plant to Plant)"
+          },
+          "LADGR": {
+            "type": "string",
+            "description": "Loading Group"
+          },
+          "XCHPF": {
+            "type": "string",
+            "description": "Batch management requirement indicator"
+          },
+          "USEQU": {
+            "type": "string",
+            "description": "Quota arrangement usage"
+          },
+          "LGRAD": {
+            "type": "number",
+            "format": "double",
+            "description": "Service level"
+          },
+          "AUFTL": {
+            "type": "string",
+            "description": "Splitting Indicator"
+          },
+          "PLVAR": {
+            "type": "string",
+            "description": "Plan Version"
+          },
+          "OTYPE": {
+            "type": "string",
+            "description": "Object Type"
+          },
+          "OBJID": {
+            "type": "string",
+            "description": "Object ID"
+          },
+          "MTVFP": {
+            "type": "string",
+            "description": "Checking Group for Availability Check"
+          },
+          "PERIV": {
+            "type": "string",
+            "description": "Fiscal Year Variant"
+          },
+          "KZKFK": {
+            "type": "string",
+            "description": "Indicator: take correction factors into account"
+          },
+          "VRVEZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Shipping setup time"
+          },
+          "VBAMG": {
+            "type": "number",
+            "format": "double",
+            "description": "Base quantity for capacity planning in shipping"
+          },
+          "VBEAZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Shipping processing time"
+          },
+          "LIZYK": {
+            "type": "string",
+            "description": "Delivery cycle"
+          },
+          "BWSCL": {
+            "type": "string",
+            "description": "Source of Supply"
+          },
+          "KAUTB": {
+            "type": "string",
+            "description": "Indicator: automatic purchase order allowed"
+          },
+          "KORDB": {
+            "type": "string",
+            "description": "Indicator: Source list requirement"
+          },
+          "STAWN": {
+            "type": "string",
+            "description": "Commodity Code/Import Code Number for Foreign Trade"
+          },
+          "HERKL": {
+            "type": "string",
+            "description": "Country of origin of the material"
+          },
+          "HERKR": {
+            "type": "string",
+            "description": "Region of origin of material (non-preferential origin)"
+          },
+          "EXPME": {
+            "type": "string",
+            "description": "Unit of measure for commodity code (foreign trade)"
+          },
+          "MTVER": {
+            "type": "string",
+            "description": "Export/import material group"
+          },
+          "PRCTR": {
+            "type": "string",
+            "description": "Profit Center"
+          },
+          "TRAME": {
+            "type": "number",
+            "format": "double",
+            "description": "Stock in Transit"
+          },
+          "MRPPP": {
+            "type": "string",
+            "description": "PPC planning calendar"
+          },
+          "SAUFT": {
+            "type": "string",
+            "description": "Ind.: Repetitive mfg allowed"
+          },
+          "FXHOR": {
+            "type": "string",
+            "description": "Planning time fence"
+          },
+          "VRMOD": {
+            "type": "string",
+            "description": "Consumption mode"
+          },
+          "VINT1": {
+            "type": "string",
+            "description": "Consumption period: backward"
+          },
+          "VINT2": {
+            "type": "string",
+            "description": "Consumption period: forward"
+          },
+          "STLAL": {
+            "type": "string",
+            "description": "Alternative BOM"
+          },
+          "STLAN": {
+            "type": "string",
+            "description": "BOM Usage"
+          },
+          "PLNNR": {
+            "type": "string",
+            "description": "Key for Task List Group"
+          },
+          "APLAL": {
+            "type": "string",
+            "description": "Group Counter"
+          },
+          "LOSGR": {
+            "type": "number",
+            "format": "double",
+            "description": "Lot Size for Product Costing"
+          },
+          "SOBSK": {
+            "type": "string",
+            "description": "Special Procurement Type for Costing"
+          },
+          "FRTME": {
+            "type": "string",
+            "description": "Production unit"
+          },
+          "LGPRO": {
+            "type": "string",
+            "description": "Issue Storage Location"
+          },
+          "DISGR": {
+            "type": "string",
+            "description": "MRP Group"
+          },
+          "KAUSF": {
+            "type": "number",
+            "format": "double",
+            "description": "Component scrap in percent"
+          },
+          "QZGTP": {
+            "type": "string",
+            "description": "Certificate Type"
+          },
+          "TAKZT": {
+            "type": "number",
+            "format": "double",
+            "description": "Takt time"
+          },
+          "RWPRO": {
+            "type": "string",
+            "description": "Range of coverage profile"
+          },
+          "COPAM": {
+            "type": "string",
+            "description": "Local field name for CO/PA link to SOP"
+          },
+          "ABCIN": {
+            "type": "string",
+            "description": "Physical inventory indicator for cycle counting"
+          },
+          "AWSLS": {
+            "type": "string",
+            "description": "Variance Key"
+          },
+          "SERNP": {
+            "type": "string",
+            "description": "Serial Number Profile"
+          },
+          "STDPD": {
+            "type": "string",
+            "description": "Configurable material"
+          },
+          "SFEPR": {
+            "type": "string",
+            "description": "Repetitive manufacturing profile"
+          },
+          "XMCNG": {
+            "type": "string",
+            "description": "Negative stocks allowed in plant"
+          },
+          "QSSYS": {
+            "type": "string",
+            "description": "Required QM System for Vendor"
+          },
+          "LFRHY": {
+            "type": "string",
+            "description": "Planning cycle"
+          },
+          "RDPRF": {
+            "type": "string",
+            "description": "Rounding Profile"
+          },
+          "VRBMT": {
+            "type": "string",
+            "description": "Reference material for consumption"
+          },
+          "VRBWK": {
+            "type": "string",
+            "description": "Reference plant for consumption"
+          },
+          "VRBDT": {
+            "type": "string",
+            "description": "To date of the material to be copied for consumption"
+          },
+          "VRBFK": {
+            "type": "number",
+            "format": "double",
+            "description": "Multiplier for reference material for consumption"
+          },
+          "AUTRU": {
+            "type": "string",
+            "description": "Reset Forecast Model Automatically"
+          },
+          "PREFE": {
+            "type": "string",
+            "description": "Preference indicator in export/import"
+          },
+          "PRENC": {
+            "type": "string",
+            "description": "Exemption certificate: Indicator for legal control"
+          },
+          "PRENO": {
+            "type": "string",
+            "description": "Exemption certificate number for legal control"
+          },
+          "PREND": {
+            "type": "string",
+            "description": "Exemption certificate: Issue date of exemption certificate"
+          },
+          "PRENE": {
+            "type": "string",
+            "description": "Indicator: Vendor declaration exists"
+          },
+          "PRENG": {
+            "type": "string",
+            "description": "Validity date of vendor declaration"
+          },
+          "ITARK": {
+            "type": "string",
+            "description": "Indicator: Military goods"
+          },
+          "PRFRQ": {
+            "type": "string",
+            "description": "Character Field With Field Length 7"
+          },
+          "KZKUP": {
+            "type": "string",
+            "description": "Indicator: Material can be co-product"
+          },
+          "STRGR": {
+            "type": "string",
+            "description": "Planning strategy group"
+          },
+          "LGFSB": {
+            "type": "string",
+            "description": "Default storage location for external procurement"
+          },
+          "SCHGT": {
+            "type": "string",
+            "description": "Indicator: Bulk Material"
+          },
+          "CCFIX": {
+            "type": "string",
+            "description": "CC indicator is fixed"
+          },
+          "EPRIO": {
+            "type": "string",
+            "description": "Withdrawal sequence group for stocks"
+          },
+          "QMATA": {
+            "type": "string",
+            "description": "Material Authorization Group for Activities in QM"
+          },
+          "PLNTY": {
+            "type": "string",
+            "description": "Task List Type"
+          },
+          "MMSTA": {
+            "type": "string",
+            "description": "Plant-Specific Material Status"
+          },
+          "SFCPF": {
+            "type": "string",
+            "description": "Production Scheduling Profile"
+          },
+          "SHFLG": {
+            "type": "string",
+            "description": "Safety time indicator (with or without safety time)"
+          },
+          "SHZET": {
+            "type": "string",
+            "description": "Safety time (in workdays)"
+          },
+          "MDACH": {
+            "type": "string",
+            "description": "Action control: planned order processing"
+          },
+          "KZECH": {
+            "type": "string",
+            "description": "Determination of batch entry in the production/process order"
+          },
+          "MMSTD": {
+            "type": "string",
+            "description": "Date from which the plant-specific material status is valid"
+          },
+          "MFRGR": {
+            "type": "string",
+            "description": "Material freight group"
+          },
+          "FVIDK": {
+            "type": "string",
+            "description": "Production Version To Be Costed"
+          },
+          "INDUS": {
+            "type": "string",
+            "description": "Material CFOP category"
+          },
+          "MOWNR": {
+            "type": "string",
+            "description": "CAP: Number of CAP products list"
+          },
+          "MOGRU": {
+            "type": "string",
+            "description": "Common Agricultural Policy: CAP products group-Foreign Trade"
+          },
+          "CASNR": {
+            "type": "string",
+            "description": "CAS number for pharmaceutical products in foreign trade"
+          },
+          "GPNUM": {
+            "type": "string",
+            "description": "Production statistics: PRODCOM number for foreign trade"
+          },
+          "STEUC": {
+            "type": "string",
+            "description": "Control code for consumption taxes in foreign trade"
+          },
+          "FABKZ": {
+            "type": "string",
+            "description": "Indicator: Item Relevant to JIT Delivery Schedules"
+          },
+          "MATGR": {
+            "type": "string",
+            "description": "Group of Materials for Transition Matrix"
+          },
+          "LOGGR": {
+            "type": "string",
+            "description": "Logistics handling group for workload calculation"
+          },
+          "VSPVB": {
+            "type": "string",
+            "description": "Proposed Supply Area in Material Master Record"
+          },
+          "DPLFS": {
+            "type": "string",
+            "description": "Fair share rule"
+          },
+          "DPLPU": {
+            "type": "string",
+            "description": "Indicator: push distribution"
+          },
+          "DPLHO": {
+            "type": "number",
+            "format": "double",
+            "description": "Deployment horizon in days"
+          },
+          "MINLS": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum lot size for Supply Demand Match"
+          },
+          "MAXLS": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum lot size for Supply Demand Match"
+          },
+          "FIXLS": {
+            "type": "number",
+            "format": "double",
+            "description": "Fixed lot size for Supply Demand Match"
+          },
+          "LTINC": {
+            "type": "number",
+            "format": "double",
+            "description": "Lot size increment for Supply Demand Match"
+          },
+          "COMPL": {
+            "type": "string",
+            "description": "Material completion level"
+          },
+          "CONVT": {
+            "type": "string",
+            "description": "Conversion types for production figures"
+          },
+          "FPRFM": {
+            "type": "string",
+            "description": "Distribution profile of material in plant"
+          },
+          "SHPRO": {
+            "type": "string",
+            "description": "Period Profile for Safety Time"
+          },
+          "FXPRU": {
+            "type": "string",
+            "description": "Fixed-Price Co-Product"
+          },
+          "KZPSP": {
+            "type": "string",
+            "description": "Indicator for cross-project material"
+          },
+          "OCMPF": {
+            "type": "string",
+            "description": "Profile for OCM PP / PS"
+          },
+          "APOKZ": {
+            "type": "string",
+            "description": "Indicator: Is material relevant for APO"
+          },
+          "AHDIS": {
+            "type": "string",
+            "description": "MRP relevancy for dependent requirements"
+          },
+          "EISLO": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum Safety Stock"
+          },
+          "NCOST": {
+            "type": "string",
+            "description": "Do Not Cost"
+          },
+          "MEGRU": {
+            "type": "string",
+            "description": "Unit of Measure Group"
+          },
+          "ROTATION_DATE": {
+            "type": "string",
+            "description": "Strategy for Putaway and Stock Removal"
+          },
+          "UCHKZ": {
+            "type": "string",
+            "description": "Indicator for Original Batch Management"
+          },
+          "UCMAT": {
+            "type": "string",
+            "description": "Reference Material for Original Batches"
+          },
+          "IUID_RELEVANT": {
+            "type": "string",
+            "description": "IUID-Relevant"
+          },
+          "IUID_TYPE": {
+            "type": "string",
+            "description": "Structure Type of UII"
+          },
+          "UID_IEA": {
+            "type": "string",
+            "description": "External Allocation of UII"
+          },
+          "SGT_COVS": {
+            "type": "string",
+            "description": "Segmentation Strategy"
+          },
+          "SGT_STATC": {
+            "type": "string",
+            "description": "Segmentation Status"
+          },
+          "SGT_PRCM": {
+            "type": "string",
+            "description": "Consumption Priority"
+          },
+          "SGT_CHINT": {
+            "type": "string",
+            "description": "Discrete Batch Number"
+          },
+          "SGT_STK_PRT": {
+            "type": "string",
+            "description": "Stock Protection Indicator"
+          },
+          "SGT_DEFSC": {
+            "type": "string",
+            "description": "Default Stock Segment value"
+          },
+          "MARC1": {
+            "$ref": "#/components/schemas/MARC1"
+          },
+          "MARD": {
+            "type": "array",
+            "description": "Master material warehouse/batch segment (MARD)",
+            "items": {
+              "$ref": "#/components/schemas/MARD"
+            }
+          },
+          "MFHM": {
+            "$ref": "#/components/schemas/MFHM"
+          },
+          "MPGD": {
+            "$ref": "#/components/schemas/MPGD"
+          },
+          "MPOP": {
+            "$ref": "#/components/schemas/MPOP"
+          },
+          "MPRW": {
+            "type": "array",
+            "description": "Master material forecast value",
+            "items": {
+              "$ref": "#/components/schemas/MPRW"
+            }
+          },
+          "MVEG": {
+            "type": "array",
+            "description": "Master material total consumption",
+            "items": {
+              "$ref": "#/components/schemas/MVEG"
+            }
+          },
+          "MVEU": {
+            "type": "array",
+            "description": "Master material unplanned consumption",
+            "items": {
+              "$ref": "#/components/schemas/MVEU"
+            }
+          },
+          "MKAL": {
+            "type": "array",
+            "description": "Master material production version",
+            "items": {
+              "$ref": "#/components/schemas/MKAL"
+            }
+          },
+          "ADDITIONAL_PROPERTIES": {
+            "type": "object",
+            "description": "Properties representing fields that are not part of MATMAS05 but are  relevant to the integration on MARC level",
+            "example": {
+              "[add_field_1]": "Example Value",
+              "[add_field_2]": "Example Value 2"
+            }
+          }
+        },
+        "required": [
+          "WERKS"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MEAN": {
+        "title": "MEAN",
+        "type": "object",
+        "description": "Master Material European Article Number (MEAN)",
+        "properties": {
+          "MEINH": {
+            "type": "string",
+            "description": "Unit of Measure for Display"
+          },
+          "LFNUM": {
+            "type": "string",
+            "description": "Consecutive Number"
+          },
+          "EAN11": {
+            "type": "string",
+            "description": "International Article Number (EAN/UPC)"
+          },
+          "EANTP": {
+            "type": "string",
+            "description": "Category of International Article Number (EAN)"
+          },
+          "HPEAN": {
+            "type": "string",
+            "description": "Indicator: Main EAN"
+          }
+        },
+        "required": [
+          "MEINH",
+          "LFNUM"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MARM": {
+        "title": "MARM",
+        "type": "object",
+        "description": "Master material units of measure",
+        "properties": {
+          "MEINH": {
+            "type": "string",
+            "description": "Alternative Unit of Measure for Stockkeeping Unit"
+          },
+          "UMREZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Numerator for Conversion to Base Units of Measure"
+          },
+          "UMREN": {
+            "type": "number",
+            "format": "double",
+            "description": "Denominator for conversion to base units of measure"
+          },
+          "EAN11": {
+            "type": "string",
+            "description": "International Article Number (EAN/UPC)"
+          },
+          "NUMTP": {
+            "type": "string",
+            "description": "Category of International Article Number (EAN)"
+          },
+          "LAENG": {
+            "type": "number",
+            "format": "double",
+            "description": "Length"
+          },
+          "BREIT": {
+            "type": "number",
+            "format": "double",
+            "description": "Width"
+          },
+          "HOEHE": {
+            "type": "number",
+            "format": "double",
+            "description": "Height"
+          },
+          "MEABM": {
+            "type": "string",
+            "description": "Unit of Dimension for Length/Width/Height"
+          },
+          "VOLUM": {
+            "type": "number",
+            "format": "double",
+            "description": "Volume"
+          },
+          "VOLEH": {
+            "type": "string",
+            "description": "Volume Unit"
+          },
+          "BRGEW": {
+            "type": "number",
+            "format": "double",
+            "description": "Gross Weight"
+          },
+          "GEWEI": {
+            "type": "string",
+            "description": "Unit of Weight"
+          },
+          "MESUB": {
+            "type": "string",
+            "description": "Lower-Level Unit of Measure in a Packing Hierarchy"
+          },
+          "GTIN_VARIANT": {
+            "type": "string",
+            "description": "Global Trade Item Number Variant"
+          },
+          "TY2TQ": {
+            "type": "string",
+            "description": "Type of Parallel Unit of Measure"
+          },
+          "NEST_FTR": {
+            "type": "number",
+            "format": "double",
+            "description": "Remaining Volume after Nesting (in Percentage)"
+          },
+          "MAX_STACK": {
+            "type": "number",
+            "description": "Maximum Stacking Factor"
+          },
+          "CAPAUSE": {
+            "type": "number",
+            "format": "double",
+            "description": "Capacity Usage"
+          },
+          "MEAN": {
+            "type": "array",
+            "description": "Master Material European Article Number (MEAN)",
+            "items": {
+              "$ref": "#/components/schemas/MEAN"
+            }
+          }
+        },
+        "required": [
+          "MEINH"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MBEW": {
+        "title": "MBEW",
+        "type": "object",
+        "description": "Master material material valuation (MBEW)",
+        "properties": {
+          "BWKEY": {
+            "type": "string",
+            "description": "Valuation Area"
+          },
+          "BWTAR": {
+            "type": "string",
+            "description": "Valuation Type"
+          },
+          "LVORM": {
+            "type": "string",
+            "description": "Deletion Indicator"
+          },
+          "VPRSV": {
+            "type": "string",
+            "description": "Price Control Indicator"
+          },
+          "VERPR": {
+            "type": "number",
+            "format": "double",
+            "description": "Moving Average Price/Periodic Unit Price"
+          },
+          "STPRS": {
+            "type": "number",
+            "format": "double",
+            "description": "Standard price"
+          },
+          "PEINH": {
+            "type": "number",
+            "format": "double",
+            "description": "Price Unit"
+          },
+          "BKLAS": {
+            "type": "string",
+            "description": "Valuation Class"
+          },
+          "VMVPR": {
+            "type": "string",
+            "description": "Price Control Indicator in Previous Period"
+          },
+          "VMVER": {
+            "type": "number",
+            "format": "double",
+            "description": "Moving Average Price/Periodic Unit Price in Previous Period"
+          },
+          "VMSTP": {
+            "type": "number",
+            "format": "double",
+            "description": "Standard price in the previous period"
+          },
+          "VMPEI": {
+            "type": "number",
+            "format": "double",
+            "description": "Price unit of previous period"
+          },
+          "VMBKL": {
+            "type": "string",
+            "description": "Valuation Class in Previous Period"
+          },
+          "VJVPR": {
+            "type": "string",
+            "description": "Price Control Indicator in Previous Year"
+          },
+          "VJVER": {
+            "type": "number",
+            "format": "double",
+            "description": "Moving Average Price/Periodic Unit Price in Previous Year"
+          },
+          "VJSTP": {
+            "type": "number",
+            "format": "double",
+            "description": "Standard price in previous year"
+          },
+          "LFGJA": {
+            "type": "string",
+            "description": "Fiscal Year of Current Period"
+          },
+          "LFMON": {
+            "type": "string",
+            "description": "Current period (posting period)"
+          },
+          "BWTTY": {
+            "type": "string",
+            "description": "Valuation Category"
+          },
+          "ZKPRS": {
+            "type": "number",
+            "format": "double",
+            "description": "Future price"
+          },
+          "ZKDAT": {
+            "type": "string",
+            "description": "Date as of which the price is valid"
+          },
+          "BWPRS": {
+            "type": "number",
+            "format": "double",
+            "description": "Valuation price based on tax law: level 1"
+          },
+          "BWPRH": {
+            "type": "number",
+            "format": "double",
+            "description": "Valuation price based on commercial law: level 1"
+          },
+          "VJBWS": {
+            "type": "number",
+            "format": "double",
+            "description": "Valuation price based on tax law: level 3"
+          },
+          "VJBWH": {
+            "type": "number",
+            "format": "double",
+            "description": "Valuation price based on commercial law: level 3"
+          },
+          "VVJLB": {
+            "type": "number",
+            "format": "double",
+            "description": "Total valuated stock in year before last"
+          },
+          "VVMLB": {
+            "type": "number",
+            "format": "double",
+            "description": "Total valuated stock in period before last"
+          },
+          "VVSAL": {
+            "type": "number",
+            "format": "double",
+            "description": "Value of total valuated stock in period before last"
+          },
+          "ZPLPR": {
+            "type": "number",
+            "format": "double",
+            "description": "Future planned price"
+          },
+          "ZPLP1": {
+            "type": "number",
+            "format": "double",
+            "description": "Future Planned Price 1"
+          },
+          "ZPLP2": {
+            "type": "number",
+            "format": "double",
+            "description": "Future Planned Price 2"
+          },
+          "ZPLP3": {
+            "type": "number",
+            "format": "double",
+            "description": "Future Planned Price 3"
+          },
+          "ZPLD1": {
+            "type": "string",
+            "description": "Date from Which Future Planned Price 1 Is Valid"
+          },
+          "ZPLD2": {
+            "type": "string",
+            "description": "Date from Which Future Planned Price 2 Is Valid"
+          },
+          "ZPLD3": {
+            "type": "string",
+            "description": "Date from Which Future Planned Price 3 Is Valid"
+          },
+          "KALKZ": {
+            "type": "string",
+            "description": "Indicator: Standard cost estimate for the period"
+          },
+          "KALKL": {
+            "type": "string",
+            "description": "Standard Cost Estimate for Current Period"
+          },
+          "XLIFO": {
+            "type": "string",
+            "description": "LIFO/FIFO-Relevant"
+          },
+          "MYPOL": {
+            "type": "string",
+            "description": "Pool number for LIFO valuation"
+          },
+          "BWPH1": {
+            "type": "number",
+            "format": "double",
+            "description": "Valuation price based on commercial law: level 2"
+          },
+          "BWPS1": {
+            "type": "number",
+            "format": "double",
+            "description": "Valuation price based on tax law: level 2"
+          },
+          "ABWKZ": {
+            "type": "string",
+            "description": "Lowest value: devaluation indicator"
+          },
+          "PSTAT": {
+            "type": "string",
+            "description": "Maintenance status"
+          },
+          "KALN1": {
+            "type": "string",
+            "description": "Cost Estimate Number - Product Costing"
+          },
+          "KALNR": {
+            "type": "string",
+            "description": "Cost Estimate Number for Cost Est. w/o Qty Structure"
+          },
+          "BWVA1": {
+            "type": "string",
+            "description": "Valuation Variant for Future Standard Cost Estimate"
+          },
+          "BWVA2": {
+            "type": "string",
+            "description": "Valuation Variant for Current Standard Cost Estimate"
+          },
+          "BWVA3": {
+            "type": "string",
+            "description": "Valuation Variant for Previous Standard Cost Estimate"
+          },
+          "VERS1": {
+            "type": "string",
+            "description": "Costing Version of Future Standard Cost Estimate"
+          },
+          "VERS2": {
+            "type": "string",
+            "description": "Costing Version of Current Standard Cost Estimate"
+          },
+          "VERS3": {
+            "type": "string",
+            "description": "Costing Version of Previous Standard Cost Estimate"
+          },
+          "HRKFT": {
+            "type": "string",
+            "description": "Origin Group as Subdivision of Cost Element"
+          },
+          "KOSGR": {
+            "type": "string",
+            "description": "Costing Overhead Group"
+          },
+          "PPRDZ": {
+            "type": "string",
+            "description": "Period of Future Standard Cost Estimate"
+          },
+          "PPRDL": {
+            "type": "string",
+            "description": "Period of Current Standard Cost Estimate"
+          },
+          "PPRDV": {
+            "type": "string",
+            "description": "Period of Previous Standard Cost Estimate"
+          },
+          "PDATZ": {
+            "type": "string",
+            "description": "Fiscal Year of Future Standard Cost Estimate"
+          },
+          "PDATL": {
+            "type": "string",
+            "description": "Fiscal Year of Current Standard Cost Estimate"
+          },
+          "PDATV": {
+            "type": "string",
+            "description": "Fiscal Year of Previous Standard Cost Estimate"
+          },
+          "EKALR": {
+            "type": "string",
+            "description": "Material Is Costed with Quantity Structure"
+          },
+          "VPLPR": {
+            "type": "number",
+            "format": "double",
+            "description": "Previous planned price"
+          },
+          "MLMAA": {
+            "type": "string",
+            "description": "Material ledger activated at material level"
+          },
+          "MLAST": {
+            "type": "string",
+            "description": "Material Price Determination: Control"
+          },
+          "VJBKL": {
+            "type": "string",
+            "description": "Valuation Class in Previous Year"
+          },
+          "VJPEI": {
+            "type": "number",
+            "format": "double",
+            "description": "Price unit of previous year"
+          },
+          "HKMAT": {
+            "type": "string",
+            "description": "Material-related origin"
+          },
+          "EKLAS": {
+            "type": "string",
+            "description": "Valuation Class for Sales Order Stock"
+          },
+          "QKLAS": {
+            "type": "string",
+            "description": "Valuation Class for Project Stock"
+          },
+          "MTUSE": {
+            "type": "string",
+            "description": "Usage of the material"
+          },
+          "MTORG": {
+            "type": "string",
+            "description": "Origin of the material"
+          },
+          "OWNPR": {
+            "type": "string",
+            "description": "Produced in-house"
+          },
+          "BWPEI": {
+            "type": "number",
+            "format": "double",
+            "description": "Price unit for valuation prices based on tax/commercial law"
+          },
+          "CON_FIN_VALLEVEL": {
+            "type": "string",
+            "description": "Valuation Level"
+          },
+          "CON_FIN_VALPROC": {
+            "type": "string",
+            "description": "Valuation Procedure"
+          }
+        },
+        "required": [
+          "BWKEY",
+          "BWTAR"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MLGT": {
+        "title": "MLGT",
+        "type": "object",
+        "description": "Material Master: Material Data for Each Storage Type (MLGT)",
+        "properties": {
+          "LGTYP": {
+            "type": "string",
+            "description": "Storage Type"
+          },
+          "LVORM": {
+            "type": "string",
+            "description": "Deletion flag for all material data of a storage type"
+          },
+          "LGPLA": {
+            "type": "string",
+            "description": "Storage Bin"
+          },
+          "LPMAX": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum storage bin quantity"
+          },
+          "LPMIN": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum storage bin quantity"
+          },
+          "MAMNG": {
+            "type": "number",
+            "format": "double",
+            "description": "Control quantity"
+          },
+          "NSMNG": {
+            "type": "number",
+            "format": "double",
+            "description": "Replenishment quantity"
+          },
+          "KOBER": {
+            "type": "string",
+            "description": "Picking Area"
+          },
+          "RDMNG": {
+            "type": "number",
+            "format": "double",
+            "description": "Rounding qty"
+          }
+        },
+        "required": [
+          "LGTYP"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MLGN": {
+        "title": "MLGN",
+        "type": "object",
+        "description": "Master material material data per warehouse number (MLGN)",
+        "properties": {
+          "LGNUM": {
+            "type": "string",
+            "description": "Warehouse Number / Warehouse Complex"
+          },
+          "LVORM": {
+            "type": "string",
+            "description": "Deletion flag for all material data of a warehouse number"
+          },
+          "LGBKZ": {
+            "type": "string",
+            "description": "Storage Section Indicators"
+          },
+          "LTKZE": {
+            "type": "string",
+            "description": "Storage type indicator for stock placement"
+          },
+          "LTKZA": {
+            "type": "string",
+            "description": "Storage type indicator for stock removal"
+          },
+          "LHMG1": {
+            "type": "number",
+            "format": "double",
+            "description": "Loading equipment quantity"
+          },
+          "LHMG2": {
+            "type": "number",
+            "format": "double",
+            "description": "Loading equipment quantity"
+          },
+          "LHMG3": {
+            "type": "number",
+            "format": "double",
+            "description": "Loading equipment quantity"
+          },
+          "LHME1": {
+            "type": "string",
+            "description": "Unit of measure for loading equipment quantity"
+          },
+          "LHME2": {
+            "type": "string",
+            "description": "Unit of measure for loading equipment quantity"
+          },
+          "LHME3": {
+            "type": "string",
+            "description": "Unit of measure for loading equipment quantity"
+          },
+          "LETY1": {
+            "type": "string",
+            "description": "Storage Unit Type"
+          },
+          "LETY2": {
+            "type": "string",
+            "description": "Storage Unit Type"
+          },
+          "LETY3": {
+            "type": "string",
+            "description": "Storage Unit Type"
+          },
+          "LVSME": {
+            "type": "string",
+            "description": "Warehouse Management Unit of Measure"
+          },
+          "KZZUL": {
+            "type": "string",
+            "description": "Indicator: Allow addition to existing stock"
+          },
+          "BLOCK": {
+            "type": "string",
+            "description": "Bulk storage indicator"
+          },
+          "KZMBF": {
+            "type": "string",
+            "description": "Indicator: Message to inventory management"
+          },
+          "BSSKZ": {
+            "type": "string",
+            "description": "Special movement indicator for warehouse management"
+          },
+          "MKAPV": {
+            "type": "number",
+            "format": "double",
+            "description": "Capacity usage"
+          },
+          "BEZME": {
+            "type": "string",
+            "description": "Unit of measure for capacity consumption"
+          },
+          "PLKPT": {
+            "type": "string",
+            "description": "Picking storage type for rough-cut and detailed planning"
+          },
+          "VOMEM": {
+            "type": "string",
+            "description": "Default for unit of measure from material master record"
+          },
+          "L2SKR": {
+            "type": "string",
+            "description": "Material relevance for 2-step picking"
+          },
+          "MLGT": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MLGT"
+            }
+          }
+        },
+        "required": [
+          "LGNUM"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MVKE": {
+        "title": "MVKE",
+        "type": "object",
+        "description": "Master material sales data (MVKE)",
+        "properties": {
+          "VKORG": {
+            "type": "string",
+            "description": "Sales Organization"
+          },
+          "VTWEG": {
+            "type": "string",
+            "description": "Distribution Channel"
+          },
+          "LVORM": {
+            "type": "string",
+            "description": "Ind.: Flag material for deletion at distribution chain level"
+          },
+          "VERSG": {
+            "type": "string",
+            "description": "Material statistics group"
+          },
+          "BONUS": {
+            "type": "string",
+            "description": "Volume rebate group"
+          },
+          "PROVG": {
+            "type": "string",
+            "description": "Commission group"
+          },
+          "SKTOF": {
+            "type": "string",
+            "description": "Cash discount indicator"
+          },
+          "VMSTA": {
+            "type": "string",
+            "description": "Distribution-chain-specific material status"
+          },
+          "VMSTD": {
+            "type": "string",
+            "description": "Date from which distr.-chain-spec. material status is valid"
+          },
+          "AUMNG": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum order quantity in base unit of measure"
+          },
+          "LFMNG": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum delivery quantity in delivery note processing"
+          },
+          "EFMNG": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum make-to-order quantity"
+          },
+          "SCMNG": {
+            "type": "number",
+            "format": "double",
+            "description": "Delivery unit"
+          },
+          "SCHME": {
+            "type": "string",
+            "description": "Unit of measure of delivery unit"
+          },
+          "VRKME": {
+            "type": "string",
+            "description": "Sales Unit"
+          },
+          "MTPOS": {
+            "type": "string",
+            "description": "Item category group from material master"
+          },
+          "DWERK": {
+            "type": "string",
+            "description": "Delivering Plant"
+          },
+          "PRODH": {
+            "type": "string",
+            "description": "Product Hierarchy"
+          },
+          "PMATN": {
+            "type": "string",
+            "description": "Pricing Reference Material"
+          },
+          "KONDM": {
+            "type": "string",
+            "description": "Material Pricing Group"
+          },
+          "KTGRM": {
+            "type": "string",
+            "description": "Account assignment group for this material"
+          },
+          "MVGR1": {
+            "type": "string",
+            "description": "Material group 1"
+          },
+          "MVGR2": {
+            "type": "string",
+            "description": "Material group 2"
+          },
+          "MVGR3": {
+            "type": "string",
+            "description": "Material group 3"
+          },
+          "MVGR4": {
+            "type": "string",
+            "description": "Material group 4"
+          },
+          "MVGR5": {
+            "type": "string",
+            "description": "Material group 5"
+          },
+          "SSTUF": {
+            "type": "string",
+            "description": "Assortment grade"
+          },
+          "PFLKS": {
+            "type": "string",
+            "description": "External assortment priority"
+          },
+          "LSTFL": {
+            "type": "string",
+            "description": "Listing procedure for store or other assortment categories"
+          },
+          "LSTVZ": {
+            "type": "string",
+            "description": "Listing procedure for distr. center assortment categories"
+          },
+          "LSTAK": {
+            "type": "string",
+            "description": "Listing functions (assortments) are active"
+          },
+          "PRAT1": {
+            "type": "string",
+            "description": "ID for product attribute 1"
+          },
+          "PRAT2": {
+            "type": "string",
+            "description": "GDS"
+          },
+          "PRAT3": {
+            "type": "string",
+            "description": "ID for product attribute 3"
+          },
+          "PRAT4": {
+            "type": "string",
+            "description": "ID for product attribute 4"
+          },
+          "PRAT5": {
+            "type": "string",
+            "description": "ID for product attribute 5"
+          },
+          "PRAT6": {
+            "type": "string",
+            "description": "ID for product attribute 6"
+          },
+          "PRAT7": {
+            "type": "string",
+            "description": "ID for product attribute 7"
+          },
+          "PRAT8": {
+            "type": "string",
+            "description": "ID for product attribute 8"
+          },
+          "PRAT9": {
+            "type": "string",
+            "description": "ID for product attribute 9"
+          },
+          "PRATA": {
+            "type": "string",
+            "description": "ID for product attribute 10"
+          },
+          "VAVME": {
+            "type": "string",
+            "description": "Variable Sales Unit Not Allowed"
+          },
+          "RDPRF": {
+            "type": "string",
+            "description": "Rounding Profile"
+          },
+          "MEGRU": {
+            "type": "string",
+            "description": "Unit of Measure Group"
+          },
+          "PMATN_EXTERNAL": {
+            "type": "string",
+            "description": "Long Material Number for Field PMATN"
+          },
+          "PMATN_VERSION": {
+            "type": "string",
+            "description": "Version Number for Field PMATN"
+          },
+          "PMATN_GUID": {
+            "type": "string",
+            "description": "External GUID for Field PMATN"
+          }
+        },
+        "required": [
+          "VKORG",
+          "VTWEG"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MLAN": {
+        "title": "MLAN",
+        "type": "object",
+        "description": "Master material tax classification (MLAN)",
+        "properties": {
+          "ALAND": {
+            "type": "string",
+            "description": "Departure country (country from which the goods are sent)"
+          },
+          "TATY1": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM1": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY2": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM2": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY3": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM3": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY4": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM4": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY5": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM5": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY6": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM6": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY7": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM7": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY8": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM8": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TATY9": {
+            "type": "string",
+            "description": "Tax category (sales tax, federal sales tax,...)"
+          },
+          "TAXM9": {
+            "type": "string",
+            "description": "Tax classification material"
+          },
+          "TAXIM": {
+            "type": "string",
+            "description": "Tax indicator for material (Purchasing)"
+          }
+        },
+        "required": [
+          "ALAND"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MTXL": {
+        "title": "MTXL",
+        "type": "object",
+        "description": "Master material long text line",
+        "properties": {
+          "TDFORMAT": {
+            "type": "string",
+            "description": "Tag column"
+          },
+          "TDLINE": {
+            "type": "string",
+            "description": "Text Line"
+          }
+        },
+        "required": [
+          "TDFORMAT",
+          "TDLINE"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MTXH": {
+        "title": "MTXH",
+        "type": "object",
+        "description": "Master material long text header",
+        "properties": {
+          "TDOBJECT": {
+            "type": "string",
+            "description": "Texts: application object"
+          },
+          "TDNAME": {
+            "type": "string",
+            "description": "Name"
+          },
+          "TDID": {
+            "type": "string",
+            "description": "Text ID"
+          },
+          "TDSPRAS": {
+            "type": "string",
+            "description": "Language Key"
+          },
+          "TDTEXTTYPE": {
+            "type": "string",
+            "description": "SAPscript: Format of Text"
+          },
+          "SPRAS_ISO": {
+            "type": "string",
+            "description": "2-Character SAP Language Code"
+          },
+          "MTXL": {
+            "type": "array",
+            "description": "Master material long text line",
+            "items": {
+              "$ref": "#/components/schemas/MTXL"
+            }
+          }
+        },
+        "required": [
+          "TDOBJECT",
+          "TDNAME",
+          "TDID",
+          "TDSPRAS",
+          "TDTEXTTYPE"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "CUINS": {
+        "title": "CUINS",
+        "type": "object",
+        "description": "CU: Instance data",
+        "properties": {
+          "INST_ID": {
+            "type": "string",
+            "description": "Character field, 8 characters long"
+          },
+          "OBJ_TYPE": {
+            "type": "string",
+            "description": "Character Field Length = 10"
+          },
+          "CLASS_TYPE": {
+            "type": "string",
+            "description": "3-Byte field"
+          },
+          "OBJ_KEY": {
+            "type": "string",
+            "description": "Comment"
+          },
+          "OBJ_TXT": {
+            "type": "string",
+            "description": "Character field, length 70"
+          },
+          "QUANTITY": {
+            "type": "string",
+            "description": "Char 15"
+          },
+          "AUTHOR": {
+            "type": "string",
+            "description": "Statement was Inferred"
+          },
+          "QUANTITY_UNIT": {
+            "type": "string",
+            "description": "Unit of Measure"
+          },
+          "COMPLETE": {
+            "type": "string",
+            "description": "General Indicator"
+          },
+          "CONSISTENT": {
+            "type": "string",
+            "description": "General Indicator"
+          },
+          "OBJECT_GUID": {
+            "type": "string",
+            "description": "GUID for TYPE_OF Statement of Instance"
+          },
+          "PERSIST_ID": {
+            "type": "string",
+            "description": "Instance Number (Persistent)"
+          },
+          "PERSIST_ID_TYPE": {
+            "type": "string",
+            "description": "Type of Instance Number (Persistent)"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "CUVAL": {
+        "title": "CUVAL",
+        "type": "object",
+        "description": "CU: Characteristic valuation",
+        "properties": {
+          "INST_ID": {
+            "type": "string",
+            "description": "Character field, 8 characters long"
+          },
+          "CHARC": {
+            "type": "string",
+            "description": "Character field of length 40"
+          },
+          "CHARC_TXT": {
+            "type": "string",
+            "description": "Character field, length 70"
+          },
+          "VALUE": {
+            "type": "string",
+            "description": "Character field of length 40"
+          },
+          "VALUE_TXT": {
+            "type": "string",
+            "description": "Character field, length 70"
+          },
+          "AUTHOR": {
+            "type": "string",
+            "description": "Statement was Inferred"
+          },
+          "VALUE_TO": {
+            "type": "string",
+            "description": "Characteristic Value"
+          },
+          "VALCODE": {
+            "type": "string",
+            "description": "Value Type: Interval Limits - Single Values"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "CUCOM": {
+        "title": "CUCOM",
+        "type": "object",
+        "description": "Master configuration profile configuration parameter",
+        "properties": {
+          "C_PROFILE": {
+            "type": "string",
+            "description": "Configuration Profile Name"
+          },
+          "CLASSTYPE": {
+            "type": "string",
+            "description": "Class Type"
+          },
+          "ORGAREAS": {
+            "type": "string",
+            "description": "Organizational Area"
+          },
+          "STATUS": {
+            "type": "string",
+            "description": "Status of configuration profile"
+          },
+          "BOMAPPL": {
+            "type": "string",
+            "description": "Application"
+          },
+          "FLAVAILCH": {
+            "type": "string",
+            "description": "Availability Check"
+          },
+          "BOMEXPL": {
+            "type": "string",
+            "description": "Result of BOM explosion"
+          },
+          "TASKLEXPL": {
+            "type": "string",
+            "description": "Result of task list explosion"
+          },
+          "INITSCREEN": {
+            "type": "string",
+            "description": "Initial screen for configuration"
+          },
+          "FLASSEMBLY": {
+            "type": "string",
+            "description": "Configuration Structure of BOM"
+          },
+          "FLRESULT": {
+            "type": "string",
+            "description": "Configured BOM Result"
+          },
+          "FLMDATA": {
+            "type": "string",
+            "description": "Display BOM Master Data"
+          },
+          "FLCASONLY": {
+            "type": "string",
+            "description": "Only configurable assemblies"
+          },
+          "FLMANCHANG": {
+            "type": "string",
+            "description": "Manual changes to components allowed"
+          },
+          "FLHOLDBOM": {
+            "type": "string",
+            "description": "Automatic Fixing"
+          },
+          "FLDELETE": {
+            "type": "string",
+            "description": "Deletion Indicator"
+          },
+          "DESIGN": {
+            "type": "string",
+            "description": "Design Name"
+          },
+          "NEUTR": {
+            "type": "string",
+            "description": "Language-Independent Processing"
+          },
+          "CHAR_VALU": {
+            "type": "string",
+            "description": "Language setting for chars and values"
+          },
+          "A_LAISO": {
+            "type": "string",
+            "description": "2-Character SAP Language Code"
+          },
+          "SCOPE_CHAR": {
+            "type": "string",
+            "description": "Restriction to required and optional characteristics"
+          },
+          "SCOPE_VALU": {
+            "type": "string",
+            "description": "Restriction to chars with and without values"
+          },
+          "FL_EXCLUDE": {
+            "type": "string",
+            "description": "Display Excluded Characteristics and Values"
+          },
+          "DISPLAY": {
+            "type": "string",
+            "description": "Display options for default/values/page editing"
+          },
+          "PRICING": {
+            "type": "string",
+            "description": "Pricing on request/permanent"
+          },
+          "CONFIGUR": {
+            "type": "string",
+            "description": "Configurator active permananently/on request/on ENTER"
+          },
+          "DEFVALU_DE": {
+            "type": "string",
+            "description": "Default Values Deleted / Entered"
+          },
+          "FL_MARK": {
+            "type": "string",
+            "description": "Only selected entries"
+          },
+          "DEFVALU_CC": {
+            "type": "string",
+            "description": "Copy Default Values / Must Confirm"
+          },
+          "TYPM_SEL": {
+            "type": "string",
+            "description": "Type Matching Selection On Request / Permanent"
+          },
+          "TYPM_STRA": {
+            "type": "string",
+            "description": "Type Matching Strategy Partial / Complete Configuration"
+          },
+          "FL_SC_CHAR": {
+            "type": "string",
+            "description": "Characteristics"
+          },
+          "FL_SC_DEP": {
+            "type": "string",
+            "description": "Display with Object Dependencies"
+          },
+          "FL_SC_KN": {
+            "type": "string",
+            "description": "Display Nodes Only"
+          },
+          "FL_SC_CMPF": {
+            "type": "string",
+            "description": "Display All Components"
+          },
+          "MULTIL_STRU": {
+            "type": "string",
+            "description": "Decomposition Hierarchy Multilevel / Structure Explosion"
+          },
+          "FL_DPSEU": {
+            "type": "string",
+            "description": "Read Special Procurement Key"
+          },
+          "OB_FIX": {
+            "type": "string",
+            "description": "Fixing entry/top-down/bottom-up"
+          },
+          "OB_INST": {
+            "type": "string",
+            "description": "Instantiating entry/top-down/bottom-up"
+          },
+          "FL_EOASL": {
+            "type": "string",
+            "description": "Result-Oriented Order BOM"
+          },
+          "FL_SAASL": {
+            "type": "string",
+            "description": "Maintenance in Order Allowed"
+          },
+          "FL_OBJ_MAT": {
+            "type": "string",
+            "description": "Object Type Material"
+          },
+          "FL_OBJ_DOC": {
+            "type": "string",
+            "description": "Object Type Document"
+          },
+          "FL_OBJ_CLS": {
+            "type": "string",
+            "description": "Object Type Class"
+          },
+          "FL_OBJ_TXT": {
+            "type": "string",
+            "description": "Object Type Text"
+          },
+          "FL_SDREL": {
+            "type": "string",
+            "description": "Relevant to SD"
+          },
+          "FL_KOREL": {
+            "type": "string",
+            "description": "Relevant to Engineering"
+          },
+          "FL_FEREL": {
+            "type": "string",
+            "description": "Production Relevant"
+          },
+          "FL_INREL": {
+            "type": "string",
+            "description": "Relevant to Plant Maintenance"
+          },
+          "FL_KAREL": {
+            "type": "string",
+            "description": "Relevant to Costing"
+          },
+          "POSTYPEN": {
+            "type": "string",
+            "description": "Item categories (BOM)"
+          },
+          "SORTF1": {
+            "type": "string",
+            "description": "Sort String"
+          },
+          "SORTF2": {
+            "type": "string",
+            "description": "Sort String"
+          },
+          "SORTF3": {
+            "type": "string",
+            "description": "Sort String"
+          },
+          "SORTF4": {
+            "type": "string",
+            "description": "Sort String"
+          },
+          "SORTF5": {
+            "type": "string",
+            "description": "Sort String"
+          },
+          "CLASSF1": {
+            "type": "string",
+            "description": "Class filter"
+          },
+          "CLASSF2": {
+            "type": "string",
+            "description": "Class filter"
+          },
+          "CLASSF3": {
+            "type": "string",
+            "description": "Class filter"
+          },
+          "CLASSF4": {
+            "type": "string",
+            "description": "Class filter"
+          },
+          "CLASSF5": {
+            "type": "string",
+            "description": "Class filter"
+          },
+          "PRIO": {
+            "type": "string",
+            "description": "Configuration profile priority"
+          },
+          "PRSTL": {
+            "type": "string",
+            "description": "WBS BOM"
+          },
+          "UMBEW": {
+            "type": "string",
+            "description": "Characteristics without values"
+          },
+          "FLBROWSER": {
+            "type": "string",
+            "description": "Configuration browser"
+          },
+          "FL_PROF_OBOM": {
+            "type": "string",
+            "description": "Order BOM Profile"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "CUCFG": {
+        "title": "CUCFG",
+        "type": "object",
+        "description": "CU: Configuration data",
+        "properties": {
+          "POSEX": {
+            "type": "string",
+            "description": "Character field of length 6"
+          },
+          "CONFIG_ID": {
+            "type": "string",
+            "description": "Character field of length 6"
+          },
+          "ROOT_ID": {
+            "type": "string",
+            "description": "Character field, 8 characters long"
+          },
+          "SCE": {
+            "type": "string",
+            "description": "CU: Only Information Transferred from SCE to Configuration"
+          },
+          "KBNAME": {
+            "type": "string",
+            "description": "Knowledge-Base Object"
+          },
+          "KBVERSION": {
+            "type": "string",
+            "description": "Runtime Version of SCE Knowledge Base"
+          },
+          "COMPLETE": {
+            "type": "string",
+            "description": "General Indicator"
+          },
+          "CONSISTENT": {
+            "type": "string",
+            "description": "General Indicator"
+          },
+          "CFGINFO": {
+            "type": "string",
+            "description": "CU: Configuration BLOB (SCE)"
+          },
+          "KBPROFILE": {
+            "type": "string",
+            "description": "Knowledge-Base Profile"
+          },
+          "KBLANGUAGE": {
+            "type": "string",
+            "description": "Configuration Language"
+          },
+          "CBASE_ID": {
+            "type": "string",
+            "description": "Instance Number (Persistent)"
+          },
+          "CBASE_ID_TYPE": {
+            "type": "string",
+            "description": "Type of Instance Number (Persistent)"
+          },
+          "CUINS": {
+            "type": "array",
+            "description": "CU: Instance data",
+            "items": {
+              "$ref": "#/components/schemas/CUINS"
+            }
+          },
+          "CUVAL": {
+            "type": "array",
+            "description": "CU: Characteristic valuation",
+            "items": {
+              "$ref": "#/components/schemas/CUVAL"
+            }
+          },
+          "CUCOM": {
+            "type": "array",
+            "description": "Master configuration profile configuration parameter",
+            "items": {
+              "$ref": "#/components/schemas/CUCOM"
+            }
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "MARA": {
+        "title": "MARA",
+        "type": "object",
+        "description": "Master material general data",
+        "properties": {
+          "MATNR": {
+            "type": "string",
+            "description": "Material Number"
+          },
+          "ERSDA": {
+            "type": "string",
+            "description": "Created On"
+          },
+          "ERNAM": {
+            "type": "string",
+            "description": "Name of Person Responsible for Creating the Object"
+          },
+          "LAEDA": {
+            "type": "string",
+            "description": "Date of Last Change"
+          },
+          "AENAM": {
+            "type": "string",
+            "description": "Name of Person Who Changed Object"
+          },
+          "PSTAT": {
+            "type": "string",
+            "description": "Maintenance status"
+          },
+          "LVORM": {
+            "type": "string",
+            "description": "Flag Material for Deletion at Client Level"
+          },
+          "MTART": {
+            "type": "string",
+            "description": "Material Type"
+          },
+          "MBRSH": {
+            "type": "string",
+            "description": "Industry Sector"
+          },
+          "MATKL": {
+            "type": "string",
+            "description": "Material Group"
+          },
+          "BISMT": {
+            "type": "string",
+            "description": "Old material number"
+          },
+          "MEINS": {
+            "type": "string",
+            "description": "Base Unit of Measure"
+          },
+          "BSTME": {
+            "type": "string",
+            "description": "Purchase Order Unit of Measure"
+          },
+          "ZEINR": {
+            "type": "string",
+            "description": "Document number (without document management system)"
+          },
+          "ZEIAR": {
+            "type": "string",
+            "description": "Document type (without Document Management system)"
+          },
+          "ZEIVR": {
+            "type": "string",
+            "description": "Document version (without Document Management system)"
+          },
+          "ZEIFO": {
+            "type": "string",
+            "description": "Page format of document (without Document Management system)"
+          },
+          "AESZN": {
+            "type": "string",
+            "description": "Document change number (without document management system)"
+          },
+          "BLATT": {
+            "type": "string",
+            "description": "Page number of document (without Document Management system)"
+          },
+          "BLANZ": {
+            "type": "string",
+            "description": "Number of sheets (without Document Management system)"
+          },
+          "FERTH": {
+            "type": "string",
+            "description": "Production/inspection memo"
+          },
+          "FORMT": {
+            "type": "string",
+            "description": "Page Format of Production Memo"
+          },
+          "GROES": {
+            "type": "string",
+            "description": "Size/dimensions"
+          },
+          "WRKST": {
+            "type": "string",
+            "description": "Basic material (basic constituent of a material) - obsolete"
+          },
+          "NORMT": {
+            "type": "string",
+            "description": "Industry Standard Description (such as ANSI or ISO)"
+          },
+          "LABOR": {
+            "type": "string",
+            "description": "Laboratory/design office"
+          },
+          "EKWSL": {
+            "type": "string",
+            "description": "Purchasing Value Key"
+          },
+          "BRGEW": {
+            "type": "number",
+            "format": "double",
+            "description": "Gross Weight"
+          },
+          "NTGEW": {
+            "type": "number",
+            "format": "double",
+            "description": "Net Weight"
+          },
+          "GEWEI": {
+            "type": "string",
+            "description": "Unit of Weight"
+          },
+          "VOLUM": {
+            "type": "number",
+            "format": "double",
+            "description": "Volume"
+          },
+          "VOLEH": {
+            "type": "string",
+            "description": "Volume Unit"
+          },
+          "BEHVO": {
+            "type": "string",
+            "description": "Container requirements"
+          },
+          "RAUBE": {
+            "type": "string",
+            "description": "Storage conditions"
+          },
+          "TEMPB": {
+            "type": "string",
+            "description": "Temperature conditions indicator"
+          },
+          "TRAGR": {
+            "type": "string",
+            "description": "Transportation Group"
+          },
+          "STOFF": {
+            "type": "string",
+            "description": "Hazardous material number"
+          },
+          "SPART": {
+            "type": "string",
+            "description": "Division"
+          },
+          "KUNNR": {
+            "type": "string",
+            "description": "Competitor"
+          },
+          "WESCH": {
+            "type": "number",
+            "format": "double",
+            "description": "Quantity: Number of GR/GI slips to be printed"
+          },
+          "BWVOR": {
+            "type": "string",
+            "description": "Procurement rule"
+          },
+          "BWSCL": {
+            "type": "string",
+            "description": "Source of Supply"
+          },
+          "SAISO": {
+            "type": "string",
+            "description": "Season Category"
+          },
+          "ETIAR": {
+            "type": "string",
+            "description": "Label type"
+          },
+          "ETIFO": {
+            "type": "string",
+            "description": "Label form"
+          },
+          "EAN11": {
+            "type": "string",
+            "description": "International Article Number (EAN/UPC)"
+          },
+          "NUMTP": {
+            "type": "string",
+            "description": "Category of International Article Number (EAN)"
+          },
+          "LAENG": {
+            "type": "number",
+            "format": "double",
+            "description": "Length"
+          },
+          "BREIT": {
+            "type": "number",
+            "format": "double",
+            "description": "Width"
+          },
+          "HOEHE": {
+            "type": "number",
+            "format": "double",
+            "description": "Height"
+          },
+          "MEABM": {
+            "type": "string",
+            "description": "Unit of Dimension for Length/Width/Height"
+          },
+          "PRDHA": {
+            "type": "string",
+            "description": "Product Hierarchy"
+          },
+          "CADKZ": {
+            "type": "string",
+            "description": "CAD Indicator"
+          },
+          "ERGEW": {
+            "type": "number",
+            "format": "double",
+            "description": "Allowed packaging weight"
+          },
+          "ERGEI": {
+            "type": "string",
+            "description": "Unit of Weight"
+          },
+          "ERVOL": {
+            "type": "number",
+            "format": "double",
+            "description": "Allowed packaging volume"
+          },
+          "ERVOE": {
+            "type": "string",
+            "description": "Volume Unit"
+          },
+          "GEWTO": {
+            "type": "number",
+            "format": "double",
+            "description": "Excess Weight Tolerance for Handling unit"
+          },
+          "VOLTO": {
+            "type": "number",
+            "format": "double",
+            "description": "Excess Volume Tolerance of the Handling Unit"
+          },
+          "VABME": {
+            "type": "string",
+            "description": "Variable Purchase Order Unit Active"
+          },
+          "KZKFG": {
+            "type": "string",
+            "description": "Configurable Material"
+          },
+          "XCHPF": {
+            "type": "string",
+            "description": "Batch management requirement indicator"
+          },
+          "VHART": {
+            "type": "string",
+            "description": "Packaging Material Type"
+          },
+          "FUELG": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum level (by volume)"
+          },
+          "STFAK": {
+            "type": "number",
+            "description": "Stacking factor"
+          },
+          "MAGRV": {
+            "type": "string",
+            "description": "Material Group: Packaging Materials"
+          },
+          "BEGRU": {
+            "type": "string",
+            "description": "Authorization Group"
+          },
+          "QMPUR": {
+            "type": "string",
+            "description": "QM in Procurement is Active"
+          },
+          "RBNRM": {
+            "type": "string",
+            "description": "Catalog Profile"
+          },
+          "MHDRZ": {
+            "type": "number",
+            "format": "double",
+            "description": "Minimum Remaining Shelf Life"
+          },
+          "MHDHB": {
+            "type": "number",
+            "format": "double",
+            "description": "Total shelf life"
+          },
+          "MHDLP": {
+            "type": "number",
+            "format": "double",
+            "description": "Storage percentage"
+          },
+          "VPSTA": {
+            "type": "string",
+            "description": "Maintenance status of complete material"
+          },
+          "EXTWG": {
+            "type": "string",
+            "description": "External Material Group"
+          },
+          "MSTAE": {
+            "type": "string",
+            "description": "Cross-Plant Material Status"
+          },
+          "MSTAV": {
+            "type": "string",
+            "description": "Cross-distribution-chain material status"
+          },
+          "MSTDE": {
+            "type": "string",
+            "description": "Date from which the cross-plant material status is valid"
+          },
+          "MSTDV": {
+            "type": "string",
+            "description": "Date from which the X-distr.-chain material status is valid"
+          },
+          "KZUMW": {
+            "type": "string",
+            "description": "Environmentally Relevant"
+          },
+          "KOSCH": {
+            "type": "string",
+            "description": "Product allocation determination procedure"
+          },
+          "NRFHG": {
+            "type": "string",
+            "description": "Material qualifies for discount in kind"
+          },
+          "MFRPN": {
+            "type": "string",
+            "description": "Manufacturer Part Number"
+          },
+          "MFRNR": {
+            "type": "string",
+            "description": "Number of a Manufacturer"
+          },
+          "BMATN": {
+            "type": "string",
+            "description": "To material number"
+          },
+          "MPROF": {
+            "type": "string",
+            "description": "Manufacturer Part Profile"
+          },
+          "PROFL": {
+            "type": "string",
+            "description": "Dangerous Goods Indicator Profile"
+          },
+          "IHIVI": {
+            "type": "string",
+            "description": "Indicator: Highly Viscous"
+          },
+          "ILOOS": {
+            "type": "string",
+            "description": "Indicator: In Bulk/Liquid"
+          },
+          "KZGVH": {
+            "type": "string",
+            "description": "Packaging Material is Closed Packaging"
+          },
+          "XGCHP": {
+            "type": "string",
+            "description": "Indicator: Approved batch record required"
+          },
+          "COMPL": {
+            "type": "string",
+            "description": "Material completion level"
+          },
+          "KZEFF": {
+            "type": "string",
+            "description": "Assign effectivity parameter values/ override change numbers"
+          },
+          "RDMHD": {
+            "type": "string",
+            "description": "Rounding rule for calculation of SLED"
+          },
+          "IPRKZ": {
+            "type": "string",
+            "description": "Period Indicator for Shelf Life Expiration Date"
+          },
+          "PRZUS": {
+            "type": "string",
+            "description": "Indicator: Product composition printed on packaging"
+          },
+          "MTPOS_MARA": {
+            "type": "string",
+            "description": "General item category group"
+          },
+          "GEWTO_NEW": {
+            "type": "number",
+            "format": "double",
+            "description": "Excess Weight Tolerance for Handling unit"
+          },
+          "VOLTO_NEW": {
+            "type": "number",
+            "format": "double",
+            "description": "Excess Volume Tolerance of the Handling Unit"
+          },
+          "WRKST_NEW": {
+            "type": "string",
+            "description": "Basic Material"
+          },
+          "AENNR": {
+            "type": "string",
+            "description": "Change Number"
+          },
+          "MATFI": {
+            "type": "string",
+            "description": "Material Is Locked"
+          },
+          "CMREL": {
+            "type": "string",
+            "description": "Relevant for Configuration Management"
+          },
+          "SATNR": {
+            "type": "string",
+            "description": "Cross-Plant Configurable Material"
+          },
+          "SLED_BBD": {
+            "type": "string",
+            "description": "Expiration Date"
+          },
+          "GTIN_VARIANT": {
+            "type": "string",
+            "description": "Global Trade Item Number Variant"
+          },
+          "GENNR": {
+            "type": "string",
+            "description": "Material Number of the Generic Material in Prepack Materials"
+          },
+          "SERLV": {
+            "type": "string",
+            "description": "Level of Explicitness for Serial Number"
+          },
+          "RMATP": {
+            "type": "string",
+            "description": "Reference material for materials packed in same way"
+          },
+          "GDS_RELEVANT": {
+            "type": "string",
+            "description": "Indicator: Global Data Synchronization-Relevant"
+          },
+          "MCOND": {
+            "type": "string",
+            "description": "Material Condition Management"
+          },
+          "RETDELC": {
+            "type": "string",
+            "description": "Return Code"
+          },
+          "LOGLEV_RETO": {
+            "type": "string",
+            "description": "Return to Logistics Level"
+          },
+          "NSNID": {
+            "type": "string",
+            "description": "NATO Item Identification Number"
+          },
+          "WEORA": {
+            "type": "string",
+            "description": "Acceptance At Origin"
+          },
+          "TOLGR": {
+            "type": "string",
+            "description": "Tolerance Group for Catch Weight Management"
+          },
+          "TARA": {
+            "type": "string",
+            "description": "Checkbox"
+          },
+          "TARUM": {
+            "type": "string",
+            "description": "Base Unit of Measure"
+          },
+          "PACKCODE": {
+            "type": "string",
+            "description": "Packaging Code"
+          },
+          "DG_PACK_STATUS": {
+            "type": "string",
+            "description": "Dangerous Goods Packaging Status"
+          },
+          "ANP": {
+            "type": "string",
+            "description": "ANP Code"
+          },
+          "MARA1": {
+            "$ref": "#/components/schemas/MARA1"
+          },
+          "MAKT": {
+            "type": "array",
+            "description": "Master material short texts",
+            "items": {
+              "$ref": "#/components/schemas/MAKT"
+            }
+          },
+          "MARC": {
+            "type": "array",
+            "description": "Master material C segment",
+            "items": {
+              "$ref": "#/components/schemas/MARC"
+            }
+          },
+          "MARM": {
+            "type": "array",
+            "description": "Master material units of measure",
+            "items": {
+              "$ref": "#/components/schemas/MARM"
+            }
+          },
+          "MBEW": {
+            "type": "array",
+            "description": "Master material material valuation (MBEW)",
+            "items": {
+              "$ref": "#/components/schemas/MBEW"
+            }
+          },
+          "MLGN": {
+            "type": "array",
+            "description": "Master material material data per warehouse number (MLGN)",
+            "items": {
+              "$ref": "#/components/schemas/MLGN"
+            }
+          },
+          "MVKE": {
+            "type": "array",
+            "description": "Master material sales data (MVKE)",
+            "items": {
+              "$ref": "#/components/schemas/MVKE"
+            }
+          },
+          "MLAN": {
+            "type": "array",
+            "description": "Master material tax classification (MLAN)",
+            "items": {
+              "$ref": "#/components/schemas/MLAN"
+            }
+          },
+          "MTXH": {
+            "type": "array",
+            "description": "Master material long text header",
+            "items": {
+              "$ref": "#/components/schemas/MTXH"
+            }
+          },
+          "CUCFG": {
+            "type": "array",
+            "description": "CU: Configuration data",
+            "items": {
+              "$ref": "#/components/schemas/CUCFG"
+            }
+          },
+          "ADDITIONAL_PROPERTIES": {
+            "type": "object",
+            "description": "Properties representing fields that are not part of MATMAS05 but are  relevant to the integration on MARA level",
+            "example": {
+              "[add_field_1]": "Example Value",
+              "[add_field_2]": "Example Value 2"
+            }
+          }
+        },
+        "required": [
+          "MATNR"
+        ],
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "UPSLINK": {
+        "title": "UPSLINK",
+        "type": "object",
+        "description": "Reference from Object to Superior UPS",
+        "properties": {
+          "UPSNAM": {
+            "type": "string",
+            "description": "ALE Distribution Packet: Name"
+          },
+          "ORGNAM": {
+            "type": "string",
+            "description": "ALE Distribution Packet : Original Packet Name"
+          },
+          "MESTYP": {
+            "type": "string",
+            "description": "Message Type"
+          },
+          "OBJID": {
+            "type": "string",
+            "description": "ALE Distribution Packet: Object Key"
+          },
+          "OBJVAL": {
+            "type": "string",
+            "description": "ALE Distribution Package: Object Validity"
+          }
+        },
+        "x-naming-strategy": "UPPER_SNAKE_CASE"
+      },
+      "UpsertMaterial": {
+        "title": "UpsertMaterial",
+        "type": "object",
+        "properties": {
+          "MARA": {
+            "$ref": "#/components/schemas/MARA"
+          },
+          "UPSLINK": {
+            "$ref": "#/components/schemas/UPSLINK"
+          }
+        },
+        "required": [
+          "MARA"
+        ]
+      },
+      "CreationIntentConfirmation": {
+        "title": "CreationIntentConfirmation",
+        "type": "object",
+        "properties": {
+          "materialNumber": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "materialNumber"
+        ]
+      },
+      "RejectComment": {
+        "title": "RejectComment",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Short description of the reason for rejecting the intent."
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  }
+}

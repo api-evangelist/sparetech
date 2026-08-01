@@ -1,0 +1,10 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Sparetech Sync API v1
+  version: 1.0.0
+extends: openapi/sparetech-sync-v1-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-07-21'
+    x-apievangelist-source: https://docs.sparetech.io/v1

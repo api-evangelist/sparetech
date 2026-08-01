@@ -1,9 +1,31 @@
 aid: sparetech
 name: Sparetech
-description: 'Sparetech is a company surfaced as a portfolio company of insight-partners and added to
-  the API Evangelist network as a stub for enrichment. Sector: manufacturing. This profile is a lead awaiting
-  the enrichment pipeline.'
+description: >-
+  SPARETECH is an enterprise MRO (Maintenance, Repair and Operations) SaaS that helps
+  manufacturing maintenance and procurement teams reduce spend and optimize spare-parts
+  inventory. Founded in 2018 in Stuttgart, Germany, it pairs a global catalog of 40M+
+  original manufacturer part records with proprietary matching and AI to deliver
+  automated duplicate detection, data enrichment, obsolescence management and BOM
+  processing. It is a 100% cloud SaaS, available in 14 languages, an official SAP
+  partner in the SAP Store, and certified under SOC 2 Type II, ISO 27001 and GDPR.
+  For developers it exposes a REST Sync API (v1 for all ERPs, v2 for SAP S/4HANA)
+  using JWT authentication with a dedicated sandbox for material creation, change and
+  extension synchronization between SPARETECH and ERP/CMMS/MDM systems. Customers
+  include Bosch, Porsche, BMW, Volkswagen, Nestlé and Sanofi.
 url: https://raw.githubusercontent.com/api-evangelist/sparetech/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://app.sparetech.io/img/sparetech-logo.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -12,16 +34,169 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
 - Manufacturing
-apis: []
+- Spare Parts
+- MRO
+- Maintenance
+- Procurement
+- Inventory Optimization
+- ERP Integration
+- SAP
+- Master Data Management
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: sparetech:sparetech-authentication-api
+  name: Sparetech Authentication API
+  description: The Authentication API from Sparetech — 2 operation(s) for authentication.
+  humanURL: https://docs.sparetech.io/v1
+  baseURL: https://sync.sparetech.io/v1
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/sparetech-authentication-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sparetech.io/v1
+  - type: APIReference
+    url: https://docs.sparetech.io/v2
+- aid: sparetech:sparetech-changeintent-api
+  name: Sparetech ChangeIntent API
+  description: The ChangeIntent API from Sparetech — 4 operation(s) for changeintent.
+  humanURL: https://docs.sparetech.io/v1
+  baseURL: https://sync.sparetech.io/v1
+  tags:
+  - ChangeIntent
+  properties:
+  - type: OpenAPI
+    url: openapi/sparetech-changeintent-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sparetech.io/v1
+  - type: APIReference
+    url: https://docs.sparetech.io/v2
+- aid: sparetech:sparetech-creationintent-api
+  name: Sparetech CreationIntent API
+  description: The CreationIntent API from Sparetech — 4 operation(s) for creationintent.
+  humanURL: https://docs.sparetech.io/v1
+  baseURL: https://sync.sparetech.io/v1
+  tags:
+  - CreationIntent
+  properties:
+  - type: OpenAPI
+    url: openapi/sparetech-creationintent-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sparetech.io/v1
+  - type: APIReference
+    url: https://docs.sparetech.io/v2
+- aid: sparetech:sparetech-extensionintent-api
+  name: Sparetech ExtensionIntent API
+  description: The ExtensionIntent API from Sparetech — 4 operation(s) for extensionintent.
+  humanURL: https://docs.sparetech.io/v1
+  baseURL: https://sync.sparetech.io/v1
+  tags:
+  - ExtensionIntent
+  properties:
+  - type: OpenAPI
+    url: openapi/sparetech-extensionintent-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sparetech.io/v1
+  - type: APIReference
+    url: https://docs.sparetech.io/v2
+- aid: sparetech:sparetech-material-master-sync-api
+  name: Sparetech Material Master Sync API
+  description: The Material Master Sync API from Sparetech — 3 operation(s) for material master sync.
+  humanURL: https://docs.sparetech.io/v1
+  baseURL: https://sync.sparetech.io/v1
+  tags:
+  - Material Master Sync
+  properties:
+  - type: OpenAPI
+    url: openapi/sparetech-material-master-sync-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sparetech.io/v1
+  - type: APIReference
+    url: https://docs.sparetech.io/v2
+- aid: sparetech:sparetech-schema-api
+  name: Sparetech Schema API
+  description: The Schema API from Sparetech — 2 operation(s) for schema.
+  humanURL: https://docs.sparetech.io/v1
+  baseURL: https://sync.sparetech.io/v1
+  tags:
+  - Schema
+  properties:
+  - type: OpenAPI
+    url: openapi/sparetech-schema-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sparetech.io/v1
+  - type: APIReference
+    url: https://docs.sparetech.io/v2
 common:
 - type: Website
   url: https://www.sparetech.io/
+- type: Documentation
+  url: https://docs.sparetech.io/
+- type: APIReference
+  url: https://docs.sparetech.io/v1
+- type: GettingStarted
+  url: https://www.sparetech.io/product/api
+- type: Blog
+  url: https://www.sparetech.io/blog
+- type: Support
+  url: https://www.sparetech.io/contact
+- type: SignUp
+  url: https://www.sparetech.io/demo-request
+- type: Login
+  url: https://app.sparetech.io/
+- type: GitHubOrganization
+  url: https://github.com/sparetech
+- type: TermsOfService
+  url: https://www.sparetech.io/general-terms-and-conditions
+- type: PrivacyPolicy
+  url: https://www.sparetech.io/privacy
+- type: Compliance
+  url: https://www.sparetech.io/security-and-compliance
+- type: TrustCenter
+  url: https://trust.sparetech.io/
+- type: Security
+  url: https://www.sparetech.io/security-and-compliance
+- type: AgenticAccess
+  url: agentic-access/sparetech-agentic-access.yml
+- type: Authentication
+  url: authentication/sparetech-authentication.yml
+- type: DomainSecurity
+  url: security/sparetech-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/sparetech-vulnerability-disclosure.yml
+- type: Conformance
+  url: conformance/sparetech-conformance.yml
+- type: Lifecycle
+  url: lifecycle/sparetech-lifecycle.yml
+- type: Sandbox
+  url: sandbox/sparetech-sandbox.yml
+- type: Conventions
+  url: conventions/sparetech-conventions.yml
+- type: ErrorCatalog
+  url: errors/sparetech-problem-types.yml
+- type: DataModel
+  url: data-model/sparetech-data-model.yml
+- type: MCPServer
+  url: mcp/sparetech-mcp.yml
+- type: Overlay
+  url: overlays/sparetech-sync-v1-overlay.yaml
+- type: Overlay
+  url: overlays/sparetech-sync-v2-overlay.yaml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/sparetech-llms.txt
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1

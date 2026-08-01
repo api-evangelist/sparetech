@@ -1,0 +1,23 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/sparetech-sync-v1-openapi.json, openapi/sparetech-sync-v2-openapi.json
+summary:
+  types:
+  - http
+schemes:
+- name: Token
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: This API uses JWT for authorization. SPARETECH will provide your client credentials,
+    that are specific to each organisation and integration environment. See the Authentication
+    section of this documentation for details on how to obtain a token.
+  sources:
+  - openapi/sparetech-sync-v1-openapi.json
+  - openapi/sparetech-sync-v2-openapi.json
+- name: ClientCredentials
+  type: http
+  scheme: basic
+  sources:
+  - openapi/sparetech-sync-v1-openapi.json
+  - openapi/sparetech-sync-v2-openapi.json

@@ -1,0 +1,26 @@
+generated: '2026-07-21'
+method: searched
+source: https://www.sparetech.io/product/api, openapi servers[]
+summary: >-
+  The Sparetech Sync API publishes a dedicated sandbox (integration) environment
+  for testing ERP/CMMS/MDM data exchange without touching production data.
+environments:
+- name: production
+  base_urls:
+  - https://sync.sparetech.io/v1
+  - https://sync.sparetech.io/v2
+- name: sandbox
+  base_urls:
+  - https://sync.sandbox.sparetech.io/v1
+  - https://sync.sandbox.sparetech.io/v2
+credentials:
+  model: >-
+    SPARETECH provisions client credentials that are specific to each organisation
+    AND each integration environment (separate credentials for sandbox vs
+    production). Credentials are exchanged for a JWT at POST /oauth/token or POST
+    /auth. No self-serve test keys are published; credentials are issued by
+    SPARETECH during onboarding.
+test_values: []
+notes: >-
+  No published magic/test identifiers or fixtures were found; the sandbox is a
+  full integration environment seeded with the customer's own onboarding data.

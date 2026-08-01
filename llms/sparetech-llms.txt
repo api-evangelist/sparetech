@@ -1,0 +1,280 @@
+# SPARETECH
+
+
+> SPARETECH is an enterprise MRO (Maintenance, Repair, and Operations) software that enables maintenance and procurement teams in manufacturing to reliably reduce spend and optimize inventory by sourcing spare parts inside or outside their production network and stop buying parts they already have. The software features a global spare parts catalog with over 40 million original manufacturer part data entries from more than 15,000 original manufacturers, suppliers, and distributors. Using proprietary matching technology and AI, SPARETECH delivers automated duplicate detection, data enrichment, obsolescence management, and BOM (Bill of Materials) processing. SPARETECH is a 100% cloud-based SaaS solution, available in 14 languages, compatible with most ERP and CMMS systems, available in the SAP® Store as an official SAP partner, and certified under SOC 2 Type II, and GDPR.
+
+
+Founded in 2018 in Stuttgart, Germany, by Dr. Lukas Biedermann and Martin Weber, SPARETECH is used by factories in 70 countries. Customers include Nestlé, Bosch, Porsche, BMW, Volkswagen, Sanofi, WEPA, and other global manufacturers. Industries served include automotive (OEM and tiers), food and beverage, pharmaceuticals, electronics, measuring and control technology (including industrial automation), process industries (petroleum, plastics, paint), chemicals and cement, aerospace, wood and paper production, and industrial machinery and engineering. SPARETECH serves large enterprise manufacturers with multiple production sites. Customers typically achieve a 21% average inventory reduction, 45% reduction in unplanned downtime, 57% less manual effort on BOMs and material checks, and 7% lower spare part procurement costs.
+
+
+## Core Pages
+
+
+- [Home](https://sparetech.io/) – Introduces SPARETECH with the tagline "Spare parts intelligence for spare parts people," highlights the four product pillars (Global Spare Parts Search, Automated BOM Check, Data Lifecycle Management, Digital Workflow), and showcases customer logos and key statistics.
+- [About Us](https://sparetech.io/about-us) – Company background, mission ("transform industrial spare parts data into an efficient, reliable, and collaborative experience"), 80+ team members across 12+ locations and 26+ nationalities.
+- [Demo Request](https://sparetech.io/demo-request) – Form to schedule a personalized product demo. After the initial demo, SPARETECH analyzes your master data for free and provides a detailed value quantification report.
+- [Contact](https://sparetech.io/contact) – Contact form and support options.
+- [FAQ](https://sparetech.io/frequently-asked-questions) – Comprehensive answers covering the app and onboarding, integration, security and compliance, pricing, company overview, product overview, MRO data management, MRO inventory optimization, and MRO sourcing optimization.
+- [Security & Compliance](https://sparetech.io/security-and-compliance) – ISO 27001, SOC 2 Type II, GDPR compliance documentation. All data hosted in secure, certified data centers and encrypted during transfer and storage.
+- [Privacy Policy](https://sparetech.io/privacy) – Details on data collection, processing, and GDPR compliance.
+- [Terms & Conditions](https://sparetech.io/general-terms-and-conditions) – Contractual terms governing use of SPARETECH's services.
+
+
+## Product Capabilities
+
+
+SPARETECH's software is built on four core product pillars for intelligent spare parts management, plus an API for ERP/CMMS integration. Every part in the global catalog is assigned a unique SPARETECH ID, providing a single source of truth across the entire spare parts landscape through proprietary matching technology.
+
+
+- [Global Spare Parts Search](https://sparetech.io/product/global-spare-parts-search) – Search across your own material master and the SPARETECH database using any information, part numbers, descriptions, or technical details, to find the exact part you need. No training required.
+- [Automated BOM Check](https://sparetech.io/product/automated-bom-check) – Instantly analyzes spare parts lists, compares them with your material master data and the global catalog, and identifies what you already have. Detects new materials and enriches them with verified data. Shortens processing time by over 50%.
+- [Data Lifecycle Management](https://sparetech.io/product/data-lifecycle-management) – Deduplicate, enrich records with original manufacturer information, and proactively manage discontinuations. Supports ECLASS standard for structured, globally recognized spare parts classification. Goes beyond one-time cleansing by supporting ongoing data lifecycle management.
+- [Digital Workflow](https://sparetech.io/product/material-creation-workflow) – Create, update, and optimize material master data through customized processes and AI-enhanced recommendations. Features built-in live duplicate checks, multilingual AI data standardization, and the ability to import 100% accurate original manufacturer data into your ERP. Ensures one part, one reference across your entire global production network.
+- [API Solution](https://sparetech.io/product/api) – REST API using JWT authentication for seamless, automated data exchange between SPARETECH and ERP/CMMS/MDM systems. Supports material creation, change, and extension intents with bi-directional synchronization. Developed through an official SAP partnership. Includes a sandbox environment for testing. Supports SAP S/4HANA integration.
+
+
+## Solutions
+
+
+Solution pages explain how SPARETECH addresses specific operational challenges for maintenance and procurement teams.
+
+
+### Inventory & Cost Optimization
+- [MRO Inventory Optimization](https://sparetech.io/inventory-optimization) – Sustainably reduce spare parts inventories through full transparency of spare parts stocks across the production network and available suppliers. Shows parts availability across your production network and alternative sourcing options.
+- [MRO Sourcing Optimization](https://sparetech.io/mro-procurement) – Gives instant access to over 40 million verified spare parts and 15,000 original manufacturers, suppliers, and distributors in one centralized catalog. Procurement teams can immediately see available suppliers, compatible parts, and alternative sourcing options.
+- [Business Impact](https://sparetech.io/business-impact) – Quantified value creation for warehouse and maintenance business processes with SPARETECH.
+
+
+### Data Management
+- [MRO Data Management](https://sparetech.io/mro-master-data-management) – Optimize spare parts master data management. Increase data quality and make informed decisions at the touch of a button.
+- [Master Data Cleansing](https://sparetech.io/mro-master-data-management/master-data-cleansing) – Clean up material master data at the touch of a button and maintain data quality automatically.
+- [Obsolescence Management](https://sparetech.io/mro-master-data-management/mro-obsolescence-management) – Flags obsolete spare parts using information sourced directly from original manufacturers and suppliers. Suggests available successor parts with technical specifications for compatibility checks.
+
+
+### Operational Efficiency
+- [Maintenance Process Efficiency](https://sparetech.io/maintenance-efficiency) – Use software to achieve efficient maintenance, reduce costs, and increase system availability.
+- [Reduce Machine Downtime](https://sparetech.io/reduce-machine-downtime) – Minimize machine downtimes through effective spare parts data management. Data quality and transparency are the key to success.
+- [AI & Digitization in MRO](https://sparetech.io/ai-digitization-mro) – How AI enhances factory efficiency and delivers tangible ROI by improving spare parts data, optimizing MRO inventory, and reducing spending.
+
+
+## Comparisons
+
+
+SPARETECH compared against alternative MRO software solutions, with feature comparisons and evaluation criteria.
+
+
+- [4 Alternatives to Sphera](https://sparetech.io/alternatives-to-sphera) – Compares MRO software solutions for data governance, inventory management, and procurement as alternatives to Sphera.
+- [4 Alternatives to Verusen](https://sparetech.io/alternatives-to-verusen) – Compares MRO software solutions as alternatives to Verusen.
+- [4 Alternatives to Creactives](https://sparetech.io/alternatives-to-creactives) – Compares MRO software solutions as alternatives to Creactives.
+- [4 Alternatives to Sparrow](https://sparetech.io/alternatives-to-sparrow) – Compares MRO software solutions as alternatives to Sparrow.
+
+
+## Customer Success Stories
+
+
+Real-world results from manufacturers who transformed spare parts management with SPARETECH.
+
+
+- [Bosch](https://sparetech.io/customers/bosch) – 50% efficiency gain in spare parts management through digital transformation at Bosch Blaichach.
+- [WEPA](https://sparetech.io/customers/wepa) – Efficient cross-location spare parts management across 13 European sites by improving data quality.
+- [Yanfeng](https://sparetech.io/customers/yanfeng) – Achieved efficient cross-location spare parts management in just one and a half years.
+- [Idahoan Foods](https://sparetech.io/customers/idahoanfoods) – Slashed spare parts inventories and solved manufacturing challenges around rising costs and inefficiencies.
+- [ElringKlinger](https://sparetech.io/customers/elringklinger) – Ensured long-term high master data quality across plants with SPARETECH's MRO software.
+- [Speira](https://sparetech.io/customers/speira) – Seamless data exchange workflow with SAP via API, increasing operational efficiency. Reduced spare parts inventory by €135,000.
+- [REHAU](https://sparetech.io/customers/rehau) – 50% time reduction in material creation and search through seamless SAP integration. SPARETECH identified 1,800 duplicates and 1,500 discontinued products in REHAU's material master.
+- [MANN+HUMMEL](https://sparetech.io/customers/mann-hummel) – Improved spare parts management and increased data transparency within and between plants.
+- [All Customer Stories](https://sparetech.io/customers) – Full list of customer success stories and case studies from Nestlé, Bosch, and other industry leaders.
+
+
+## Partner Ecosystem
+
+
+- [Partners Overview](https://sparetech.io/partners) – How component suppliers increase direct sales through visibility in the SPARETECH app and maintain control over product data as the "single source of truth."
+- [Become a Partner](https://sparetech.io/become-a-partner) – Join the SPARETECH partner program and benefit from up-to-date product data with end customers.
+- [Bosch Rexroth Partnership](https://sparetech.io/partners/bosch-rexroth) – How SPARETECH and Bosch Rexroth work together to provide always-up-to-date data for end customers and overcome maintenance challenges.
+- [Partner FAQ](https://sparetech.io/component-supplier/frequently-asked-questions) – Answers to frequently asked questions about partnering with SPARETECH, covering integration, value, data, and pricing.
+
+
+## Resources
+
+
+### Reports & Whitepapers
+- [Report: The MRO Strategy Gap](https://sparetech.io/report/the-mro-strategy-gap) – How smarter MRO strategies reduce inefficiencies in spare parts management and boost margins for manufacturers under cost and efficiency pressure.
+- [Whitepaper: Three Data-Driven Strategies for Spare Parts Management](https://sparetech.io/resources/whitepapers/mro-data-management) – Modern, data-based approaches to improve spare parts management efficiency.
+- [Whitepaper: AI in MRO](https://sparetech.io/resources/whitepapers/ai-and-digitization-in-mro) – How AI applications in MRO deliver concrete results through better spare parts data, inventory, and spending optimization.
+- [Whitepaper: Obsolescence Management in 5 Steps](https://sparetech.io/resources/whitepapers/obsolescence-management) – Strategies to identify, mitigate, and prevent obsolescence risks in MRO processes.
+- [Whitepaper: Hidden Costs of MRO Inventories](https://sparetech.io/whitepapers/mro-inventories) – Discover hidden costs in MRO inventory management and learn strategies to cut waste, prevent downtime, and boost efficiency.
+
+
+### Webinars
+- [Nestlé's Journey to Unified MRO Data with AI](https://sparetech.io/resources/webinars/nestle-breaking-silos-building-standards) – How Nestlé standardized MRO and spare parts data across 50 U.S. factories.
+- [Spare Parts Management Like a Bosch](https://sparetech.io/resources/webinars/spare-parts-management-with-bosch) – Behind the scenes at Bosch Blaichach: how the maintenance team increased efficiency by 50%.
+- [Slash Spare Parts Inventories with AI Tools](https://sparetech.io/resources/webinars/slash-spare-parts-inventories-with-ai-tools) – How Idahoan Foods solved manufacturing challenges with SPARETECH.
+- [Seamless Data Exchange with SAP via SPARETECH API](https://sparetech.io/resources/webinars/seamless-data-exchange-with-sap-via-sparetech-api) – How automated data exchange between SPARETECH and SAP transformed Speira's spare parts management.
+- [Standardizing Spare Parts Management](https://sparetech.io/resources/webinars/standardizing-spare-parts-management) – How enterprise MRO software enhances spare parts management and drives efficiency in practice.
+- [Rethinking Spare Parts Management](https://sparetech.io/resources/webinars/rethinking-spare-parts-management) – How data-driven solutions optimize spare parts processes, reduce costs, and increase transparency at WEPA.
+- [The Power of Original Manufacturer Data](https://sparetech.io/en/resources/webinars/power-of-original-manufacturer-data) – Benefits of using original manufacturer data for manufacturers, OEMs, and machine operators.
+- [Increased Efficiency Through Data Enrichment at Speira](https://sparetech.io/resources/webinars/increased-efficiency-with-speira) – Revolutionizing spare parts management with original manufacturer data enrichment.
+- [The MRO Strategy Gap](https://sparetech.io/ressources/webinars/mro-strategy-gap) – MRO optimization's strategic importance and how to transform it into a key business driver.
+- [All Resources](https://sparetech.io/resources) – Whitepapers, events, webinars, and expert resources for smarter spare parts management.
+
+
+## Blog – Key Articles
+
+
+### MRO Strategy & Business Case
+- [The MRO Paradox: How Manufacturers Overspend Their Way Into Downtime](https://sparetech.io/en/blog/the-mro-paradox-how-manufacturers-are-overspending-their-way-into-downtime) – Why poor MRO management leads to overspending and downtime, and strategies for improving visibility.
+- [From Afterthought to Advantage: The Case for MRO Optimization](https://sparetech.io/en/blog/from-afterthought-to-advantage-the-case-for-mro-optimization) – How enhancing MRO drives significant margin improvements for manufacturers.
+- [The Overlooked Advantage: Why MRO Could Be Manufacturing's Next Strategic Win](https://sparetech.io/en/blog/the-overlooked-advantage-why-mro-could-be-manufacturings-next-strategic-win) – How dedicated MRO software transforms manufacturing operations.
+- [How MRO Software Boosts Manufacturing Margins](https://sparetech.io/en/blog/the-mro-software-advantage) – How MRO software cuts spare parts inventory, reduces procurement costs, and improves operational efficiency.
+- [MRO Software: What to Look for and Why It Matters](https://sparetech.io/en/blog/mro-software-what-to-look-for-and-why-it-matters) – Guide to evaluating MRO software for spare parts inventory, data quality, and operational efficiency.
+
+
+### AI in MRO
+- [How SPARETECH Uses AI](https://sparetech.io/en/blog/how-sparetech-uses-ai) – SPARETECH combines proprietary AI models built for industrial spare parts with advanced matching algorithms. Uses an accuracy-first approach with generative AI applied strategically in controlled processes.
+- [AI in MRO: How AI Will Improve MRO Data Quality](https://sparetech.io/en/blog/how-ai-will-improve-mro-data-quality) – How AI helps solve common MRO data challenges from duplicates to incomplete records.
+- [AI in MRO: How AI Will Improve MRO Spend Optimization](https://sparetech.io/en/blog/how-ai-will-improve-mro-spend-optimization) – How AI helps factories reduce MRO spending through better spare parts management and procurement.
+- [AI in MRO: How AI Will Optimize Spare Parts Inventory](https://sparetech.io/en/blog/how-ai-will-optimize-spare-parts-inventory) – How AI helps factories reduce waste, cut costs, and maintain optimal inventory levels.
+- [AI in MRO: How AI Will Improve Decision Making and Productivity](https://sparetech.io/en/blog/how-ai-will-improve-decision-making-and-productivity) – How AI transforms MRO operations by enhancing decision-making and productivity.
+- [Survival of the Smartest: Human, Machine & the Maintenance of the Future](https://sparetech.io/en/blog/survival-of-the-smartest-human-machine-the-maintenance-of-the-future) – How AI, data quality, and human-machine collaboration shape the future of maintenance.
+
+
+### Master Data Management
+- [What is Master Data Governance? A Guide for MRO Teams](https://sparetech.io/en/blog/what-is-master-data-governance-a-guide-for-mro-teams) – How clean spare parts data reduces costs, boosts efficiency, and powers digital transformation.
+- [Master Data Cleansing and Harmonization](https://sparetech.io/en/blog/master-data-cleansing-and-harmonization) – How to ensure long-term data quality in the material master.
+- [Find and Remove Duplicates in Material Master](https://sparetech.io/en/blog/find-and-remove-duplicates-material-master) – Step-by-step guide to clean and duplicate-free master data.
+- [Best Practice: Master Data Management of Duplicates](https://sparetech.io/en/blog/master-data-management-duplicates) – Practical examples from ElringKlinger & WEPA on cleaning up material master duplicates.
+- [MRO Data Readiness for S/4HANA Migration](https://sparetech.io/en/blog/mro-data-readiness-for-your-s4hana-migration) – How to ensure MRO data readiness for a successful S/4HANA migration.
+- [SAP MDG and SPARETECH for Efficient Master Data Management](https://sparetech.io/en/blog/efficient-master-data-management-with-sap-mdg) – How SPARETECH complements and seamlessly integrates SAP MDG.
+- [Creating Material Master Data in SAP](https://sparetech.io/en/blog/material-master-data-creation-in-sap) – The 6 methods and transaction codes for material master creation in SAP ERP.
+
+
+### Spare Parts & Inventory Strategy
+- [Spare Parts Obsolescence Management](https://sparetech.io/en/blog/spare-parts-obsolescence-management) – Proactive approach to identifying and mitigating the risk of discontinued components.
+- [Are Spare Parts Your Biggest Hidden Liability?](https://sparetech.io/en/blog/spare-parts-are-seen-as-an-asset-but-are-they-actually-your-biggest-liability) – The true cost of idle spare parts and how data-driven management improves visibility and profitability.
+- [The Real Cost of "Just-in-Case" Spare Parts](https://sparetech.io/en/blog/real-cost-just-in-case-spare-parts) – Why excess inventory compounds costs and what manufacturers are doing instead.
+- [Spare Parts Visibility: Why Inventory Visibility is the Real MRO Bottleneck](https://sparetech.io/en/blog/spare-parts-visibility-problem) – Why poor visibility drives overstocking and downtime risk.
+- [Spare Parts on Demand: Transparency & Availability Instead of High Inventories](https://sparetech.io/en/blog/spare-parts-on-demand-transparency-availability-instead-of-high-inventories) – Solving spare parts management problems with transparency instead of inventory.
+
+
+### ERP Integration & Technical
+- [Data Exchange Between SPARETECH and ERP Systems](https://sparetech.io/en/blog/data-exchange-sparetech-erp) – Manual vs automated data exchange: advantages and disadvantages of each approach. Data exchange can occur hourly, daily, or weekly.
+- [SPARETECH API](https://sparetech.io/en/blog/sparetech-api) – Everything about the SPARETECH REST API for ERP integration, including authentication, sandbox testing, and workflow synchronization.
+- [SPARETECH Now Available in SAP® Store](https://sparetech.io/en/blog/sparetech-now-available-in-sap-store) – SPARETECH as an official SAP partner in the SAP Store.
+- [Relevant Fields in the ERP System](https://sparetech.io/en/blog/relevant-erp-fields) – Guide to relevant ERP fields for material master data and optimal configuration.
+
+
+## Frequently Asked Questions
+
+
+### What is SPARETECH?
+SPARETECH is an enterprise MRO software that enables maintenance and procurement teams in manufacturing to reliably reduce spend and optimize inventory by sourcing spare parts inside or outside their production network and stop buying parts they already have. It leverages the industry's largest spare part catalog and proprietary matching technology to provide AI recommendations for daily decision-making.
+
+
+### What makes SPARETECH different from other MRO software?
+SPARETECH offers a global spare parts catalog featuring over 40 million original manufacturer part data entries. Each part is assigned a unique SPARETECH ID, giving a single source of truth across the entire spare parts landscape. Using proprietary matching technology and advanced AI techniques, SPARETECH accurately matches customer data to this catalog. Additionally, by connecting all stakeholders in the spare parts ecosystem, SPARETECH enables data sharing, collaboration, and network-driven value.
+
+
+### Which industries does SPARETECH serve?
+Large enterprise manufacturers with multiple production sites across automotive (OEM and tiers), food and beverage, pharmaceuticals, electronics, measuring and control technology (including industrial automation), process industries (petroleum, plastics, paint), chemicals and cement, aerospace, wood and paper production, and industrial machinery and engineering.
+
+
+### Does SPARETECH replace my ERP system?
+No. SPARETECH works as a filter before spare parts data enters your ERP system. It ensures that only error-free information is imported, and it cleans and enriches data already present in the ERP with original manufacturer information. SPARETECH is compatible with most ERP and CMMS systems that allow exporting master data records.
+
+
+### Does SPARETECH integrate with SAP S/4HANA?
+Yes. SPARETECH integrates seamlessly with SAP S/4HANA through secure interfaces, enabling automated data transfer and real-time synchronization for material master data. SPARETECH is an official SAP partner and is available in the SAP® Store.
+
+
+### How does SPARETECH use AI?
+SPARETECH combines proprietary AI models built for industrial spare parts with advanced matching algorithms, forming an expert system refined over years. With an accuracy-first approach, AI is used to eliminate errors, ensure duplicate detection, obsolete part identification, and accurate data enrichment. Generative AI is applied strategically in controlled processes where creativity adds value without risking accuracy.
+
+
+### What is SPARETECH's pricing model?
+Pricing is tailored to business size and scope of use, with no setup or implementation fees. The pricing is fully transparent with no hidden costs. After an initial demo, SPARETECH provides a free proof of value analysis and detailed value quantification report showing potential savings.
+
+
+
+
+### Is SPARETECH cloud-based?
+Yes. SPARETECH is a 100% cloud-based SaaS solution available in 14 languages, enabling smooth global rollout across plants in different countries.
+
+
+### How secure is SPARETECH?
+SPARETECH operates under SOC 2 certifications and ensures GDPR compliance. All data is hosted in secure, certified data centers and encrypted during transfer and storage.
+
+
+## Leadership
+
+
+- **Martin Weber** – Co-Founder & CEO
+- **Dr. Lukas Biedermann** – Co-Founder & COO. His dissertation on supply chain resilience has been downloaded over 50,000 times and highlighted the need for better spare parts management.
+- **Sabira Lakhani** – VP Product
+- **Georgi Staykov** – VP Engineering
+- **Theocharis Chatziioakimidis** – VP Finance & IT
+- **Diana Robertson** – VP Customer Success
+- **Charles Mackenzie** – Head of Marketing
+- **Anja-Maria Schäfer** – Head of People & Culture
+
+
+## Company Information
+
+
+### Key Statistics
+- **40M+** original manufacturer part data entries in the global catalog
+- **15,000+** original manufacturers, suppliers, and distributors in the catalog
+- **70** countries with factories using SPARETECH
+- **-45%** reduction in unplanned downtime
+- **-21%** average inventory reduction
+- **-57%** less manual effort on BOMs and material checks
+- **-7%** spare part procurement costs
+- **80+** team members
+- **12+** work locations worldwide
+- **26+** nationalities
+- **14** languages supported
+
+
+### Certifications & Compliance
+- SOC 2 Type II
+- GDPR Compliant
+
+
+### Partnerships
+- Official SAP Partner (available in SAP® Store)
+
+
+### Trusted By
+Nestlé, Bosch, Porsche, BMW, Volkswagen, Sanofi, Yanfeng, WEPA, Idahoan Foods, ElringKlinger, Speira, REHAU, MANN+HUMMEL, Pepperl+Fuchs, Brose, DRÄXLMAIER, and other global manufacturers.
+
+
+### Locations
+
+
+**Germany (HQ)**
+Eberhardstraße 65, 70173 Stuttgart
+
+
+**Germany**
+Einsteinstraße 174, 81677 Munich
+
+
+**USA**
+1 S Dearborn St, Chicago, IL 60603
+
+
+### Vision
+
+
+SPARETECH is an enterprise MRO software that enables maintenance and procurement teams in manufacturing to reliably reduce spend and optimize inventory by sourcing spare parts inside or outside their production network and stop buying parts they already have. Leveraging the industry’s largest spare part catalog and proprietary matching technology, SPARETECH provides AI-powered recommendations for daily decision-making.
+
+
+By connecting all players in the spare parts ecosystem, SPARETECH facilitates the exchange of data, knowledge, and expertise. This shared visibility and intelligence empower effective collaboration and unlock network-driven value beyond software. Trusted by global manufacturers like Bosch, Porsche, and Nestlé, SPARETECH is moving toward its vision of the zero-waste industrial sharing economy
+
+
+## Optional
+
+
+- [Blog](https://sparetech.io/en/blog) – Latest articles on MRO strategy, AI in maintenance, master data management, and spare parts optimization.
+- [SPARETECH's Golden Layer](https://sparetech.io/en/blog/golden-layer-comprehensive-database-for-industrial-spare-parts) – Explains SPARETECH's proprietary database that links spare parts data along the supply chain to create transparency.
+- [API Documentation](https://docs.sparetech.io/) – Technical REST API documentation (Sync API v2) for developers integrating SPARETECH with ERP/CMMS/MDM systems.

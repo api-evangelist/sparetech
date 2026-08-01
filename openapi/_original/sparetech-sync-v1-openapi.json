@@ -1,0 +1,1397 @@
+{
+  "openapi": "3.0.2",
+  "x-stoplight": {
+    "id": "gfa4jhd050w9x"
+  },
+  "info": {
+    "title": "Sync API",
+    "version": "0.2.0",
+    "description": "# Authorization\n\n<!-- Redoc-Inject: <security-definitions> -->\n",
+    "contact": {},
+    "x-logo": {
+      "url": "https://app.sparetech.io/img/sparetech-logo.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Sparetech logo"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://sync.sparetech.io/v1",
+      "description": "Production environment"
+    },
+    {
+      "url": "https://sync.sandbox.sparetech.io/v1",
+      "description": "Sandbox environment"
+    }
+  ],
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "summary": "Retrieve an access token",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "A dictionary with a JWT, its time until expiration, and type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthAccessToken"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You have exceeded your token quota and cannot create any more tokens until {timestamp}"
+          }
+        },
+        "operationId": "oAuthAuthenticate",
+        "description": "Retrieves a bearer token to authorize requests. Client id and secret should be supplied as [Basic HTTP Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization#basic_authentication_2). The token retrieved has an expiration time and can be requested a limited number of times per day.",
+        "security": [
+          {
+            "ClientCredentials": []
+          }
+        ]
+      }
+    },
+    "/auth": {
+      "post": {
+        "deprecated": true,
+        "summary": "Retrieve an access token",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "A dictionary with a JWT, its time until expiration, and type.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Auth0AccessToken"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You have exceeded your token quota and cannot create any more tokens until {timestamp}"
+          }
+        },
+        "operationId": "authenticate",
+        "description": "Retrieves a bearer token to authorize requests. The token retrieved has an expiration time and can be requested a limited number of times per day.",
+        "requestBody": {
+          "description": "Client ID and Client Secret pair.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Auth0TokenRequest"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/schema/export": {
+      "get": {
+        "summary": "Export Metadata Schema",
+        "tags": [
+          "Schema"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of `strings` containing attributes that can occur in the metadata object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "MANU",
+                    "ART_NUM",
+                    "TYP",
+                    "DESC"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getExportSchema",
+        "description": "Returns a list of attributes that can occur in the metadata object. Corresponds to the export mapping of your organisation.",
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      }
+    },
+    "/schema/import": {
+      "get": {
+        "summary": "Import Material Schema",
+        "tags": [
+          "Schema"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of `strings` containing all the names of the attributes that can occur in the request body of the Import Material endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "Materialnummer",
+                    "[ART_NUM]",
+                    "[MANU]",
+                    "[TYP]"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getImportSchema",
+        "description": "Returns a list of attributes that can occur in the request body of the Import Material endpoint. Corresponds to the Material Master fields of your organisation.",
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      }
+    },
+    "/creation-intents": {
+      "get": {
+        "summary": "List all CreationIntents",
+        "tags": [
+          "CreationIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "A dictionary with a `creationIntents` property that contains an array of up to `limit`. CreationIntents.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreationIntents"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Creation intent {id} couldn't be found"
+          }
+        },
+        "operationId": "getCreationIntents",
+        "description": "Returns a list of CreationIntents.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/CreationIntentStatus"
+            },
+            "description": "Only returns intents in the given status. Allowed statuses are `Ready` and `Done`."
+          },
+          {
+            "name": "created.gt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2022-12-10",
+            "description": "A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format."
+          },
+          {
+            "name": "created.lt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2022-12-13",
+            "description": "A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "A cursor for pagination across multiple pages of results."
+          }
+        ],
+        "x-validator": true
+      }
+    },
+    "/creation-intents/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a CreationIntent",
+        "description": "Retrieves the details of a CreationIntent that has previously been created.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "CreationIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "A `CreationIntent` if a valid `id` was provided.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreationIntent"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Creation intent {id} couldn't be found"
+          }
+        },
+        "operationId": "getCreationIntent",
+        "x-validator": true
+      }
+    },
+    "/creation-intents/{id}/confirm": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Confirm material creation",
+        "description": "Confirms the material creation by supplying the material number.",
+        "tags": [
+          "CreationIntent"
+        ],
+        "operationId": "confirmCreationIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreationIntentConfirmation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated `CreationIntent` after adding the material number.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreationIntent"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Creation intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/creation-intents/{id}/reject": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Reject material creation",
+        "description": "Marks the intent as rejected by the external system.",
+        "tags": [
+          "CreationIntent"
+        ],
+        "operationId": "rejectCreationIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Creation intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/change-intents": {
+      "get": {
+        "summary": "List all ChangeIntents",
+        "tags": [
+          "ChangeIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "A dictionary with a `changeIntents` property that contains an array of up to `limit` ChangeIntents.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeIntents"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Change intent {id} couldn't be found"
+          }
+        },
+        "operationId": "getChangeIntents",
+        "description": "Returns a list of ChangeIntents.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ChangeIntentStatus"
+            },
+            "description": "Only returns intents in the given status."
+          },
+          {
+            "name": "created.gt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2022-12-10",
+            "description": "A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format."
+          },
+          {
+            "name": "created.lt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2022-12-13",
+            "description": "A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "A cursor for pagination across multiple pages of results."
+          },
+          {
+            "name": "changes.only",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "description": "If true, this endpoint only returns fields that have changes as part of the `metadata` property of the `changeIntents` property. This is the default behaviour, mimicking a patch."
+          }
+        ],
+        "x-validator": true
+      }
+    },
+    "/change-intents/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        },
+        {
+          "name": "changes.only",
+          "in": "query",
+          "schema": {
+            "type": "boolean",
+            "default": true
+          },
+          "description": "If true, this endpoint only returns fields that have changes as part of the `metadata` property. This is the default behaviour, mimicking a patch."
+        }
+      ],
+      "get": {
+        "summary": "Retrieve a ChangeIntent",
+        "description": "Retrieves the details of a ChangeIntent that has previously been created.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "ChangeIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "A `ChangeIntent` if a valid `id` was provided.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeIntent"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Change intent {id} couldn't be found"
+          }
+        },
+        "operationId": "getChangeIntent",
+        "x-validator": true
+      }
+    },
+    "/change-intents/{id}/confirm": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Confirm material change",
+        "description": "Confirms the change to the material.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "ChangeIntent"
+        ],
+        "operationId": "applyChangeIntent",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Change intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/change-intents/{id}/reject": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Reject material change",
+        "description": "Marks the intent as rejected by the external system.",
+        "tags": [
+          "ChangeIntent"
+        ],
+        "operationId": "rejectChangeIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Change intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/extension-intents": {
+      "get": {
+        "summary": "List all ExtensionIntents",
+        "tags": [
+          "ExtensionIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "A dictionary with a `extensionIntents` property that contains an array of up to `limit` ExtensionIntents.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtensionIntents"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Extension intent {id} couldn't be found"
+          }
+        },
+        "operationId": "getExtensionIntents",
+        "description": "Returns a list of ExtensionIntents.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ExtensionIntentStatus"
+            },
+            "description": "Only returns intents in the given status."
+          },
+          {
+            "name": "created.gt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2022-12-10",
+            "description": "A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format."
+          },
+          {
+            "name": "created.lt",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2022-12-13",
+            "description": "A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "A cursor for pagination across multiple pages of results."
+          }
+        ],
+        "x-validator": true
+      }
+    },
+    "/extension-intents/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Retrieve an ExtensionIntent",
+        "description": "Retrieves the details of an ExtensionIntent that has previously been created.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "ExtensionIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "An `ExtensionIntent` if a valid `id` was provided.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtensionIntent"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Extension intent {id} couldn't be found"
+          }
+        },
+        "operationId": "getExtensionIntent",
+        "x-validator": true
+      }
+    },
+    "/extension-intents/{id}/confirm": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Confirm material extension",
+        "description": "Confirms the extension of the material to a new plant.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "ExtensionIntent"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Extension intent {id} couldn't be found"
+          }
+        },
+        "operationId": "confirmExtensionIntent",
+        "x-validator": true
+      }
+    },
+    "/extension-intents/{id}/reject": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Reject material extension",
+        "description": "Marks the intent as rejected by the external system.",
+        "tags": [
+          "ExtensionIntent"
+        ],
+        "operationId": "rejectExtensionIntent",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectComment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Extension intent {id} couldn't be found"
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/material": {
+      "post": {
+        "summary": "Create material",
+        "description": "This endpoint is part of the module \u201cMaterial Master Sync\u201d for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint inserts a new material.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Material Master Sync"
+        ],
+        "operationId": "createMaterial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncMaterialMaster"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Material reference already exists."
+          }
+        },
+        "x-validator": false
+      }
+    },
+    "/material/{reference}": {
+      "parameters": [
+        {
+          "name": "reference",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "put": {
+        "summary": "Update material",
+        "description": "This endpoint is part of the module \u201cMaterial Master Sync\u201d for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint applies changes to a material.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Material Master Sync"
+        ],
+        "operationId": "updateMaterial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncMaterialMaster"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Material reference and/or plant couldn't be found."
+          },
+          "409": {
+            "description": "Invalid material reference."
+          }
+        },
+        "x-validator": true
+      }
+    },
+    "/material/{reference}/extend": {
+      "parameters": [
+        {
+          "name": "reference",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Extend material",
+        "description": "This endpoint is part of the module \u201cMaterial Master Sync\u201d for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint extends a material to a given plant.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Material Master Sync"
+        ],
+        "operationId": "extendMaterial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncMaterialMasterExtension"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Material reference and/or plant couldn't be found."
+          },
+          "409": {
+            "description": "Plant is already included in material"
+          },
+          "422": {
+            "description": "Material fields should not be part of an extension."
+          }
+        },
+        "x-validator": true
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Token": {
+        "description": "This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "ClientCredentials": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "OAuthAccessToken": {
+        "title": "OAuthAccessToken",
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "example": "eyJz93a...k4laUWw"
+          },
+          "expires_in": {
+            "type": "integer",
+            "example": 86400
+          },
+          "token_type": {
+            "type": "string",
+            "example": "Bearer"
+          }
+        },
+        "x-naming-strategy": "snake_case",
+        "required": [
+          "access_token",
+          "expires_in",
+          "token_type"
+        ]
+      },
+      "Auth0TokenRequest": {
+        "title": "Auth0TokenRequest",
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "example": "YOUR_CLIENT_ID"
+          },
+          "clientSecret": {
+            "type": "string",
+            "format": "password",
+            "example": "YOUR_CLIENT_SECRET"
+          }
+        },
+        "required": [
+          "clientId",
+          "clientSecret"
+        ]
+      },
+      "Auth0AccessToken": {
+        "title": "Auth0AccessToken",
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJz93a...k4laUWw"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "example": 86400
+          },
+          "tokenType": {
+            "type": "string",
+            "example": "Bearer"
+          }
+        },
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "tokenType"
+        ]
+      },
+      "CreationIntentStatus": {
+        "title": "CreationIntentStatus",
+        "type": "string",
+        "x-stoplight": {
+          "id": "lp1e4gqdhcrni"
+        },
+        "x-examples": {
+          "example-1": {
+            "id": "string"
+          }
+        },
+        "enum": [
+          "Ready",
+          "Done"
+        ],
+        "description": "Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.",
+        "example": "Ready"
+      },
+      "CreatedBy": {
+        "title": "CreatedBy",
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "creator@example.com",
+            "description": "Email of the creator"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "ApprovedBy": {
+        "title": "ApprovedBy",
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "approver@example.com",
+            "description": "Email of the approver"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "CreationIntent": {
+        "title": "CreationIntent",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "904134",
+            "description": "Unique identifier for the intent object."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2022-12-10T12:05:12Z",
+            "description": "Time at which the object was created. Follows the ISO-8601 standard format."
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "approvedBy": {
+            "$ref": "#/components/schemas/ApprovedBy"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CreationIntentStatus"
+          },
+          "metadata": {
+            "type": "object",
+            "example": {
+              "MANU": "Sparetech",
+              "ART_NUM": "SED1234",
+              "TYP": "TYP_1234",
+              "DESC": "Material Description"
+            },
+            "description": "Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Empty fields will not be returned."
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "metadata",
+          "createdBy"
+        ]
+      },
+      "CreationIntents": {
+        "title": "CreationIntents",
+        "type": "object",
+        "properties": {
+          "hasMore": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether or not more intents are available after this set. If `false`, this set comprises the end of the results."
+          },
+          "totalCount": {
+            "type": "number",
+            "example": 2,
+            "description": "Total number of intents available to retrieve, given the provided parameters."
+          },
+          "limit": {
+            "type": "integer",
+            "example": 1,
+            "description": "The maximum number of items the `changeIntents` list can have."
+          },
+          "page": {
+            "type": "integer",
+            "example": 0,
+            "description": "Current cursor of pagination across multiple pages of results."
+          },
+          "creationIntents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreationIntent"
+            }
+          }
+        },
+        "required": [
+          "hasMore",
+          "totalCount",
+          "limit",
+          "page",
+          "creationIntents"
+        ]
+      },
+      "CreationIntentConfirmation": {
+        "title": "CreationIntentConfirmation",
+        "type": "object",
+        "properties": {
+          "materialNumber": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "materialNumber"
+        ]
+      },
+      "RejectComment": {
+        "title": "RejectComment",
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Short description of the reason for rejecting the intent."
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "ChangeIntentStatus": {
+        "title": "ChangeIntentStatus",
+        "type": "string",
+        "x-stoplight": {
+          "id": "lp1e4gqdhcrni"
+        },
+        "x-examples": {
+          "example-1": {
+            "id": "string"
+          }
+        },
+        "enum": [
+          "Ready",
+          "Done"
+        ],
+        "description": "Status of the object. Possible values are `Ready` when the change is ready to be reflected in external  system and `Done` when the changes have been applied in SPARETECH and in the external system.",
+        "example": "Done"
+      },
+      "ChangeIntent": {
+        "title": "ChangeIntent",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "904136",
+            "description": "Unique identifier for the intent object."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2022-12-10T12:05:12Z",
+            "description": "Time at which the object was created. Follows the ISO-8601 standard format."
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "approvedBy": {
+            "$ref": "#/components/schemas/ApprovedBy"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ChangeIntentStatus"
+          },
+          "materialNumber": {
+            "type": "string",
+            "example": "79850030905",
+            "description": "Identifier of the material to which the changes will be applied to."
+          },
+          "plant": {
+            "type": "string",
+            "example": "",
+            "description": "Plant of material being changed"
+          },
+          "metadata": {
+            "type": "object",
+            "example": {
+              "MANU": "Sparetech",
+              "ART_NUM": "SED1234",
+              "TYP": "TYP_1234",
+              "DESC": "Material Description"
+            },
+            "description": "Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Only fields with changes will be returned."
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "metadata",
+          "materialNumber",
+          "createdBy"
+        ]
+      },
+      "ChangeIntents": {
+        "title": "ChangeIntents",
+        "type": "object",
+        "properties": {
+          "hasMore": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether or not more intents are available after this set. If `false`, this set comprises the end of the results."
+          },
+          "totalCount": {
+            "type": "number",
+            "example": 2,
+            "description": "Total number of intents available to retrieve, given the provided parameters."
+          },
+          "limit": {
+            "type": "integer",
+            "example": 1,
+            "description": "The maximum number of items the `changeIntents` list can have."
+          },
+          "page": {
+            "type": "integer",
+            "example": 0,
+            "description": "Current cursor of pagination across multiple pages of results."
+          },
+          "changeIntents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeIntent"
+            }
+          }
+        },
+        "required": [
+          "hasMore",
+          "totalCount",
+          "limit",
+          "page",
+          "changeRequests"
+        ]
+      },
+      "ExtensionIntentStatus": {
+        "title": "ExtensionIntentStatus",
+        "type": "string",
+        "enum": [
+          "Ready",
+          "Done"
+        ],
+        "description": "Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.",
+        "example": "Done"
+      },
+      "ExtensionIntent": {
+        "title": "ExtensionIntent",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "904136",
+            "description": "Unique identifier for the intent object."
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2022-12-10T12:05:12Z",
+            "description": "Time at which the object was created. Follows the ISO-8601 standard format."
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "approvedBy": {
+            "$ref": "#/components/schemas/ApprovedBy"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExtensionIntentStatus"
+          },
+          "materialNumber": {
+            "type": "string",
+            "example": "79850030905",
+            "description": "Identifier of the material to extend to a new plant."
+          },
+          "metadata": {
+            "type": "object",
+            "example": {
+              "MANU": "Sparetech",
+              "ART_NUM": "SED1234",
+              "TYP": "TYP_1234",
+              "DESC": "Material Description"
+            },
+            "description": "Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Only fields with changes will be returned."
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "metadata",
+          "materialNumber",
+          "createdBy"
+        ]
+      },
+      "ExtensionIntents": {
+        "title": "ExtensionIntents",
+        "type": "object",
+        "properties": {
+          "hasMore": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether or not more intents are available after this set. If `false`, this set comprises the end of the results."
+          },
+          "totalCount": {
+            "type": "number",
+            "example": 2,
+            "description": "Total number of intents available to retrieve, given the provided parameters."
+          },
+          "limit": {
+            "type": "integer",
+            "example": 1,
+            "description": "The maximum number of items the `extensionIntents` list can have."
+          },
+          "page": {
+            "type": "integer",
+            "example": 0,
+            "description": "Current cursor of pagination across multiple pages of results."
+          },
+          "extensionIntents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtensionIntent"
+            }
+          }
+        },
+        "required": [
+          "hasMore",
+          "totalCount",
+          "limit",
+          "page",
+          "changeRequests"
+        ]
+      },
+      "SyncMaterialMaster": {
+        "title": "SyncMaterialMaster",
+        "type": "object",
+        "properties": {
+          "material": {
+            "type": "object",
+            "example": {
+              "Materialnummer": "MAT00001",
+              "[ART_NUM]": "LIZ031",
+              "[MANU]": "Sparetech",
+              "[TYP]": "SPT.1.4541"
+            },
+            "description": "Object containing the entire material for a specific plant, if exists. The fields in this object are  based on the material master headings."
+          }
+        },
+        "required": [
+          "material"
+        ]
+      },
+      "SyncMaterialMasterExtension": {
+        "title": "SyncMaterialMasterExtension",
+        "type": "object",
+        "properties": {
+          "material": {
+            "type": "object",
+            "example": {
+              "[WERK]": "12345",
+              "[EKGRP]": "HH",
+              "[DISGR]": "HR1"
+            },
+            "description": "Object containing the plant fields. The fields in this object are based on the material master  headings."
+          }
+        },
+        "required": [
+          "material"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/sparetech-sync-v1-openapi.json
+summary: >-
+  Entity-relationship graph derived from the Sparetech Sync API v1 OpenAPI schemas.
+  The domain is ERP material-master synchronization: a Material is created,
+  changed or extended through approval-workflow "intent" entities.
+entities:
+- name: Material
+  key: reference
+  attributes: [reference, plant, material]
+  notes: The material master record synced to/from the customer ERP; keyed by reference and scoped to a plant.
+- name: CreationIntent
+  key: id
+  attributes: [id, createdAt, createdBy, approvedBy, status, metadata]
+- name: ChangeIntent
+  key: id
+  attributes: [id, createdAt, createdBy, approvedBy, status, materialNumber, plant, metadata]
+- name: ExtensionIntent
+  key: id
+  attributes: [id, createdAt, createdBy, approvedBy, status, materialNumber, metadata]
+relationships:
+- from: ChangeIntent
+  to: Material
+  type: belongs_to
+  via: materialNumber
+- from: ExtensionIntent
+  to: Material
+  type: belongs_to
+  via: materialNumber
+- from: CreationIntent
+  to: Material
+  type: has_one
+  via: confirmation
+  notes: Confirming a CreationIntent results in a new Material master record.
