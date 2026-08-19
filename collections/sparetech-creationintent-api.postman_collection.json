@@ -1,0 +1,742 @@
+{
+  "item": [
+    {
+      "id": "b0752916-0522-4355-a616-a2dfbf1e57e0",
+      "name": "CreationIntent",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "15a821ea-c307-47e5-8948-fb86341a875a",
+          "name": "List all CreationIntents",
+          "request": {
+            "name": "List all CreationIntents",
+            "description": {
+              "content": "Returns a list of CreationIntents.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "creation-intents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Only returns intents in the given status. Allowed statuses are `Ready` and `Done`."
+                },
+                {
+                  "disabled": false,
+                  "key": "created.gt",
+                  "value": "<date>",
+                  "description": "A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format."
+                },
+                {
+                  "disabled": false,
+                  "key": "created.lt",
+                  "value": "<date>",
+                  "description": "A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "A cursor for pagination across multiple pages of results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ad739c7d-13c0-429f-abbb-618fb989c2c1",
+              "name": "A dictionary with a `creationIntents` property that contains an array of up to `limit`. CreationIntents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "Ready"
+                    },
+                    {
+                      "key": "created.gt",
+                      "value": "2022-12-10"
+                    },
+                    {
+                      "key": "created.lt",
+                      "value": "2022-12-13"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hasMore\": true,\n  \"totalCount\": 2,\n  \"limit\": 1,\n  \"page\": 0,\n  \"creationIntents\": [\n    {\n      \"id\": \"904134\",\n      \"status\": \"Ready\",\n      \"metadata\": {\n        \"MANU\": \"Sparetech\",\n        \"ART_NUM\": \"SED1234\",\n        \"TYP\": \"TYP_1234\",\n        \"DESC\": \"Material Description\"\n      },\n      \"createdBy\": {\n        \"email\": \"creator@example.com\"\n      },\n      \"createdAt\": \"2022-12-10T12:05:12Z\",\n      \"approvedBy\": {\n        \"email\": \"approver@example.com\"\n      }\n    },\n    {\n      \"id\": \"904134\",\n      \"status\": \"Ready\",\n      \"metadata\": {\n        \"MANU\": \"Sparetech\",\n        \"ART_NUM\": \"SED1234\",\n        \"TYP\": \"TYP_1234\",\n        \"DESC\": \"Material Description\"\n      },\n      \"createdBy\": {\n        \"email\": \"creator@example.com\"\n      },\n      \"createdAt\": \"2022-12-10T12:05:12Z\",\n      \"approvedBy\": {\n        \"email\": \"approver@example.com\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f3cf95a8-a42a-4fdd-a5d7-0e1645ac0f52",
+              "name": "Creation intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "Ready"
+                    },
+                    {
+                      "key": "created.gt",
+                      "value": "2022-12-10"
+                    },
+                    {
+                      "key": "created.lt",
+                      "value": "2022-12-13"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45907937-0818-4b2d-ae6a-65a39c64187a",
+          "name": "Retrieve a CreationIntent",
+          "request": {
+            "name": "Retrieve a CreationIntent",
+            "description": {
+              "content": "Retrieves the details of a CreationIntent that has previously been created.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "creation-intents",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "73158cf1-95dc-4308-b41b-d28948ed1871",
+              "name": "A `CreationIntent` if a valid `id` was provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"904134\",\n  \"status\": \"Ready\",\n  \"metadata\": {\n    \"MANU\": \"Sparetech\",\n    \"ART_NUM\": \"SED1234\",\n    \"TYP\": \"TYP_1234\",\n    \"DESC\": \"Material Description\"\n  },\n  \"createdBy\": {\n    \"email\": \"creator@example.com\"\n  },\n  \"createdAt\": \"2022-12-10T12:05:12Z\",\n  \"approvedBy\": {\n    \"email\": \"approver@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8bbac546-3897-4aac-87a1-cc7b66a438ad",
+              "name": "Creation intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90b28ea8-7d37-4862-8a5c-01830902d096",
+          "name": "Confirm material creation",
+          "request": {
+            "name": "Confirm material creation",
+            "description": {
+              "content": "Confirms the material creation by supplying the material number.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "creation-intents",
+                ":id",
+                "confirm"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"materialNumber\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ea8e8bf1-d350-4727-b2c7-e886cb339889",
+              "name": "The updated `CreationIntent` after adding the material number.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"materialNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"904134\",\n  \"status\": \"Ready\",\n  \"metadata\": {\n    \"MANU\": \"Sparetech\",\n    \"ART_NUM\": \"SED1234\",\n    \"TYP\": \"TYP_1234\",\n    \"DESC\": \"Material Description\"\n  },\n  \"createdBy\": {\n    \"email\": \"creator@example.com\"\n  },\n  \"createdAt\": \"2022-12-10T12:05:12Z\",\n  \"approvedBy\": {\n    \"email\": \"approver@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63732073-b009-4267-92cf-abbe2e7f5184",
+              "name": "Creation intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"materialNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b82aa78-48d8-472f-9c88-c753f5337705",
+          "name": "Reject material creation",
+          "request": {
+            "name": "Reject material creation",
+            "description": {
+              "content": "Marks the intent as rejected by the external system.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "creation-intents",
+                ":id",
+                "reject"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0a98f4a6-b1af-418f-aa63-7986a7ab43b9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents",
+                    ":id",
+                    "reject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "25dc3e09-fa31-47a9-b17e-7eb235ecf0d8",
+              "name": "Creation intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "creation-intents",
+                    ":id",
+                    "reject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sync.sparetech.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9be64c23-9a8b-4276-9086-5eac16c4e846",
+    "name": "Sync Authentication CreationIntent API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Authorization\n\n<!-- Redoc-Inject: <security-definitions> -->\n",
+      "type": "text/plain"
+    }
+  }
+}

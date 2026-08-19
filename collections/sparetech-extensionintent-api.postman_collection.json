@@ -1,0 +1,703 @@
+{
+  "item": [
+    {
+      "id": "f7e56149-806b-4f5e-9514-d23525173e4b",
+      "name": "ExtensionIntent",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "695b4626-0e84-49ac-a10f-685348825a19",
+          "name": "List all ExtensionIntents",
+          "request": {
+            "name": "List all ExtensionIntents",
+            "description": {
+              "content": "Returns a list of ExtensionIntents.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "extension-intents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Only returns intents in the given status."
+                },
+                {
+                  "disabled": false,
+                  "key": "created.gt",
+                  "value": "<date>",
+                  "description": "A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format."
+                },
+                {
+                  "disabled": false,
+                  "key": "created.lt",
+                  "value": "<date>",
+                  "description": "A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "A cursor for pagination across multiple pages of results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6a9ba35c-9485-4134-b62e-dbbd1992f6c3",
+              "name": "A dictionary with a `extensionIntents` property that contains an array of up to `limit` ExtensionIntents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "Done"
+                    },
+                    {
+                      "key": "created.gt",
+                      "value": "2022-12-10"
+                    },
+                    {
+                      "key": "created.lt",
+                      "value": "2022-12-13"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hasMore\": true,\n  \"totalCount\": 2,\n  \"limit\": 1,\n  \"page\": 0,\n  \"extensionIntents\": [\n    {\n      \"id\": \"904136\",\n      \"status\": \"Done\",\n      \"metadata\": {\n        \"MANU\": \"Sparetech\",\n        \"ART_NUM\": \"SED1234\",\n        \"TYP\": \"TYP_1234\",\n        \"DESC\": \"Material Description\"\n      },\n      \"materialNumber\": \"79850030905\",\n      \"createdBy\": {\n        \"email\": \"creator@example.com\"\n      },\n      \"createdAt\": \"2022-12-10T12:05:12Z\",\n      \"approvedBy\": {\n        \"email\": \"approver@example.com\"\n      }\n    },\n    {\n      \"id\": \"904136\",\n      \"status\": \"Done\",\n      \"metadata\": {\n        \"MANU\": \"Sparetech\",\n        \"ART_NUM\": \"SED1234\",\n        \"TYP\": \"TYP_1234\",\n        \"DESC\": \"Material Description\"\n      },\n      \"materialNumber\": \"79850030905\",\n      \"createdBy\": {\n        \"email\": \"creator@example.com\"\n      },\n      \"createdAt\": \"2022-12-10T12:05:12Z\",\n      \"approvedBy\": {\n        \"email\": \"approver@example.com\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d52ec79a-9f22-4c3c-882c-b7e1444e4a5a",
+              "name": "Extension intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "Done"
+                    },
+                    {
+                      "key": "created.gt",
+                      "value": "2022-12-10"
+                    },
+                    {
+                      "key": "created.lt",
+                      "value": "2022-12-13"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e26c608d-dbf2-436d-b907-7c1460b6461e",
+          "name": "Retrieve an ExtensionIntent",
+          "request": {
+            "name": "Retrieve an ExtensionIntent",
+            "description": {
+              "content": "Retrieves the details of an ExtensionIntent that has previously been created.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "extension-intents",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b3cf2c1b-9fbf-4b03-9261-f41a600f532e",
+              "name": "An `ExtensionIntent` if a valid `id` was provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"904136\",\n  \"status\": \"Done\",\n  \"metadata\": {\n    \"MANU\": \"Sparetech\",\n    \"ART_NUM\": \"SED1234\",\n    \"TYP\": \"TYP_1234\",\n    \"DESC\": \"Material Description\"\n  },\n  \"materialNumber\": \"79850030905\",\n  \"createdBy\": {\n    \"email\": \"creator@example.com\"\n  },\n  \"createdAt\": \"2022-12-10T12:05:12Z\",\n  \"approvedBy\": {\n    \"email\": \"approver@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e30c0fc-077e-4dcd-b6b9-d7e6a2e88c7c",
+              "name": "Extension intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "579f5fe4-7094-4f7d-b4be-694478aa84ef",
+          "name": "Confirm material extension",
+          "request": {
+            "name": "Confirm material extension",
+            "description": {
+              "content": "Confirms the extension of the material to a new plant.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "extension-intents",
+                ":id",
+                "confirm"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d8231725-d2f9-4c46-98a6-af8aa12c5025",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "48378f6c-937d-40e9-82ee-41f9d9c4503e",
+              "name": "Extension intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb33d4ae-9e84-4235-8023-d883ee857f5b",
+          "name": "Reject material extension",
+          "request": {
+            "name": "Reject material extension",
+            "description": {
+              "content": "Marks the intent as rejected by the external system.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "extension-intents",
+                ":id",
+                "reject"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d34ecb06-1d21-480b-846c-a90d26dc3a5f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents",
+                    ":id",
+                    "reject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5fe45ec2-d654-42e6-833c-ea3ffde262b5",
+              "name": "Extension intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extension-intents",
+                    ":id",
+                    "reject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sync.sparetech.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c8e07c65-5a6c-44cd-bcf7-d574952b212c",
+    "name": "Sync Authentication ExtensionIntent API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Authorization\n\n<!-- Redoc-Inject: <security-definitions> -->\n",
+      "type": "text/plain"
+    }
+  }
+}

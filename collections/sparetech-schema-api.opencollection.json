@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sync Authentication Schema API",
+    "version": "0.2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Schema",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export Metadata Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sync.sparetech.io/v1/schema/export",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of attributes that can occur in the metadata object. Corresponds to the export mapping of your organisation."
+        },
+        {
+          "info": {
+            "name": "Import Material Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sync.sparetech.io/v1/schema/import",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of attributes that can occur in the request body of the Import Material endpoint. Corresponds to the Material Master fields of your organisation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

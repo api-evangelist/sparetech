@@ -1,0 +1,734 @@
+{
+  "item": [
+    {
+      "id": "54613eb0-1eac-4bfc-9793-ea36e6cdfa4f",
+      "name": "ChangeIntent",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0751cd5d-970a-4fd3-b830-eec184906fa3",
+          "name": "List all ChangeIntents",
+          "request": {
+            "name": "List all ChangeIntents",
+            "description": {
+              "content": "Returns a list of ChangeIntents.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "change-intents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Only returns intents in the given status."
+                },
+                {
+                  "disabled": false,
+                  "key": "created.gt",
+                  "value": "<date>",
+                  "description": "A filter based on the object's `createdAt` field. Return results where the field is greater than or equal to this value. Follows the ISO-8601 standard format."
+                },
+                {
+                  "disabled": false,
+                  "key": "created.lt",
+                  "value": "<date>",
+                  "description": "A filter based on the object's `createdAt` field. Return results where the field is less than or equal to this value. Follows the ISO-8601 standard format."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "A limit on the number of objects to be returned. Limit can range between 1 and 99, and the default is 10."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "A cursor for pagination across multiple pages of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "changes.only",
+                  "value": "true",
+                  "description": "If true, this endpoint only returns fields that have changes as part of the `metadata` property of the `changeIntents` property. This is the default behaviour, mimicking a patch."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bf75d68d-f9ff-43cd-9102-77d4828ecb2e",
+              "name": "A dictionary with a `changeIntents` property that contains an array of up to `limit` ChangeIntents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "Done"
+                    },
+                    {
+                      "key": "created.gt",
+                      "value": "2022-12-10"
+                    },
+                    {
+                      "key": "created.lt",
+                      "value": "2022-12-13"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "changes.only",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hasMore\": true,\n  \"totalCount\": 2,\n  \"limit\": 1,\n  \"page\": 0,\n  \"changeIntents\": [\n    {\n      \"id\": \"904136\",\n      \"status\": \"Done\",\n      \"metadata\": {\n        \"MANU\": \"Sparetech\",\n        \"ART_NUM\": \"SED1234\",\n        \"TYP\": \"TYP_1234\",\n        \"DESC\": \"Material Description\"\n      },\n      \"materialNumber\": \"79850030905\",\n      \"createdBy\": {\n        \"email\": \"creator@example.com\"\n      },\n      \"createdAt\": \"2022-12-10T12:05:12Z\",\n      \"approvedBy\": {\n        \"email\": \"approver@example.com\"\n      },\n      \"plant\": \"\"\n    },\n    {\n      \"id\": \"904136\",\n      \"status\": \"Done\",\n      \"metadata\": {\n        \"MANU\": \"Sparetech\",\n        \"ART_NUM\": \"SED1234\",\n        \"TYP\": \"TYP_1234\",\n        \"DESC\": \"Material Description\"\n      },\n      \"materialNumber\": \"79850030905\",\n      \"createdBy\": {\n        \"email\": \"creator@example.com\"\n      },\n      \"createdAt\": \"2022-12-10T12:05:12Z\",\n      \"approvedBy\": {\n        \"email\": \"approver@example.com\"\n      },\n      \"plant\": \"\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c46d5067-5c8f-4f4a-99ec-0eafc6384b46",
+              "name": "Change intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "Done"
+                    },
+                    {
+                      "key": "created.gt",
+                      "value": "2022-12-10"
+                    },
+                    {
+                      "key": "created.lt",
+                      "value": "2022-12-13"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "changes.only",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e6209ee4-5523-4882-a909-fd0026f4f377",
+          "name": "Retrieve a ChangeIntent",
+          "request": {
+            "name": "Retrieve a ChangeIntent",
+            "description": {
+              "content": "Retrieves the details of a ChangeIntent that has previously been created.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "change-intents",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "changes.only",
+                  "value": "true",
+                  "description": "If true, this endpoint only returns fields that have changes as part of the `metadata` property. This is the default behaviour, mimicking a patch."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b87a2518-f6e2-4f86-a726-601632addbeb",
+              "name": "A `ChangeIntent` if a valid `id` was provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "changes.only",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"904136\",\n  \"status\": \"Done\",\n  \"metadata\": {\n    \"MANU\": \"Sparetech\",\n    \"ART_NUM\": \"SED1234\",\n    \"TYP\": \"TYP_1234\",\n    \"DESC\": \"Material Description\"\n  },\n  \"materialNumber\": \"79850030905\",\n  \"createdBy\": {\n    \"email\": \"creator@example.com\"\n  },\n  \"createdAt\": \"2022-12-10T12:05:12Z\",\n  \"approvedBy\": {\n    \"email\": \"approver@example.com\"\n  },\n  \"plant\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1834670b-7eff-4d8b-9605-d713d006e0dc",
+              "name": "Change intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "changes.only",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "32cbb274-6451-4898-9245-089d2872e5c3",
+          "name": "Confirm material change",
+          "request": {
+            "name": "Confirm material change",
+            "description": {
+              "content": "Confirms the change to the material.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "change-intents",
+                ":id",
+                "confirm"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0d0cb6c5-1501-4c96-b713-964619259e27",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4d71c269-8408-447d-929d-436a7042cfa8",
+              "name": "Change intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents",
+                    ":id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7268f629-d3e9-4015-9a3c-9aceadbece62",
+          "name": "Reject material change",
+          "request": {
+            "name": "Reject material change",
+            "description": {
+              "content": "Marks the intent as rejected by the external system.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "change-intents",
+                ":id",
+                "reject"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "25321799-3d85-4b15-bcf9-c7a1bc18fc1e",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents",
+                    ":id",
+                    "reject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3675f51f-b6dc-481a-a17b-0197bb19fdb1",
+              "name": "Change intent {id} couldn't be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "change-intents",
+                    ":id",
+                    "reject"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sync.sparetech.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "99bc6f72-cb60-4f44-bd54-5ff4650bcaef",
+    "name": "Sync Authentication ChangeIntent API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Authorization\n\n<!-- Redoc-Inject: <security-definitions> -->\n",
+      "type": "text/plain"
+    }
+  }
+}

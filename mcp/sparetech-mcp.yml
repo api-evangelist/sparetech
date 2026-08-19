@@ -66,3 +66,9 @@ tools:
 - name: extendMaterial
   description: Extend material
   source_operation: openapi/sparetech-sync-v1-openapi.json#extendMaterial
+deployment:
+  mode: none
+  verified: derived
+  tools: 19
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sync Authentication Material Master Sync API",
+    "version": "0.2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Material Master Sync",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create material",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sync.sparetech.io/v1/material",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint is part of the module “Material Master Sync” for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint inserts a new material."
+        },
+        {
+          "info": {
+            "name": "Update material",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://sync.sparetech.io/v1/material/:reference",
+            "params": [
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint is part of the module “Material Master Sync” for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint applies changes to a material."
+        },
+        {
+          "info": {
+            "name": "Extend material",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sync.sparetech.io/v1/material/:reference/extend",
+            "params": [
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint is part of the module “Material Master Sync” for updating the material master content in SPARETECH based on the changes initiated from the external ERP. The current endpoint extends a material to a given plant."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

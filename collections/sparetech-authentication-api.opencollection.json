@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sync Authentication API",
+    "version": "0.2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve an access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sync.sparetech.io/v1/oauth/token",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieves a bearer token to authorize requests. Client id and secret should be supplied as [Basic HTTP Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization#basic_authentication_2). The token retrieved has an expiration time and can be requested a limited number of times per day."
+        },
+        {
+          "info": {
+            "name": "Retrieve an access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sync.sparetech.io/v1/auth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieves a bearer token to authorize requests. The token retrieved has an expiration time and can be requested a limited number of times per day."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
