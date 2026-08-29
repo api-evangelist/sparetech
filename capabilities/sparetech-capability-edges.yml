@@ -1,0 +1,53 @@
+slug: sparetech
+provider: Sparetech
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Transportation & Logistics
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Material Master Sync
+  spec_file: sparetech-material-master-sync-api-openapi.yml
+  capability_id: BC-610.20
+  capability_id_l1: BC-610
+  capability_name: Master Data Management
+  confidence: 0.85
+  evidence: 'POST /material  createMaterial  Create material ... schemas: SyncMaterialMaster'
+  reason: Directly creates, updates and extends material master records synchronised with the ERP — material/product
+    master data management.
+- tag: ChangeIntent
+  spec_file: sparetech-changeintent-api-openapi.yml
+  capability_id: BC-610.20
+  capability_id_l1: BC-610
+  capability_name: Master Data Management
+  confidence: 0.75
+  evidence: POST /change-intents/{id}/confirm  applyChangeIntent  Confirm material change
+  reason: The operations govern proposed changes to material (spare-part) master records with confirm/reject
+    approval and ApprovedBy/RejectComment schemas, matching Master Data Management workflows over material
+    master data rather than procurement or maintenance execution.
+- tag: CreationIntent
+  spec_file: sparetech-creationintent-api-openapi.yml
+  capability_id: BC-610.20
+  capability_id_l1: BC-610
+  capability_name: Master Data Management
+  confidence: 0.75
+  evidence: 'POST /creation-intents/{id}/confirm  Confirm material creation ... schemas: CreationIntentStatus,
+    ApprovedBy'
+  reason: Approval workflow for creating new material master records in the MRO catalogue — governance/approval
+    of master data creation, i.e. Master Data Management.
+- tag: ExtensionIntent
+  spec_file: sparetech-extensionintent-api-openapi.yml
+  capability_id: BC-610.20
+  capability_id_l1: BC-610
+  capability_name: Master Data Management
+  confidence: 0.72
+  evidence: POST /extension-intents/{id}/confirm  Confirm material extension
+  reason: Confirm/reject workflow for extending material master records to additional plants/orgs — master
+    data record lifecycle governance.

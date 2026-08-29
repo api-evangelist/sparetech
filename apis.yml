@@ -149,6 +149,9 @@ apis:
   - type: APIReference
     url: https://docs.sparetech.io/v2
 common:
+- type: CapabilityMap
+  url: capabilities/sparetech-capability-edges.yml
+  name: Sparetech Business Capability Map
 - type: Website
   url: https://www.sparetech.io/
 - type: Documentation
