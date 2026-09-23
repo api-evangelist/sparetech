@@ -1,12 +1,7 @@
 {
   "provider": "sparetech",
   "sources": [
-    "sparetech-authentication-api-openapi.yml",
-    "sparetech-changeintent-api-openapi.yml",
-    "sparetech-creationintent-api-openapi.yml",
-    "sparetech-extensionintent-api-openapi.yml",
-    "sparetech-material-master-sync-api-openapi.yml",
-    "sparetech-schema-api-openapi.yml"
+    "_original/sparetech-sync-v1-openapi.json"
   ],
   "outputs": [
     "sparetech-authentication-api-openapi.yml",
@@ -19,6 +14,25 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sparetech-sync-v1-openapi.json: upgraded openapi 3.0.2 -> OpenAPI 3.2.0",
+    "sparetech-sync-v1-openapi.json: declared missing tag: Authentication",
+    "sparetech-sync-v1-openapi.json: declared missing tag: ChangeIntent",
+    "sparetech-sync-v1-openapi.json: declared missing tag: CreationIntent",
+    "sparetech-sync-v1-openapi.json: declared missing tag: ExtensionIntent",
+    "sparetech-sync-v1-openapi.json: declared missing tag: Material Master Sync",
+    "sparetech-sync-v1-openapi.json: declared missing tag: Schema",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/sparetech-sync-v2-openapi.json: archived document superseded by a larger archived document",
+    "sparetech-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sparetech-changeintent-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sparetech-creationintent-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sparetech-extensionintent-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sparetech-material-master-sync-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sparetech-schema-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

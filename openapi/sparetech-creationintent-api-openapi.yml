@@ -1,13 +1,11 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Sync Authentication CreationIntent API
+  title: Sync Creation Intent API
   version: 0.2.0
   description: '# Authorization
 
 
-    <!-- Redoc-Inject: <security-definitions> -->
-
-    '
+    -->'
   contact: {}
   x-logo:
     url: https://app.sparetech.io/img/sparetech-logo.png
@@ -155,6 +153,45 @@ paths:
       x-validator: true
 components:
   schemas:
+    CreationIntents:
+      title: CreationIntents
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          example: true
+          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
+        totalCount:
+          type: number
+          example: 2
+          description: Total number of intents available to retrieve, given the provided parameters.
+        limit:
+          type: integer
+          example: 1
+          description: The maximum number of items the `changeIntents` list can have.
+        page:
+          type: integer
+          example: 0
+          description: Current cursor of pagination across multiple pages of results.
+        creationIntents:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreationIntent'
+      required:
+      - hasMore
+      - totalCount
+      - limit
+      - page
+      - creationIntents
+    RejectComment:
+      title: RejectComment
+      type: object
+      properties:
+        message:
+          type: string
+          description: Short description of the reason for rejecting the intent.
+      required:
+      - message
     CreationIntent:
       title: CreationIntent
       type: object
@@ -186,15 +223,16 @@ components:
       - status
       - metadata
       - createdBy
-    RejectComment:
-      title: RejectComment
+    ApprovedBy:
+      title: ApprovedBy
       type: object
       properties:
-        message:
+        email:
           type: string
-          description: Short description of the reason for rejecting the intent.
+          example: approver@example.com
+          description: Email of the approver
       required:
-      - message
+      - email
     CreationIntentStatus:
       title: CreationIntentStatus
       type: string
@@ -208,16 +246,6 @@ components:
       - Done
       description: Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.
       example: Ready
-    ApprovedBy:
-      title: ApprovedBy
-      type: object
-      properties:
-        email:
-          type: string
-          example: approver@example.com
-          description: Email of the approver
-      required:
-      - email
     CreationIntentConfirmation:
       title: CreationIntentConfirmation
       type: object
@@ -236,36 +264,6 @@ components:
           description: Email of the creator
       required:
       - email
-    CreationIntents:
-      title: CreationIntents
-      type: object
-      properties:
-        hasMore:
-          type: boolean
-          example: true
-          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
-        totalCount:
-          type: number
-          example: 2
-          description: Total number of intents available to retrieve, given the provided parameters.
-        limit:
-          type: integer
-          example: 1
-          description: The maximum number of items the `changeIntents` list can have.
-        page:
-          type: integer
-          example: 0
-          description: Current cursor of pagination across multiple pages of results.
-        creationIntents:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreationIntent'
-      required:
-      - hasMore
-      - totalCount
-      - limit
-      - page
-      - creationIntents
   securitySchemes:
     Token:
       description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.

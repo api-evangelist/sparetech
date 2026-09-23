@@ -1,13 +1,11 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Sync Authentication Material Master Sync API
+  title: Material Master Sync API
   version: 0.2.0
   description: '# Authorization
 
 
-    <!-- Redoc-Inject: <security-definitions> -->
-
-    '
+    -->'
   contact: {}
   x-logo:
     url: https://app.sparetech.io/img/sparetech-logo.png

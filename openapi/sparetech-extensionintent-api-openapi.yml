@@ -1,13 +1,11 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Sync Authentication ExtensionIntent API
+  title: Sync Extension Intent API
   version: 0.2.0
   description: '# Authorization
 
 
-    <!-- Redoc-Inject: <security-definitions> -->
-
-    '
+    -->'
   contact: {}
   x-logo:
     url: https://app.sparetech.io/img/sparetech-logo.png
@@ -155,16 +153,6 @@ components:
           description: Short description of the reason for rejecting the intent.
       required:
       - message
-    ApprovedBy:
-      title: ApprovedBy
-      type: object
-      properties:
-        email:
-          type: string
-          example: approver@example.com
-          description: Email of the approver
-      required:
-      - email
     ExtensionIntent:
       title: ExtensionIntent
       type: object
@@ -201,6 +189,24 @@ components:
       - metadata
       - materialNumber
       - createdBy
+    ApprovedBy:
+      title: ApprovedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: approver@example.com
+          description: Email of the approver
+      required:
+      - email
+    ExtensionIntentStatus:
+      title: ExtensionIntentStatus
+      type: string
+      enum:
+      - Ready
+      - Done
+      description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
+      example: Done
     ExtensionIntents:
       title: ExtensionIntents
       type: object
@@ -241,14 +247,6 @@ components:
           description: Email of the creator
       required:
       - email
-    ExtensionIntentStatus:
-      title: ExtensionIntentStatus
-      type: string
-      enum:
-      - Ready
-      - Done
-      description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
-      example: Done
   securitySchemes:
     Token:
       description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.
