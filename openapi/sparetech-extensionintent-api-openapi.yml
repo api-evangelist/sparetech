@@ -153,6 +153,54 @@ components:
           description: Short description of the reason for rejecting the intent.
       required:
       - message
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: creator@example.com
+          description: Email of the creator
+      required:
+      - email
+    ExtensionIntents:
+      title: ExtensionIntents
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          example: true
+          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
+        totalCount:
+          type: number
+          example: 2
+          description: Total number of intents available to retrieve, given the provided parameters.
+        limit:
+          type: integer
+          example: 1
+          description: The maximum number of items the `extensionIntents` list can have.
+        page:
+          type: integer
+          example: 0
+          description: Current cursor of pagination across multiple pages of results.
+        extensionIntents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtensionIntent'
+      required:
+      - hasMore
+      - totalCount
+      - limit
+      - page
+      - changeRequests
+    ExtensionIntentStatus:
+      title: ExtensionIntentStatus
+      type: string
+      enum:
+      - Ready
+      - Done
+      description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
+      example: Done
     ExtensionIntent:
       title: ExtensionIntent
       type: object
@@ -197,54 +245,6 @@ components:
           type: string
           example: approver@example.com
           description: Email of the approver
-      required:
-      - email
-    ExtensionIntentStatus:
-      title: ExtensionIntentStatus
-      type: string
-      enum:
-      - Ready
-      - Done
-      description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
-      example: Done
-    ExtensionIntents:
-      title: ExtensionIntents
-      type: object
-      properties:
-        hasMore:
-          type: boolean
-          example: true
-          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
-        totalCount:
-          type: number
-          example: 2
-          description: Total number of intents available to retrieve, given the provided parameters.
-        limit:
-          type: integer
-          example: 1
-          description: The maximum number of items the `extensionIntents` list can have.
-        page:
-          type: integer
-          example: 0
-          description: Current cursor of pagination across multiple pages of results.
-        extensionIntents:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExtensionIntent'
-      required:
-      - hasMore
-      - totalCount
-      - limit
-      - page
-      - changeRequests
-    CreatedBy:
-      title: CreatedBy
-      type: object
-      properties:
-        email:
-          type: string
-          example: creator@example.com
-          description: Email of the creator
       required:
       - email
   securitySchemes:

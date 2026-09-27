@@ -153,36 +153,14 @@ paths:
       x-validator: true
 components:
   schemas:
-    CreationIntents:
-      title: CreationIntents
+    CreationIntentConfirmation:
+      title: CreationIntentConfirmation
       type: object
       properties:
-        hasMore:
-          type: boolean
-          example: true
-          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
-        totalCount:
-          type: number
-          example: 2
-          description: Total number of intents available to retrieve, given the provided parameters.
-        limit:
-          type: integer
-          example: 1
-          description: The maximum number of items the `changeIntents` list can have.
-        page:
-          type: integer
-          example: 0
-          description: Current cursor of pagination across multiple pages of results.
-        creationIntents:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreationIntent'
+        materialNumber:
+          type: string
       required:
-      - hasMore
-      - totalCount
-      - limit
-      - page
-      - creationIntents
+      - materialNumber
     RejectComment:
       title: RejectComment
       type: object
@@ -192,6 +170,16 @@ components:
           description: Short description of the reason for rejecting the intent.
       required:
       - message
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: creator@example.com
+          description: Email of the creator
+      required:
+      - email
     CreationIntent:
       title: CreationIntent
       type: object
@@ -223,16 +211,6 @@ components:
       - status
       - metadata
       - createdBy
-    ApprovedBy:
-      title: ApprovedBy
-      type: object
-      properties:
-        email:
-          type: string
-          example: approver@example.com
-          description: Email of the approver
-      required:
-      - email
     CreationIntentStatus:
       title: CreationIntentStatus
       type: string
@@ -246,22 +224,44 @@ components:
       - Done
       description: Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.
       example: Ready
-    CreationIntentConfirmation:
-      title: CreationIntentConfirmation
+    CreationIntents:
+      title: CreationIntents
       type: object
       properties:
-        materialNumber:
-          type: string
+        hasMore:
+          type: boolean
+          example: true
+          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
+        totalCount:
+          type: number
+          example: 2
+          description: Total number of intents available to retrieve, given the provided parameters.
+        limit:
+          type: integer
+          example: 1
+          description: The maximum number of items the `changeIntents` list can have.
+        page:
+          type: integer
+          example: 0
+          description: Current cursor of pagination across multiple pages of results.
+        creationIntents:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreationIntent'
       required:
-      - materialNumber
-    CreatedBy:
-      title: CreatedBy
+      - hasMore
+      - totalCount
+      - limit
+      - page
+      - creationIntents
+    ApprovedBy:
+      title: ApprovedBy
       type: object
       properties:
         email:
           type: string
-          example: creator@example.com
-          description: Email of the creator
+          example: approver@example.com
+          description: Email of the approver
       required:
       - email
   securitySchemes:

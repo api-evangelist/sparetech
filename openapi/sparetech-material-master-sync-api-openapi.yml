@@ -99,6 +99,19 @@ paths:
       x-validator: true
 components:
   schemas:
+    SyncMaterialMasterExtension:
+      title: SyncMaterialMasterExtension
+      type: object
+      properties:
+        material:
+          type: object
+          example:
+            '[WERK]': '12345'
+            '[EKGRP]': HH
+            '[DISGR]': HR1
+          description: Object containing the plant fields. The fields in this object are based on the material master  headings.
+      required:
+      - material
     SyncMaterialMaster:
       title: SyncMaterialMaster
       type: object
@@ -111,19 +124,6 @@ components:
             '[MANU]': Sparetech
             '[TYP]': SPT.1.4541
           description: Object containing the entire material for a specific plant, if exists. The fields in this object are  based on the material master headings.
-      required:
-      - material
-    SyncMaterialMasterExtension:
-      title: SyncMaterialMasterExtension
-      type: object
-      properties:
-        material:
-          type: object
-          example:
-            '[WERK]': '12345'
-            '[EKGRP]': HH
-            '[DISGR]': HR1
-          description: Object containing the plant fields. The fields in this object are based on the material master  headings.
       required:
       - material
   securitySchemes:
