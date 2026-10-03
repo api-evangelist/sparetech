@@ -144,25 +144,6 @@ paths:
       x-validator: true
 components:
   schemas:
-    RejectComment:
-      title: RejectComment
-      type: object
-      properties:
-        message:
-          type: string
-          description: Short description of the reason for rejecting the intent.
-      required:
-      - message
-    CreatedBy:
-      title: CreatedBy
-      type: object
-      properties:
-        email:
-          type: string
-          example: creator@example.com
-          description: Email of the creator
-      required:
-      - email
     ExtensionIntents:
       title: ExtensionIntents
       type: object
@@ -193,6 +174,25 @@ components:
       - limit
       - page
       - changeRequests
+    RejectComment:
+      title: RejectComment
+      type: object
+      properties:
+        message:
+          type: string
+          description: Short description of the reason for rejecting the intent.
+      required:
+      - message
+    ApprovedBy:
+      title: ApprovedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: approver@example.com
+          description: Email of the approver
+      required:
+      - email
     ExtensionIntentStatus:
       title: ExtensionIntentStatus
       type: string
@@ -201,6 +201,16 @@ components:
       - Done
       description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
       example: Done
+    CreatedBy:
+      title: CreatedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: creator@example.com
+          description: Email of the creator
+      required:
+      - email
     ExtensionIntent:
       title: ExtensionIntent
       type: object
@@ -237,16 +247,6 @@ components:
       - metadata
       - materialNumber
       - createdBy
-    ApprovedBy:
-      title: ApprovedBy
-      type: object
-      properties:
-        email:
-          type: string
-          example: approver@example.com
-          description: Email of the approver
-      required:
-      - email
   securitySchemes:
     Token:
       description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.

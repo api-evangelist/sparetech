@@ -153,6 +153,19 @@ paths:
       x-validator: true
 components:
   schemas:
+    CreationIntentStatus:
+      title: CreationIntentStatus
+      type: string
+      x-stoplight:
+        id: lp1e4gqdhcrni
+      x-examples:
+        example-1:
+          id: string
+      enum:
+      - Ready
+      - Done
+      description: Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.
+      example: Ready
     CreationIntentConfirmation:
       title: CreationIntentConfirmation
       type: object
@@ -170,16 +183,46 @@ components:
           description: Short description of the reason for rejecting the intent.
       required:
       - message
-    CreatedBy:
-      title: CreatedBy
+    ApprovedBy:
+      title: ApprovedBy
       type: object
       properties:
         email:
           type: string
-          example: creator@example.com
-          description: Email of the creator
+          example: approver@example.com
+          description: Email of the approver
       required:
       - email
+    CreationIntents:
+      title: CreationIntents
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          example: true
+          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
+        totalCount:
+          type: number
+          example: 2
+          description: Total number of intents available to retrieve, given the provided parameters.
+        limit:
+          type: integer
+          example: 1
+          description: The maximum number of items the `changeIntents` list can have.
+        page:
+          type: integer
+          example: 0
+          description: Current cursor of pagination across multiple pages of results.
+        creationIntents:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreationIntent'
+      required:
+      - hasMore
+      - totalCount
+      - limit
+      - page
+      - creationIntents
     CreationIntent:
       title: CreationIntent
       type: object
@@ -211,57 +254,14 @@ components:
       - status
       - metadata
       - createdBy
-    CreationIntentStatus:
-      title: CreationIntentStatus
-      type: string
-      x-stoplight:
-        id: lp1e4gqdhcrni
-      x-examples:
-        example-1:
-          id: string
-      enum:
-      - Ready
-      - Done
-      description: Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.
-      example: Ready
-    CreationIntents:
-      title: CreationIntents
-      type: object
-      properties:
-        hasMore:
-          type: boolean
-          example: true
-          description: Whether or not more intents are available after this set. If `false`, this set comprises the end of the results.
-        totalCount:
-          type: number
-          example: 2
-          description: Total number of intents available to retrieve, given the provided parameters.
-        limit:
-          type: integer
-          example: 1
-          description: The maximum number of items the `changeIntents` list can have.
-        page:
-          type: integer
-          example: 0
-          description: Current cursor of pagination across multiple pages of results.
-        creationIntents:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreationIntent'
-      required:
-      - hasMore
-      - totalCount
-      - limit
-      - page
-      - creationIntents
-    ApprovedBy:
-      title: ApprovedBy
+    CreatedBy:
+      title: CreatedBy
       type: object
       properties:
         email:
           type: string
-          example: approver@example.com
-          description: Email of the approver
+          example: creator@example.com
+          description: Email of the creator
       required:
       - email
   securitySchemes:
