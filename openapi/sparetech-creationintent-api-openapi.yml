@@ -153,6 +153,46 @@ paths:
       x-validator: true
 components:
   schemas:
+    RejectComment:
+      title: RejectComment
+      type: object
+      properties:
+        message:
+          type: string
+          description: Short description of the reason for rejecting the intent.
+      required:
+      - message
+    CreationIntent:
+      title: CreationIntent
+      type: object
+      properties:
+        id:
+          type: string
+          example: '904134'
+          description: Unique identifier for the intent object.
+        createdAt:
+          type: string
+          example: '2022-12-10T12:05:12Z'
+          description: Time at which the object was created. Follows the ISO-8601 standard format.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        approvedBy:
+          $ref: '#/components/schemas/ApprovedBy'
+        status:
+          $ref: '#/components/schemas/CreationIntentStatus'
+        metadata:
+          type: object
+          example:
+            MANU: Sparetech
+            ART_NUM: SED1234
+            TYP: TYP_1234
+            DESC: Material Description
+          description: Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Empty fields will not be returned.
+      required:
+      - id
+      - status
+      - metadata
+      - createdBy
     CreationIntentStatus:
       title: CreationIntentStatus
       type: string
@@ -174,23 +214,14 @@ components:
           type: string
       required:
       - materialNumber
-    RejectComment:
-      title: RejectComment
-      type: object
-      properties:
-        message:
-          type: string
-          description: Short description of the reason for rejecting the intent.
-      required:
-      - message
-    ApprovedBy:
-      title: ApprovedBy
+    CreatedBy:
+      title: CreatedBy
       type: object
       properties:
         email:
           type: string
-          example: approver@example.com
-          description: Email of the approver
+          example: creator@example.com
+          description: Email of the creator
       required:
       - email
     CreationIntents:
@@ -223,45 +254,14 @@ components:
       - limit
       - page
       - creationIntents
-    CreationIntent:
-      title: CreationIntent
-      type: object
-      properties:
-        id:
-          type: string
-          example: '904134'
-          description: Unique identifier for the intent object.
-        createdAt:
-          type: string
-          example: '2022-12-10T12:05:12Z'
-          description: Time at which the object was created. Follows the ISO-8601 standard format.
-        createdBy:
-          $ref: '#/components/schemas/CreatedBy'
-        approvedBy:
-          $ref: '#/components/schemas/ApprovedBy'
-        status:
-          $ref: '#/components/schemas/CreationIntentStatus'
-        metadata:
-          type: object
-          example:
-            MANU: Sparetech
-            ART_NUM: SED1234
-            TYP: TYP_1234
-            DESC: Material Description
-          description: Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Empty fields will not be returned.
-      required:
-      - id
-      - status
-      - metadata
-      - createdBy
-    CreatedBy:
-      title: CreatedBy
+    ApprovedBy:
+      title: ApprovedBy
       type: object
       properties:
         email:
           type: string
-          example: creator@example.com
-          description: Email of the creator
+          example: approver@example.com
+          description: Email of the approver
       required:
       - email
   securitySchemes:

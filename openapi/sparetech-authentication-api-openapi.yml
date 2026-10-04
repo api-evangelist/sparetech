@@ -64,20 +64,23 @@ paths:
       security: []
 components:
   schemas:
-    Auth0TokenRequest:
-      title: Auth0TokenRequest
+    Auth0AccessToken:
+      title: Auth0AccessToken
       type: object
       properties:
-        clientId:
+        accessToken:
           type: string
-          example: YOUR_CLIENT_ID
-        clientSecret:
+          example: eyJz93a...k4laUWw
+        expiresIn:
+          type: integer
+          example: 86400
+        tokenType:
           type: string
-          format: password
-          example: YOUR_CLIENT_SECRET
+          example: Bearer
       required:
-      - clientId
-      - clientSecret
+      - accessToken
+      - expiresIn
+      - tokenType
     OAuthAccessToken:
       title: OAuthAccessToken
       type: object
@@ -96,23 +99,20 @@ components:
       - access_token
       - expires_in
       - token_type
-    Auth0AccessToken:
-      title: Auth0AccessToken
+    Auth0TokenRequest:
+      title: Auth0TokenRequest
       type: object
       properties:
-        accessToken:
+        clientId:
           type: string
-          example: eyJz93a...k4laUWw
-        expiresIn:
-          type: integer
-          example: 86400
-        tokenType:
+          example: YOUR_CLIENT_ID
+        clientSecret:
           type: string
-          example: Bearer
+          format: password
+          example: YOUR_CLIENT_SECRET
       required:
-      - accessToken
-      - expiresIn
-      - tokenType
+      - clientId
+      - clientSecret
   securitySchemes:
     Token:
       description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.

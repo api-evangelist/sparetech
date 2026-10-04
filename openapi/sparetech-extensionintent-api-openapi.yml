@@ -144,6 +144,23 @@ paths:
       x-validator: true
 components:
   schemas:
+    ExtensionIntentStatus:
+      title: ExtensionIntentStatus
+      type: string
+      enum:
+      - Ready
+      - Done
+      description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
+      example: Done
+    RejectComment:
+      title: RejectComment
+      type: object
+      properties:
+        message:
+          type: string
+          description: Short description of the reason for rejecting the intent.
+      required:
+      - message
     ExtensionIntents:
       title: ExtensionIntents
       type: object
@@ -174,33 +191,6 @@ components:
       - limit
       - page
       - changeRequests
-    RejectComment:
-      title: RejectComment
-      type: object
-      properties:
-        message:
-          type: string
-          description: Short description of the reason for rejecting the intent.
-      required:
-      - message
-    ApprovedBy:
-      title: ApprovedBy
-      type: object
-      properties:
-        email:
-          type: string
-          example: approver@example.com
-          description: Email of the approver
-      required:
-      - email
-    ExtensionIntentStatus:
-      title: ExtensionIntentStatus
-      type: string
-      enum:
-      - Ready
-      - Done
-      description: 'Status of the object. Possible values are: `Ready`, when the material is ready to be created in the  external system and `Done` when the material has been synchronised between SPARETECH and the external system.'
-      example: Done
     CreatedBy:
       title: CreatedBy
       type: object
@@ -209,6 +199,16 @@ components:
           type: string
           example: creator@example.com
           description: Email of the creator
+      required:
+      - email
+    ApprovedBy:
+      title: ApprovedBy
+      type: object
+      properties:
+        email:
+          type: string
+          example: approver@example.com
+          description: Email of the approver
       required:
       - email
     ExtensionIntent:
