@@ -153,67 +153,16 @@ paths:
       x-validator: true
 components:
   schemas:
-    RejectComment:
-      title: RejectComment
+    ApprovedBy:
+      title: ApprovedBy
       type: object
       properties:
-        message:
+        email:
           type: string
-          description: Short description of the reason for rejecting the intent.
+          example: approver@example.com
+          description: Email of the approver
       required:
-      - message
-    CreationIntent:
-      title: CreationIntent
-      type: object
-      properties:
-        id:
-          type: string
-          example: '904134'
-          description: Unique identifier for the intent object.
-        createdAt:
-          type: string
-          example: '2022-12-10T12:05:12Z'
-          description: Time at which the object was created. Follows the ISO-8601 standard format.
-        createdBy:
-          $ref: '#/components/schemas/CreatedBy'
-        approvedBy:
-          $ref: '#/components/schemas/ApprovedBy'
-        status:
-          $ref: '#/components/schemas/CreationIntentStatus'
-        metadata:
-          type: object
-          example:
-            MANU: Sparetech
-            ART_NUM: SED1234
-            TYP: TYP_1234
-            DESC: Material Description
-          description: Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Empty fields will not be returned.
-      required:
-      - id
-      - status
-      - metadata
-      - createdBy
-    CreationIntentStatus:
-      title: CreationIntentStatus
-      type: string
-      x-stoplight:
-        id: lp1e4gqdhcrni
-      x-examples:
-        example-1:
-          id: string
-      enum:
-      - Ready
-      - Done
-      description: Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.
-      example: Ready
-    CreationIntentConfirmation:
-      title: CreationIntentConfirmation
-      type: object
-      properties:
-        materialNumber:
-          type: string
-      required:
-      - materialNumber
+      - email
     CreatedBy:
       title: CreatedBy
       type: object
@@ -254,16 +203,67 @@ components:
       - limit
       - page
       - creationIntents
-    ApprovedBy:
-      title: ApprovedBy
+    CreationIntent:
+      title: CreationIntent
       type: object
       properties:
-        email:
+        id:
           type: string
-          example: approver@example.com
-          description: Email of the approver
+          example: '904134'
+          description: Unique identifier for the intent object.
+        createdAt:
+          type: string
+          example: '2022-12-10T12:05:12Z'
+          description: Time at which the object was created. Follows the ISO-8601 standard format.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+        approvedBy:
+          $ref: '#/components/schemas/ApprovedBy'
+        status:
+          $ref: '#/components/schemas/CreationIntentStatus'
+        metadata:
+          type: object
+          example:
+            MANU: Sparetech
+            ART_NUM: SED1234
+            TYP: TYP_1234
+            DESC: Material Description
+          description: Object containing material specific fields. The fields in this object are configuration specific and  are based on the export configuration. Empty fields will not be returned.
       required:
-      - email
+      - id
+      - status
+      - metadata
+      - createdBy
+    CreationIntentConfirmation:
+      title: CreationIntentConfirmation
+      type: object
+      properties:
+        materialNumber:
+          type: string
+      required:
+      - materialNumber
+    RejectComment:
+      title: RejectComment
+      type: object
+      properties:
+        message:
+          type: string
+          description: Short description of the reason for rejecting the intent.
+      required:
+      - message
+    CreationIntentStatus:
+      title: CreationIntentStatus
+      type: string
+      x-stoplight:
+        id: lp1e4gqdhcrni
+      x-examples:
+        example-1:
+          id: string
+      enum:
+      - Ready
+      - Done
+      description: Status of the object. Possible values are `Ready`, when the material is ready to be created in the external system and `Done` when the material has been synchronised between SPARETECH and the external  system.
+      example: Ready
   securitySchemes:
     Token:
       description: This API uses JWT for authorization. SPARETECH will provide your client credentials, that are specific to each organisation and integration environment. See the Authentication section of this documentation for details on how to obtain a token.
